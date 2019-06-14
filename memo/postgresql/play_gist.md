@@ -1,0 +1,134 @@
+# Environment
+
+PostgreSQL 12beta1 rev:2cd4e835701e15f5e32dd8bde488f8669ddf7ae8
+ 
+# Schema
+## w/ range type
+```sql
+create table events_range (id bigint, during int8range);
+
+create index during_range_idx on events_range using gist (during);
+```
+
+## w/ 2 columns
+```sql
+create table events_int8s (id bigint, start_at bigint, finish_at bigint);
+
+create index during_int8s_idx on events_int8s using gist (int8range(start_at, finish_at, '[]'));
+```
+
+# Populate
+## Populate 10M
+```
+$ time ./gen_data_gist_on_range.py 10000000 | psql test
+COPY 10000000
+./gen_data_gist_on_range.py 10000000  26.56s user 0.12s system 13% cpu 3:20.90 total
+psql test  1.32s user 0.50s system 0% cpu 3:21.07 total
+```
+
+```
+$ time ./gen_data_gist_on_int8s.py 10000000 | psql test
+`COPY 10000000
+./gen_data_gist_on_int8s.py 10000000  26.02s user 0.12s system 13% cpu 3:19.16 total
+psql test  1.24s user 0.44s system 0% cpu 3:19.25 total
+```
+
+```
+test=# \d+
+                       List of relations
+ Schema |     Name     | Type  |  Owner  |  Size  | Description
+--------|--------------|-------|---------|--------|-------------
+ public | events_int8s | table | keisuke | 498 MB |
+ public | events_range | table | keisuke | 575 MB |
+(2 rows)
+
+test=# \di+
+                                 List of relations
+ Schema |       Name       | Type  |  Owner  |    Table     |  Size  | Description
+--------|------------------|-------|---------|--------------|--------|-------------
+ public | during_int8s_idx | index | keisuke | events_int8s | 528 MB |
+ public | during_range_idx | index | keisuke | events_range | 529 MB |
+(2 rows)
+```
+
+# Bloat
+```
+test=# select count(*) from events_int8s ;
+  count
+----------
+ 10000000
+(1 row)
+
+test=# delete from events_int8s where id < 5000000;
+DELETE 5000000
+test=# select count(*) from events_int8s ;
+  count
+---------
+ 5000000
+(1 row)
+
+test=# \di+
+                                 List of relations
+ Schema |       Name       | Type  |  Owner  |    Table     |  Size  | Description
+--------|------------------|-------|---------|--------------|--------|-------------
+ public | during_int8s_idx | index | keisuke | events_int8s | 528 MB |
+(1 row)
+
+test=# vacuum events_int8s ;
+VACUUM
+test=# \di+
+                                 List of relations
+ Schema |       Name       | Type  |  Owner  |    Table     |  Size  | Description
+--------|------------------|-------|---------|--------------|--------|-------------
+ public | during_int8s_idx | index | keisuke | events_int8s | 528 MB |
+(1 row)
+```
+
+```
+$ time ./gen_data_gist_on_int8s.py 5000000 | psql test
+COPY 5000000
+./gen_data_gist_on_int8s.py 5000000  13.17s user 0.05s system 12% cpu 1:45.12 total
+psql test  0.69s user 0.22s system 0% cpu 1:45.23 total
+```
+
+```
+test=# select count(*) from events_int8s ;
+  count
+----------
+ 10000000
+(1 row)
+
+test=# \di+
+                                 List of relations
+ Schema |       Name       | Type  |  Owner  |    Table     |  Size  | Description
+--------|------------------|-------|---------|--------------|--------|-------------
+ public | during_int8s_idx | index | keisuke | events_int8s | 542 MB |
+(1 row)
+
+test=# delete from events_int8s where id < 5000000;
+DELETE 5000000
+test=# vacuum ;
+VACUUM
+test=# \di+
+                                 List of relations
+ Schema |       Name       | Type  |  Owner  |    Table     |  Size  | Description
+--------|------------------|-------|---------|--------------|--------|-------------
+ public | during_int8s_idx | index | keisuke | events_int8s | 542 MB |
+(1 row)
+```
+
+```
+$ time ./gen_data_gist_on_int8s.py 5000000 | psql test
+COPY 5000000
+./gen_data_gist_on_int8s.py 5000000  13.23s user 0.07s system 12% cpu 1:46.96 total
+psql test  0.62s user 0.22s system 0% cpu 1:47.06 total
+```
+
+```
+test=# \di+
+                                 List of relations
+ Schema |       Name       | Type  |  Owner  |    Table     |  Size  | Description
+--------|------------------|-------|---------|--------------|--------|-------------
+ public | during_int8s_idx | index | keisuke | events_int8s | 549 MB |
+(1 row)
+```
