@@ -51,6 +51,13 @@ test=# \di+
 (2 rows)
 ```
 
+## Profile
+### w/ range type
+![range insert profile](./img/20190611_0900_insert_gist_on_range.svg)
+
+### w/ 2 columns
+![2 column insert profile](./img/20190611_0900_insert_gist_on_int8s.svg)
+
 # Bloat
 ```
 test=# select count(*) from events_int8s ;
