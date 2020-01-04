@@ -1,6 +1,6 @@
 remote_theme: chesterhow/tale
 
-title: [Keisuke Suzuki]
+title: Keisuke Suzuki
 
 permalink: /:year-:month-:day/:title
 paginate: 10
