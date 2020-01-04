@@ -1,7 +1,11 @@
 ---
-layout: post
-title: About this site
+layout: simple
+title: About
 ---
+
+# About author
+Keisuke Suzuki  
+Software engineer @ [Treasure Data](https://www.treasuredata.com/)
 
 Opinions are my own.
 
