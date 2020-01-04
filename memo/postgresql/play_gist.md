@@ -1,6 +1,8 @@
 ---
-layout: default
+layout: memo
 title: play with gist
+description: Check the bloat of GiST index on PostgreSQL 12
+date: 2019/06/14
 ---
 
 # Environment

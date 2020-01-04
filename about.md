@@ -1,11 +1,11 @@
 ---
-layout: simple
+layout: default
 title: About
 ---
 
 # About author
-Keisuke Suzuki  
-Software engineer @ [Treasure Data](https://www.treasuredata.com/)
+- Name: Keisuke Suzuki
+- Occupation: Software engineer @ [Treasure Data](https://www.treasuredata.com/)
 
 Opinions are my own.
 

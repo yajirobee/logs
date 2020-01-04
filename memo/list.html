@@ -1,0 +1,24 @@
+---
+layout: default
+---
+
+<p>
+    Random memos
+</p>
+
+<div class="catalogue">
+    {% for html_page in site.html_pages | sort_natural %}
+    {% assign crumbs = html_page.url | remove: '/index.html' | split: '/' %}
+    {% if crumbs[1] == "memo" and crumbs[2] != "list" %}
+    <a href="{{ html_page.url | prepend: site.baseurl }}" class="catalogue-item">
+        <div>
+            <time datetime="{{ html_page.date }}" class="catalogue-time">{{ html_page.date | date: "%B %d, %Y" }}</time>
+            <h2 class="catalogue-title">{{ html_page.title }}</h1>
+            <p>
+                {{ html_page.description | truncatewords: 30 }}
+            </p>
+        </div>
+    </a>
+    {% endif %}
+    {% endfor %}
+</div>
