@@ -1,6 +1,14 @@
-theme: jekyll-theme-slate
+remote_theme: chesterhow/tale
 
 title: [Keisuke Suzuki]
 
+permalink: /:year-:month-:day/:title
+paginate: 10
+
 plugins:
-  - keyll-sitemap
+  - jekyll-paginate
+  - jekyll-remote-theme
+
+# custom parameters
+author:
+  name: Keisuke Suzuki
