@@ -7,11 +7,21 @@ title: Memo
     Random memos
 </p>
 
-<div class="catalogue">
+<div class="memo">
+    {% assign last_category = "" %}
     {% for html_page in site.html_pages %}
     {% assign crumbs = html_page.url | split: '/' %}
     {% if crumbs[1] == "memo" and crumbs[2] %}
-    {% include catalog_item.html url=html_page.url date=html_page.date title=html_page.title content=html_page.content %}
+    {% assign category = crumbs[2] %}
+    <h1>{{ category }}</h1>
+    {% assign last_category = category %}
+
+    <div class="memo-title">
+        <a href="{{ html_page.url | prepend: site.baseurl }}"> {{ html_page.title }}</a>
+        - {{ html_page.content | strip_html | newline_to_br | split: '<br />' | first }}
+        - {{ crumbs | last | split: "-" | slice: 0, 3 | join: "/" }}
+    </div>
+
     {% endif %}
     {% endfor %}
 </div>

@@ -1,7 +1,9 @@
 .memo {
-    &-time {
-        color: $default-tint;
-        font-family: $serif-secondary;
-        letter-spacing: .5px;
+    &-title {
+        color: $default-shade;
+        display: block;
+        font-family: $sans-serif;
+        font-weight: 700;
+        margin: .5rem 0;
     }
 }
