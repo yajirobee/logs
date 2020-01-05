@@ -2,12 +2,17 @@ remote_theme: chesterhow/tale
 
 title: Keisuke Suzuki
 
-permalink: /:year-:month-:day/:title
-paginate: 10
-
 plugins:
-  - jekyll-paginate
+  - jekyll-paginate-v2
   - jekyll-remote-theme
+  - jekyll-last-modified-at
+
+pagination:
+  enabled: true
+  per_page: 10
+
+include:
+  - "memo/postgresql/img"
 
 # custom parameters
 author:

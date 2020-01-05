@@ -2,17 +2,7 @@
 layout: default
 ---
 
-<!-- crumbs -->
-{% assign crumbs = page.url | remove: '/index.html' | split: '/' %}
-
-/ <a href="{{ '/memo/list' | prepend: site.baseurl }}">Memo</a>
-{% for crumb in crumbs offset: 2 %}
-{% assign crumb_sanitized = crumb | replace: '-',' ' | remove: '.html' %}
-/ {{ crumb_sanitized }}
-{% endfor %}
-
-<p>
-    As of {{ page.date }}
-</p>
+<time datetime="{{ page.date }}" class="catalogue-time">Created:&nbsp;{{ page.date | date: "%B %d, %Y" }}</time><br />
+<time datetime="{{ page.last_modified_at }}" class="catalogue-time">Last updated:&nbsp;{{ page.last_modified_at | date: "%B %d, %Y" }}</time>
 
 {{ content }}

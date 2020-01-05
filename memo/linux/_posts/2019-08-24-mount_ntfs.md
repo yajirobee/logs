@@ -1,9 +1,9 @@
 ---
 layout: memo
 title: Mount NTFS
-description: Operation memo to mount NTFS on ubuntu
-date: 2019/8/24
 ---
+
+Operation memo to mount NTFS on ubuntu.
 
 # Basic Data Partition
 1. Install ntfs-3g
