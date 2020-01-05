@@ -11,9 +11,6 @@ pagination:
   enabled: true
   per_page: 10
 
-include:
-  - "memo/postgresql/img"
-
 # custom parameters
 author:
   name: Keisuke Suzuki
