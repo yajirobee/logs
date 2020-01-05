@@ -3,13 +3,10 @@ remote_theme: chesterhow/tale
 title: Keisuke Suzuki
 
 plugins:
-  - jekyll-paginate-v2
+  - jekyll-paginate
   - jekyll-remote-theme
-  - jekyll-last-modified-at
 
-pagination:
-  enabled: true
-  per_page: 10
+paginate: 10
 
 # custom parameters
 author:

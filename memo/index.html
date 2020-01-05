@@ -1,11 +1,17 @@
 ---
-layout: index
+layout: default
 title: Memo
-pagination:
-  enabled: true
-  category: memo
 ---
 
 <p>
     Random memos
 </p>
+
+<div class="catalogue">
+    {% for html_page in site.html_pages %}
+    {% assign crumbs = html_page.url | split: '/' %}
+    {% if crumbs[1] == "memo" and crumbs[2] %}
+    {% include catalog_item.html url=html_page.url date=html_page.date title=html_page.title content=html_page.content %}
+    {% endif %}
+    {% endfor %}
+</div>
