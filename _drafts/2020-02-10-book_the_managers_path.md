@@ -5,20 +5,31 @@ title: Read Book The Manager's Path
 
 [Fournier, Camille. The Manager's Path](https://www.amazon.co.jp/Managers-Path-Leaders-Navigating-English-ebook/dp/B06XP3GJ7F)
 
-2019年11月20日に購入して、先日ようやく読み終えた。Managerのすすめで読んでみたが学びが多かった。後の振り返りのために印象に残った箇所をメモしておく。
+2019年11月20日に購入して、先日ようやく読み終えた。同僚のすすめで読んでみたが学びが多かった。後の振り返りのために印象に残った箇所をメモしておく。
 
 ## 1. Management 101
 - What to Expect from a Manager > Page 1 · Location 146
 > Friends of mine talk about their best managers as managing them with “benign neglect.” The engineer just kind of knows what to work on, and the manager just leaves them alone entirely.
 
+前提として、マネージャーはチームのスループットを最大化すること、タイムリーなデリバリーを実現すること、Individual Contributer (IC)はプロダクト、サービス、コードのデリバリーに責任を負う。ICの稼働の範疇で完結できるタスクについては、ICに権限を移譲することが適切。
+ICはプロダクト、サービス、コードの特定の範囲について最も詳しいはずなので、その人間が判断できることが重要。
+
 - What to Expect from a Manager > Page 3 · Location 175
 > trust, real trust, requires the ability and willingness to be vulnerable in front of each other. So, your manager will hopefully treat you like a human who has a life outside of work, and spend a few minutes talking about that life when you meet.
+
+信頼関係無しに権限を移譲することはできない。当然ながら信頼関係を構築するために、日常会話や1 on 1は重要なツールと思う。
 
 - What to Expect from a Manager > Page 4 · Location 201
 > Good managers know that delivering feedback quickly is more valuable
 
+双方の記憶が鮮明なうちにフィードバックをすることが重要と思う。早期に指摘することで、改善のチャンスも多く得られるし、同じ過ちを繰り返すリスクも減る。
+
 - How to Be Managed > Page 9 · Location 316
 > Strong managers know how to play the game at their company. They can get you promoted; they can get you attention and feedback from important people. Strong managers have strong networks, and they can get you jobs even after you stop working for them.
+
+ここはポイントが２点。
+社内で何が重視され何が求められるかは、ICへの適切なフィードバックのためにも必要。
+適切なネットワーク構築はチームのスループットを向上するためにも必須。
 
 ## 2. Mentoring
 - Being a Mentor > Page 14 · Location 397
