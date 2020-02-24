@@ -35,23 +35,34 @@ ICはプロダクト、サービス、コードの特定の範囲について最
 - Being a Mentor > Page 14 · Location 397
 > The odds of you spending all of your time answering questions are slim compared to the odds that your intern will go off in the absolute wrong direction because he didn’t ask enough questions.
 
+フィードバックを早期にと同じだが、方向性がおかしいことに気づいた場合は直ちに修正すること。失敗するまで待ってはいけない。
+
 - Being a Mentor > Page 17 · Location 453
 > A more subtle unspoken rule dictates approximately how long you are expected to struggle with something by yourself before asking someone else to help you.
+
+わからないことについて、他人に質問するまでの時間の目安を明言するのはよい方法と思う。それをコンテキストとして共有することで受け手も質問が来ることを想定するし、質問者も躊躇しづらくなる。
 
 - Being a Mentor > Page 17 · Location 455
 > Unspoken rules don’t just make it harder for new people to join, they can also make it harder for you to do your job well. So take full advantage of this gift of fresh perspective.
 
+組織外の人からフィードバックは得られる機会は貴重。その人が組織内の人になるまでの時間は極めて短い。
+
 - Being a Mentor > Page 18 · Location 469
 > You may be an introvert, or someone who does not find socializing easy, but conscious effort and practice in getting to know new people and helping them succeed will pay off.
 
+長期的な視点でスループットを最大化するためにオンボーディングは重要視すべき。
+
 - Being a Mentor > Page 18 · Location 482
 > This type of mentoring is usually not a formal relationship and may be an expected part of the job for senior engineers because it delivers so much value to the team.
+
+シニアグレードではチーム外ともメンタリングの関係が自発的に形成されるべき。
 
 - Good Manager, Bad Manager: The Alpha Geek > Page 21 · Location 528
 > The alpha geek habit often starts to show up when engineers first become mentors. If you have ever wondered why people don’t seem to come to you for help despite your clearly strong technical skills, ask yourself whether you’re showing some signs of being an alpha geek.
 
 - Tips for the Manager of a Mentor > Page 22 · Location 551
 > but it applies here as much as anywhere else. When you need to assign a mentor for your new hire or intern, figure out what you’re hoping to achieve by creating the relationship. Then, find the person who can help meet those goals.
+
 - Tips for the Manager of a Mentor > Page 22 · Location 553
 > the mentoring relationship existed for a very specific purpose:
 
