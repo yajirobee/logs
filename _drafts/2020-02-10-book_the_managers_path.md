@@ -45,12 +45,12 @@ ICはプロダクト、サービス、コードの特定の範囲について最
 - Being a Mentor > Page 17 · Location 455
 > Unspoken rules don’t just make it harder for new people to join, they can also make it harder for you to do your job well. So take full advantage of this gift of fresh perspective.
 
-組織外の人からフィードバックは得られる機会は貴重。その人が組織内の人になるまでの時間は極めて短い。
+組織の外から来た人から得られるフィードバックは貴重。その人が「組織内の人」になるまでの時間は極めて短い。
 
 - Being a Mentor > Page 18 · Location 469
 > You may be an introvert, or someone who does not find socializing easy, but conscious effort and practice in getting to know new people and helping them succeed will pay off.
 
-長期的な視点でスループットを最大化するためにオンボーディングは重要視すべき。
+新しい人とのネットワーク構築の労力を惜しまず、習慣化すること。
 
 - Being a Mentor > Page 18 · Location 482
 > This type of mentoring is usually not a formal relationship and may be an expected part of the job for senior engineers because it delivers so much value to the team.
@@ -60,21 +60,31 @@ ICはプロダクト、サービス、コードの特定の範囲について最
 - Good Manager, Bad Manager: The Alpha Geek > Page 21 · Location 528
 > The alpha geek habit often starts to show up when engineers first become mentors. If you have ever wondered why people don’t seem to come to you for help despite your clearly strong technical skills, ask yourself whether you’re showing some signs of being an alpha geek.
 
+テクニカルスキルがあるにも関わらず他人が相談にこない、アルファギークの一つの兆候。
+
 - Tips for the Manager of a Mentor > Page 22 · Location 551
 > but it applies here as much as anywhere else. When you need to assign a mentor for your new hire or intern, figure out what you’re hoping to achieve by creating the relationship. Then, find the person who can help meet those goals.
 
 - Tips for the Manager of a Mentor > Page 22 · Location 553
 > the mentoring relationship existed for a very specific purpose:
 
+メンタリング関係を組むとき、その目的は明確でなければならない。メンターの時間をいたずらに奪ってはいけない。
+
 - Tips for the Manager of a Mentor > Page 22 · Location 561
 > Secondly, recognize that this is an additional responsibility for the mentor. If the mentor does a good job, her productivity may slow down some during the mentoring period. If you’ve got an engineer involved in a time-sensitive project, you may not want to push him into mentoring at the same time.
+
+メンタリングによりメンターには一つ責任が増える。その分生産性が落ちることは明確に想定されなければならない。
 
 - Key Takeaways for the Mentor > Page 25 · Location 618
 > Senior engineers can develop bad habits, and one of the worst is the tendency to lecture and debate with anyone who does not understand them or who disagrees with what they are saying.
 
+視座を合わせ、同じコンテキストでコミュニケーションをとる。一方的なレクチャーであったり、相手の理解していない内容、反対している内容について議論するのは最悪。
+
 ## 3. Tech Lead
 - Page 27 · Location 649
 > The idea that the tech lead role should automatically be given to the most experienced engineer, the one who can handle the most complex features or who writes the best code, is a common misconception that even experienced managers
+
+Tech leadは最も経験あるエンジニアのポジションではない。確立した定義はないが、コードを書くだけではなく一定のグループのマネジメントにも責任を持つというのが例。
 
 - Page 29 · Location 671
 > The tech lead is learning how to be a strong technical project manager, and as such, they are scaling themselves by delegating work effectively without micromanaging.
@@ -82,31 +92,54 @@ ICはプロダクト、サービス、コードの特定の範囲について最
 - All Great Tech Leads Know This One Weird Trick > Page 31 · Location 714
 > From now on, wherever you go in your career, balancing is likely to be one of your core challenges. If you want to have autonomy over your work, if you want the freedom to make choices about what you work on when, you must gain mastery over your time and how you use it. What’s worse, you’ll often need to balance doing things you know how to do and enjoy doing, such as writing code, with things you don’t know how to do.
 
+コーディングとマネジメントのバランスをとることがTech leadの挑戦の一つとなる。
+
 - Being a Tech Lead 101 > Page 33 · Location 758
 > In a healthy organization, there is no shame or harm in raising issues early. Teams often fail because they overworked themselves on a feature that their product manager would have been willing to compromise on. As a large project nears its delivery date, there will be compromises on functionality.
+
+健全な組織では課題は早期に周知される。情報がtransparentであることは組織の健全性の指標となる。
+
 - Managing Projects > Page 35 · Location 807
 > As you move forward in your career, you need to understand how to break down work that has complexity beyond the scope of what you can do as an individual.
+
+マネージャーはタスクを適切にブレイクダウンする方法を知らなければならない。
 
 - Managing Projects > Page 37 · Location 845
 > I never hesitate nowadays to take the opportunity to explain basics and motivation to senior or junior members. It educates them without making them feel small, they learn to trust my judgment and advice, and we bring about change. Taking the time to explain is very important.
 
+情報を正しく伝達することに時間を費やすべき。Poor communication creates more work.
+
 - Managing a Project > Page 38 · Location 862
 > The value of a good planning process is that it helps you know approximately how far the project has come, and approximately how far it is from completion.
+
+よいプランニングプロセスとは、正確でなくともタスクがどの程度の時間や労力を要するか知ることができるもの。
 
 - Managing a Project > Page 39 · Location 882
 > Good managers are looking out for talented people who could be given bigger leadership roles, but sometimes this leads them to push people away from coding before they’re ready. This practice can have a very negative impact on your career, because at more senior levels people who are considered “not technical enough” can find it hard to be promoted into management positions with more responsibility. It’s much easier to stay in a focused individual contributor role and learn what you need to learn there than it is to try to learn all of those skills while also learning management skills.
 
+自分のテクニカルスキルにある程度満足するまでマネージメントトラックに乗るべきでないといのが筆者の考え。これはよい指標と思う。
+マネージメントのポジションに就く前に、マネージメントのリテラシーを挙げておくのも良いと思う。
+
 - Good Manager, Bad Manager: The Process Czar > Page 46 · Location 1004
 > As a new tech lead, be careful of relying on process to solve problems that are a result of communication or leadership gaps on your team. Sometimes a change in process is helpful, but it’s rarely a silver bullet, and no two great teams ever look exactly alike in process, tools, or work style.
+
+プロセスに頼りすぎてはいけない。フィットするプロセス、ツール、ワークスタイルは、全てのチームで異なることを理解する。
 
 - Good Manager, Bad Manager: The Process Czar > Page 46 · Location 1007
 > If you find yourself playing the role of taskmaster — criticizing people who break the rules or don’t follow the process — see if the process itself can be changed to be easier to follow. It’s a waste of your time to play rules cop, and automation can often make the rules more obvious.
 
+プロセスに違反したものを過剰に非難するような体制にするべきではない。人が合わせやすいようプロセスを変えることも常に選択肢に入れる。
+
 - How to Be a Great Tech Lead > Page 46 · Location 1023
 > If you’re doing all of the interesting work yourself, stop. Look at the tricky, boring, or annoying areas of technical need and see if you can unstick those areas. Working on the less exciting parts of the code base can teach you a lot about where the process is broken. With boring or frustrating projects, there’s often something obvious that can be spotted and fixed if an experienced person takes the time to look at them. If you’re only doing the most boring work, stop that, too. You’re a senior engineer who has a lot of talent as a developer, and it’s reasonable for you to take on some of the harder tasks. You want to encourage others on your team to learn the entire system, and you want to give them chances to stretch themselves, but you needn’t always be self-sacrificing in what you choose to work on. Give yourself a fun task occasionally, as long as you know you have the time to do it well.
 
+Tech leadのポジションでは、シニアより下のエンジニアのために、成長の機会のためのタスクを残しておかなければならない。
+チームのレベルを引き上げるのはシニアエンジニアの役割。
+
 - How to Be a Great Tech Lead > Page 47 · Location 1042
 > Successful leaders write well, they read carefully, and they can get up in front of a group and speak. They pay attention in meetings and are constantly testing the limits of their knowledge and the knowledge of the team. Now is a great time to practice your writing and speaking skills. Write design documents and get feedback on them from better writers. Write blog posts for your tech blog or your personal blog. Speak in team meetings, speak at meetups, and get practice standing up in front of an audience.
+
+ライティングとスピーキングのスキルをあげる。リーダーには議論を先導することが求められる。
 
 ## 4. Managing People
 - Different 1-1 Styles > Page 55 · Location 1194
