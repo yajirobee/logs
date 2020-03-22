@@ -1,6 +1,6 @@
 ---
 layout: blog
-title: Read Book The Manager's Path
+title: Read Book: The Manager's Path
 ---
 
 [Fournier, Camille. The Manager's Path](https://www.amazon.co.jp/Managers-Path-Leaders-Navigating-English-ebook/dp/B06XP3GJ7F)
@@ -9,7 +9,7 @@ title: Read Book The Manager's Path
 今後すぐどうということではないが、将来のキャリアパスの選択肢について考える上で得られた知識は多かったと思う。
 
 以下は印象に残った箇所のメモ。後の参考のため。
-なお、この本の論じているマネジメントは、ソフトウェアエンジニアチームについてであり、一般全てのマネジメントではない。
+なお、この本の論じているマネジメントは、ソフトウェアエンジニアリングチームについてであり、一般全てのマネジメントではない。
 特に断りない限り以下では、「エンジニア」「メンバー」はソフトウェアエンジニアを指し、「マネージャー」はソフトウエアエンジニアリングマネージャーを指す。
 
 ## 1. Management 101
