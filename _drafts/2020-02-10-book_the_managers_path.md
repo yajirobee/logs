@@ -5,7 +5,12 @@ title: Read Book The Manager's Path
 
 [Fournier, Camille. The Manager's Path](https://www.amazon.co.jp/Managers-Path-Leaders-Navigating-English-ebook/dp/B06XP3GJ7F)
 
-2019年11月20日に購入して、先日ようやく読み終えた。同僚のすすめで読んでみたが学びが多かった。後の振り返りのために印象に残った箇所をメモしておく。
+2019年11月20日に購入して、先日ようやく読み終えた。同僚のすすめで読んでみたが学びが多かった。
+今後すぐどうということではないが、将来のキャリアパスの選択肢について考える上で得られた知識は多かったと思う。
+
+以下は印象に残った箇所のメモ。後の参考のため。
+なお、この本の論じているマネジメントは、ソフトウェアエンジニアチームについてであり、一般全てのマネジメントではない。
+特に断りない限り以下では、「エンジニア」「メンバー」はソフトウェアエンジニアを指し、「マネージャー」はソフトウエアエンジニアリングマネージャーを指す。
 
 ## 1. Management 101
 - What to Expect from a Manager > Page 1 · Location 146
@@ -144,61 +149,110 @@ Tech leadのポジションでは、シニアより下のエンジニアのた�
 ## 4. Managing People
 - Different 1-1 Styles > Page 55 · Location 1194
 > If you start focusing a lot of energy on hearing reports’ complaints and commiserating, you’re quite possibly making the problem worse. You don’t have to have a to-do list, but problems in the workplace need to be either dealt with or put aside by mutual agreement. There is very little value to repeatedly focusing on drama.
+
+個々のメンバーの不満や愚痴に付き合いすぎないように。面と向き合い過ぎてしまうとおそらく事態は悪化する。
+そうしたトラブルに対しては、すぐに対処するか、合意の元いったん保留する。無言で放置しない。
+
 - Practical Advice for Delegating Effectively > Page 59 · Location 1294
+自分で集められる情報をメンバーをいちいち小突いて聞き出すのは最悪のマイクロマネージメント。
+チケット、アラート、メトリクス、コードの変更など一次ソースを少し見てわかるものは自分で確認する。
 
 - Creating a Culture of Continuous Feedback > Page 61 · Location 1347
 > Some companies have started to adopt software that makes it easy for teams to provide continuous feedback and track that feedback over time, but the most important thing is that the team has adopted a culture of providing feedback frequently. For you, as a new manager, getting into the habit of continuous feedback is training you to pay attention to individuals, which in turn makes it easier to recognize and foster talent.
 
+継続的かつ頻繁にフィードバックする文化を作ろう。個々人に注意を払うようになるし、結果として才能の発掘や育成にも役に立つ。
+
 - Performance Reviews > Page 67 · Location 1457
 > I usually give people a printed copy of the review as they’re leaving on the evening before the review is scheduled. This practice gives them a chance to read it at home, and then come to the meeting ready to talk about what it says. Even though they’ve had the review and gotten to read it, I still take the time to go over each section, starting with the strengths and accomplishments. Again, don’t let them skip over this and jump straight into the areas for improvement. Many people are uncomfortable being praised at length, but skipping that section undermines its value in reinforcing and encouraging their talents.
+
+フィードバックに仕方に気を付ける。いきなり改善点から始めない。
 
 - Performance Reviews > Page 68 · Location 1476
 > Real potential shows itself quickly. It shows itself as working hard to go the extra mile, offering insightful suggestions on problems, and helping the team in areas that were previously neglected.
 
+ポテンシャルは早期に成果となって現れる。高いポテンシャルを持った人のパフォーマンスが低く徐々に上がっていくケースはほとんどない。
+ポテンシャルがあると考えるならそれが発揮できるポジションへの異動を考える。
+
 - Cultivating Careers > Page 69 · Location 1502
 > early-career staff, the answer is likely to be yes. These days, people fresh out of college tend to get promoted at least once in their first couple of years on the job, because they’re often hired in at an “up or out” level. To clarify, take the example of Famous BigCo. Famous BigCo hires engineers out of college at level E2 (level E1 is reserved for interns). Famous BigCo has a policy that an engineer who shows no sign of advancing past level E2 after two years at that level doesn’t have a future at the company. It has this policy for levels E2– E4, but at E5, you can stay forever. So, if you have a team of E2s and E3s, you need to be preparing them to be promotable every couple of years. Fortunately, this is usually straightforward. As long as you don’t stop them from getting promoted, they’ll be moved forward by the process. Your job with this group is to make sure that they’re learning how to estimate their own work, getting it done roughly within the estimates, and learning from their mistakes. The evidence for promotion often takes the form of projects or features they’ve completed independently, participation in on-call rotations or other support, and engagement in team meetings and team planning.
 
+アーリーキャリアのポジションでは、promote or quitといった雇用方針も有効。
+日本の労働法では実現は難しいだろうが、西海岸ではこうした慣行で雇用されることがあるということを理解しておいたほうがよい。
+
 - Cultivating Careers > Page 70 · Location 1516
 > You should also prepare yourself to start identifying promotion-worthy projects and trying to give those projects to people who are close to promotion.
+
+昇進が近いと考えるメンバーに対しては、それに値するか見極めるためのプロジェクトを用意してサポートする。
+
 - Challenging Situations: Firing Underperformers > Page 71 · Location 1542
 > One of the basic rules of management is the rule of no surprises, particularly negative ones. You need to understand what a person is supposed to be giving you, and if that isn’t happening, make it clear to her early and often that she is not meeting expectations.
+
+マネージメントの大原則の一つは、メンバーにとってのサプライズを避けること。マイナスのニュースについては、特に伝え方に気を付ける。例えば、期待するパフォーマンスを満たしていないメンバーには、できるだけ早期からかつ繰り返しそのことを明確に伝える。
 
 ## 5. Managing a Team
 - Staying Technical > Page 78 · Location 1660
 > Strong engineering managers can identify the shortest path through the systems to implement new features. As you learned in your time as a tech lead, a critical part of complex project management is understanding the pieces of the system well enough to determine the best path to implementation. The more you understand the code in the system, the easier determining this path will be.
 
+単一チームのマネージャーは、なおテクニカルであり続けなければならない。よいマネージャーは開発の最短経路を見つけられる。
+
 - Debugging Dysfunctional Teams: The Basics > Page 79 · Location 1694
 > It turns out that releases can be a point of resource contention. When people are contending for a scarce resource, conflicts and unhappiness among team members are almost inevitable. Making the code-shipping resource far less scarce immediately improved team morale.
-Hignhlight (yellow) - How to Drive Good Decisions > Page 85 · Location 1824
-It’s easy to forget to review assumptions after the project is done, but if you make this a habit for yourself and your team, you’ll always learn from your decisions.
+
+リリースのプロセスが複雑でかつ頻度が低いと、それが作業の衝突の原因となる。リリース順序の調整などコミュニケーションのオーバーヘッドが発生し、それが生産性を低下させる。リリースの頻度を増やすことでそうした非効率を解消できる。
+
+- How to Drive Good Decisions > Page 85 · Location 1824
+> It’s easy to forget to review assumptions after the project is done, but if you make this a habit for yourself and your team, you’ll always learn from your decisions.
+
+忘れがちだがプロジェクトが終了したらレビューをする。もし失敗に終わったとしても、そこから学べば時間の無駄ではない。
 
 - Good Manager, Bad Manager: Conflict Avoider, Conflict Tamer > Page 87 · Location 1860
 > there is such a thing as artificial harmony, and conflict-avoidant managers tend to favor harmony above functional working relationships. Creating a safe environment for disagreement to work itself out is far better than pretending that all disagreement does not exist.
 
+チームに課題や衝突がないかのように見せかけてはいけない。取り返しのつかなくなるまで悪化しないと顕在化しないようなチーム運営は最悪。
+面倒事はあろうとも、反対意見が言える組織の方が遥かによい。
+
 - Good Manager, Bad Manager: Conflict Avoider, Conflict Tamer > Page 87 · Location 1863
 > Don’t rely exclusively on consensus or voting. Consensus can appear morally authoritative, but that assumes that everyone involved in the voting process is impartial, has an equal stake in the various outcomes, and has equal knowledge of the context. These conditions are rarely met on teams where each person has different levels of expertise and different roles. As when the team voted down Charles’s work, consensus can be downright cruel. Don’t set people up for votes that you know will fail instead of taking the responsibility as a manager of delivering that bad news yourself.
 
+コンセンサスや多数決に頼りすぎない。専門性や立場の違いにより、判断のために必要な情報を持ち合わせるのは一部のメンバーだけである場合がほとんどだし、関係者が増えるほどコンセンサスに費やす手間も増大する。
+実行者に権限と責任を移譲するプロセスを活用する。
+
 - Advanced Project Management > Page 94 · Location 2008
 > You have 10 productive engineering weeks per engineer per quarter There are 52 weeks in a year, or about 13 per quarter. However, realistically your team will lose a lot of that time. Vacations, meetings, review season, production outages, onboarding new employees — all of these things take away from focus. Don’t expect to get more than 10 weeks’ worth of focused effort on the main projects per team member per quarter.
+
+稼働日を全て埋めるような計画を立ててはいけない。unplannedなタスクに多くの時間が費やされることを考慮する。
 
 ## 6. Managing Multiple Teams
 - Page 102 · Location 2129
 > even if you don’t intend to write much code, I strongly advise you to keep at least a solid half-day once a week completely free from meetings or other obligations, and try to use this time at least partially on some creative pursuit. You might write blog posts for your engineering blog, prepare conference talks, or participate in an open source project. Do something to scratch that creative itch, which can otherwise be hard for you to scratch as a manager.
 
+週に半日は何かクリエイティブなことをするための時間を作っておこう。
+
 - Managing Your Time: What’s Important, Anyway? > Page 104 · Location 2183
 > One example of an important but not urgent task is actually preparing for meetings so that you can guide them in a healthy way. Healthy meetings require involvement from all parties, and a culture that favors short but productive meetings requires that participants do some up-front work to come to the meeting prepared.
+
+緊急ではないが重要なタスクの例として、健全なミーティング運営があげられる。健全なミーティングは関係者を網羅しつつも、短時間で生産的であり、全ての参加者が事前準備をして臨むものである。
+
 - Challenging Situations: Strategies for Saying No > Page 114 · Location 2368
 > The best thing to do here is to work with your tech lead to give her the skills and confidence to ask for reports from other members of the team. It will be slower than stepping in and asking for them yourself, but you’ll teach the team to respect her requests and teach her how to lead the team independently.
+
+配下のテックリードにマネージメントのスキルを与え、自信を持たせることが一つの役割。
 
 - Measuring the Health of Your Development Team > Page 116 · Location 2407
 > I bet if you honestly take a look at a team that isn’t releasing frequently, you’ll see cracks. The process of performing a release takes a long time. Engineers don’t feel ownership over their code quality, and they leave all of that work to a QA team, which creates a lot of back-and-forth communication delays. Rolling back code in the case of a bad release takes a long time. Things go wrong in the process of releasing that lead to incidents in production (or broken development builds). A whole host of ills in a team come from not being able to release frequently.
 
+リリース頻度が低いことの弊害は、エンジニアのクオリティに対する責任感の欠落させ、QAチームに全てを押し付けるようになる。またそれによりコミュニケーションのオーバーヘッドが生じる。リリースが失敗したときのロールバックに時間がかかる。多くのチームの問題はリリースを頻繁にできていないことから生じる。
+
 - Good Manager, Bad Manager: Us Versus Them, Team Player > Page 119 · Location 2487
 > As a manager, be careful about focusing on your teams to the exclusion of the wider group. Even when you have been hired to fix a team, remember that the company has gotten this far because of some fundamental strengths. Before you try to change everything to fit your vision, take the time to understand the company’s strengths and culture, and think about how you’re going to create a team that works well with this culture, not against it. The trick is not to focus on what’s broken, but to identify existing strengths and cultivate them.
+
+チームの弱点、課題に気を取られない。複数チームのマネージャーとして、会社のビジョン、文化にフィットするチーム作りをしていかなければならないが、それは欠点を直すことでなく、長所を伸ばすことで実現するべき。
 
 ## 7. Managing Managers
 - Skip-Level Meetings > Page 130 · Location 2673
 > At this level, you’re constantly making tradeoffs between investing in expensive engagements, such as 1-1s, that can provide deep value but cost you in time and energy, or casual engagements that are more efficient in terms of your time but provide less detailed information. You won’t get it perfectly right. There will still be times when you hear too late about a project that’s suffering, or a manager who’s failing his team, or a team member who’s causing problems for others.
+
+このポジションでは、情報収集方法のトレードオフを常に念頭に置く必要がある。コミュニケーションをいかに綿密に行うかと、時間と労力はトレードオフにあるので、パーフェクトな方法というのは存在しない。悪い知らせが耳に届くのが遅い場合、バランスを見直す機会である。
 
 - Good Manager, Bad Manager: The People Pleaser > Page 135 · Location 2771
 > People pleasers who focus externally can be a huge blind spot for their managers: because they’re so focused on only talking about good things and saying yes to everything that comes their way, their managers often don’t even know about problems on the team or within projects until it’s too late. These people can be very good at distracting you from your concerns. They have plenty of excuses.
@@ -206,21 +260,34 @@ It’s easy to forget to review assumptions after the project is done, but if yo
 - Good Manager, Bad Manager: The People Pleaser > Page 135 · Location 2776
 > You might think people pleasers create teams that feel safe to be vulnerable and fail, but in fact the opposite is true. These managers make it hard for the team to fail in a healthy way, because of the manager’s own fears of failure and possible rejection. An externally focused people pleaser shuts down honest conversation by evasion and, if necessary, emotional manipulation that rests on his status as the person that everyone likes so much.
 
+Noと言えない環境や、意思決定を過剰に頼ることが、People pleaserが生じさせる原因となる。
+
 - Managing Experienced Managers > Page 139 · Location 2849
 > Management tends to be a very culture-specific task in a company.
+
+マネジメントは会社のカルチャーに密接に関係するタスクなので、マネジメントのポジションで採用するときは、カルチャーフィットは最重要項目となる。
 
 - Hiring Managers > Page 143 · Location 2934
 > Sometimes changing the culture of an area is inevitable, and hiring in a new manager will hasten that change. You can use management changes to your advantage in this way. In fact, you see this frequently at growing startups, where they hire in more seasoned managers and executives to round out the lack of experience of the rest of the team. Sometimes this works incredibly well, and sometimes it’s a massive failure. No matter what, you will usually see attrition happening around the hire of these bearers of new and different culture, so proceed here with caution.
 
+時にカルチャーの一部は変化が必要になる。そして、新しいマネージャーを採用することでその速度は助長される。
+成長中のスタートアップでは、経験豊富なマネージャーや幹部を採用して、経験不足を補完することがよくあるが、これは非常にうまくいくことも、破滅的に失敗することもある。なのでカルチャーに変化を生じさせるときは十分過程の出来事に注意を払う。
+
 - Debugging Dysfunctional Organizations > Page 147 · Location 3016
 > They often signal a lack of healthy conflict on a team. Good meetings have a heavy discussion element, where opinions and ideas are drawn out of the team. If the meetings are overscripted, so that no real conversation can take place, it stifles that creative discussion. If people are afraid to disagree or bring up issues for fear of dealing with conflict, or if managers always shut down conflict without letting disagreements air, this is a sign of an unhealthy team culture.
+
+退屈で非生産的なミーティングはカルチャーが悪化している兆候。
 
 ## 8. The Big Leagues
 - Page 161 · Location 3263
 > Decision making Taking conflicting perspectives and incomplete information and setting a direction, knowing that the consequences of a poor decision will impact both you and possibly the whole team. If making decisions were easy, there would be much less need for managers and leaders. However, as anyone who has spent a lot of time managing can tell you, making decisions is one of the most draining and stressful parts of the job.
 
+リーダーシップポジションの役割の一つは、不完全な情報でチーム全体に影響しうる意思決定をすること。意思決定は精神を消耗するストレスフルなタスクである。
+
 - Models for Thinking About Tech Senior Leadership > Page 162 · Location 3297
 > Technology strategy/ visionary Technology strategy meets product development. This person often also manages the product organization. He’s focused on how technology can be used to grow the business and works to predict the evolution of technology as it applies to the company’s industry. This differs from R& D in that the visionary isn’t usually focused on research potential; he uses business and technology trends to guide his decisions.
+
+他には、ビジネス環境とテクノロジーの変遷を見極め、次のプロダクト開発戦略を決定する役割を担う。ビジネスに重点が置かれる点で、R&Dとは異なる。
 
 - Models for Thinking About Tech Senior Leadership > Page 163 · Location 3317
 > Business executive, technology strategy, organization, and execution: CTO or Head of Engineering (VP/ SVP) R& D, technology strategy, external face of technology: CTO, Chief Scientist, Chief Architect, sometimes Chief Product Officer, usually for a company that is selling a software-based product Organization, execution, business executive: VP of Engineering, General Manager Infrastructure manager, organization, and execution: CTO/ CIO, possibly VP of Technical Operations Technology strategy, business executive, and execution: Head of Product (or Chief Product Officer), sometimes CTO R& nD, business executive: CTO or Chief Scientist, cofounder Organization and execution: VP of Engineering, sometimes Chief of Staff
@@ -228,17 +295,27 @@ It’s easy to forget to review assumptions after the project is done, but if yo
 - What’s a VP of Engineering? > Page 165 · Location 3337
 > As the person in charge of the day-to-day operations of the team, a good VP of Engineering has a solid handle on processes and details. She’s capable of tracking several in-flight initiatives at once and making sure they’re all going well. Often a great VP of Engineering is described as having a good “ground game.” This person is capable of dropping into the details and making things happen at a low level. While some CTOs will do this, if there’s both a CTO and a VP of Engineering, the VP is usually the one pushing the execution of ideas, while the CTO focuses on larger strategy and the position of technology within the company.
 
+CTOとVPoE両方のポジションがある場合、多くはVPoEがチームのプロセスの実施に重点を置き、CTOが長期の戦略やビジョンの策定に重点を置く。
+
 - What’s a CTO? > Page 167 · Location 3381
 > The CTO may identify areas where technology can be used to create new or bigger lines of business for the company that align with the overall company strategies. Or he may simply ensure that the technology is always evolving to anticipate and enable the potential futures of the business and product roadmap.
 
 - Changing Priorities > Page 170 · Location 3438
 > Priority changes from senior management can sometimes happen without warning. Leaders who are removed from the day-to-day schedules of the teams can forget that teams have long priority lists that may have been mapped out weeks or months ago and may take weeks or months to complete. So when these leaders see an opportunity or feel that the priorities of the organization need to change, they often expect that change to happen immediately, without consideration for the reality of the current state of affairs.
 
+ビジネス環境の変化等により、リーダーシップからの路線変更の通達は予告なしに起こることもある。
+一方で現場では、現場のプライオリティがあるが、リーダーシップポジションでは日々のオペレーションから切り離されているが故に、その認識合わせがうまくいかず変化に時間を要することがある。変化に早急に対応するために、現場も現在優先されているタスクがなぜ優先される必要があるのか意義を説明できるようになっている必要がある。
+
 - Changing Priorities > Page 170 · Location 3449
 > We forget that the people above us or in different organizations don’t have the same detailed understanding of what our teams are currently doing, and why. I don’t believe it’s necessary to constantly provide minute details to peers and your manager for every team in your large organization. However, when you’re taken to task for not focusing on the right priority, it’s a sign that you and the CEO have a misaligned understanding of reality, and you need to get on the same page. Your team may be crunching to stabilize a system that’s causing frequent outages, or in the last push of a major project that has been ongoing for a long time. If you think that the team needs to finish their current work before shifting to the new top priority, you must communicate that clearly.
 
+チーム外の人が同じコンテキストを持っている思い違いをして説明するために、理解がすりあわず衝突してしまうことは多々ある。
+現在のチームのタスクの至急性が理解されていないとき、より明確にコミュニケーションをとらなければならない。
+
 - Changing Priorities > Page 171 · Location 3464
 > Finally, never underestimate how many times and how many ways something needs to be said before it sinks in. Communication in a large organization is hard. In my experience, most people need to hear something at least three times before it really sinks in.
+
+組織が大きくなるとコミュニケーションは非常に難しくなる。筆者の体感として、大体の場合本当に理解が得られるまでは3回同じことを繰り返す必要がある。
 
 - Challenging Situations: Delivering Bad News > Page 177 · Location 3586
 > Try to bring solutions, not problems to be solved. CEOs generally do not want to hear about how things are failing, nor do they want to hear about your disagreements with your peers or your troubles managing. In the case that you have a CEO who doesn’t want to hear too much about problems, respect that you’re not going to get much coaching from him on the management side of things, and find another person to get that from. With that said, don’t shy away from delivering bad news.
@@ -246,15 +323,34 @@ It’s easy to forget to review assumptions after the project is done, but if yo
 - Senior Peers in Other Functions > Page 178 · Location 3616
 > you let them own their areas, and they let you own yours. Many of us learn how to do this earlier in our careers, when we have to work with senior designers, product managers, or other business team members, but if you haven’t learned how to let a peer own her specialty, now is the time. Giving her respectful deference when it comes to her turf is fundamental. If you disagree with her management style or application of her skill set in places where it isn’t directly affecting your team, you treat that disagreement like you would treat a good friend who happens to date people you don’t love. Unless she asks for your advice, try to stay out of it as much as possible, and certainly approach any disagreement you choose to discuss with kindness. Be willing to let those differences lie.
 
+peerとマネジメントスタイルや意見が合わない場合、それが自分のチームに影響しない限りは、干渉しないようにする。
+相手の専門性を尊重し、反対しつつも違うアプローチがあることを許容する姿勢を持つ。
+
 - The Echo > Page 181 · Location 3674
 > You’re going to be part of hard decisions that will impact the whole business, and these decisions may cause you a great deal of stress. It won’t be appropriate to discuss these decisions with other people at the company. It’s deeply tempting to rant to those people you consider friends in your reporting team about the challenges of your position, but this is a bad idea. As their leader, you can easily undermine their confidence by sharing worries that they can’t do anything to mitigate. Transparency that may have been harmless or even possibly helpful at lower levels of management can become incredibly damaging to the stability of your team at this level.
 
-## 9. Bootstrapping Culturep
+難しい判断を迫られたとき、ストレスを和らげるため社内の誰かに相談をしたくなることがあるかもしれないが、リーダーシップポジションではそれは慎むべき。
+相談相手にとっては、手の打ちようがない問題を打ち明けられただけで、リーダーシップポジションへの不信につながる。リーダーシップポジションではなかったときと違って、その手の情報共有はチームにとって大きな不安の元となる。
+
+## 9. Bootstrapping Culture
 - Page 192 · Location 3845
 > you need to have a sense of what is important to you, to your company, and to your growing group of colleagues. Consider not only what you care about, but also how you can scale that knowledge and effort effectively as the company and team grows and evolves.
+
+カルチャーを作るにあたって、自分にとって、会社にとって、また会社の増えゆく同僚達にとってなにが重要となるかという感覚が必要になる。
+会社の成長とともに知識や仕事をスケールさせる枠組みを見据える。
 
 - Assessing Your Role > Page 197 · Location 3946
 > My advice to leaders is simple: when failures occur, examine all aspects of reality that are contributing to those failures. The patterns you see are opportunities to evolve your structure, either by creating more or different structure or removing it. Think about how often the failure happens and its cost, and use your best judgment about the changes that need to be made. Using failure to guide evolution lets you apply structure at the right level.
 
+失敗から学ぶ。失敗の全ての要因を洗い出し、チームストラクチャーの発展に活用する。
+
 - Cross-Functional Teams > Page 209 · Location 4191
-> Prior to this project we had been deep in a pattern of “us versus them,” where your particular business function was “us” (tech, product, analytics, marketing, etc.), and the rest of the organization was “them.” Creating these collaboration units gave people a chance to see the whole group as “us.” It was a clear win in terms of organizational health, so we evolved our whole organization to have all product engineering performe
+> Prior to this project we had been deep in a pattern of “us versus them,” where your particular business function was “us” (tech, product, analytics, marketing, etc.), and the rest of the organization was “them.” Creating these collaboration units gave people a chance to see the whole group as “us.” It was a clear win in terms of organizational health, so we evolved our whole organization to have all product engineering perform
+
+目的の達成のためには関係する全てのチームを巻き込んで臨む。"us versus them"パターンに陥らないようにする。（自チームのスコープ外のタスクについて無関心で丸投げ状態となること。）
+[Conway's Law](http://www.melconway.com/Home/Conways_Law.html)に
+> Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization's communication structure.
+
+とあるように、プロダクトデザインは組織のコミュニケーション構造をコピーしたものになる。
+プロジェクトのスコープが単一チームを超えるとき、cross-functionalチームを立ち上げるのも一つの方法である。
+cross-functionalチームでは、各メンバーのレポートラインは変えないが、タスクの割り当てについてはそのチーム内での判断で決定される。
