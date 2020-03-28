@@ -5,7 +5,7 @@ title: Home
 
 <div class="catalogue">
     {% for post in paginator.posts %}
-    {% include catalog_item.html url=post.url date=post.date title=post.title content=post.content %}
+    {% include catalog_item.html url=post.url date=post.date title=post.title excerpt=post.excerpt %}
     {% endfor %}
 </div>
 

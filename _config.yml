@@ -8,6 +8,8 @@ plugins:
 
 paginate: 10
 
+excerpt_separator: "<!--end_excerpt-->"
+
 # custom parameters
 author:
   name: Keisuke Suzuki
