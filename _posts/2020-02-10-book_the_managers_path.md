@@ -1,6 +1,6 @@
 ---
 layout: blog
-title: Read Book: The Manager's Path
+title: "Read Book: The Manager's Path"
 ---
 
 [Fournier, Camille. The Manager's Path](https://www.amazon.co.jp/Managers-Path-Leaders-Navigating-English-ebook/dp/B06XP3GJ7F)
@@ -175,9 +175,7 @@ title: Read Book: The Manager's Path
 
 ### Cross-Functional Teams
 - 目的の達成のためには関係する全てのチームを巻き込んで臨む。"us versus them"パターンに陥らないようにする。（自チームのスコープ外のタスクについて無関心で丸投げ状態となること。）
-[Conway's Law](http://www.melconway.com/Home/Conways_Law.html)で
+[Conway's Law](http://www.melconway.com/Home/Conways_Law.html)にあるように、プロダクトデザインは組織のコミュニケーション構造をコピーしたものになる。
 > Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization's communication structure.
-
-とあるように、プロダクトデザインは組織のコミュニケーション構造をコピーしたものになる。
-プロジェクトのスコープが単一チームを超えるとき、cross-functionalチームを立ち上げるのも一つの方法である。
+- プロジェクトのスコープが単一チームを超えるとき、cross-functionalチームを立ち上げるのも一つの方法である。
 cross-functionalチームでは、各メンバーのレポートラインは変えないが、タスクの割り当てについてはそのチーム内での判断で決定される。
