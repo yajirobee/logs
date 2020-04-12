@@ -8,3 +8,7 @@
 @import 'tale/catalogue';
 
 @import 'tale/memo';
+
+main, .nav-container {
+    max-width: unset;
+}
