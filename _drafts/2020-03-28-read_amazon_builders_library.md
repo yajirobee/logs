@@ -37,3 +37,13 @@ load sheddingでは、最大コネクション数による制御と比較して�
 また、クライアントタイムアウトが減るのでリソース使用効率が向上することが見込める。
 一方で、制御の複雑さは増すため、実装やテストのコストは高くなってしまう。
 サービス立ち上げの初期の段階では、最大コネクション数等比較的簡易な仕組みを利用しておいて、トラフィックやサーバー数の増大に従って導入していくのがいいのではないかと考える。
+
+# [Avoiding insurmountable queue backlogs](https://aws.amazon.com/builders-library/avoiding-insurmountable-queue-backlogs/)
+
+平常時FIFOなキューの捌き方をしているアプリケーションでも、クライアントからすると実はバックログがたまった際のリカバリはLIFOがよいというケースも考えられる。
+平常時とリカバリ時のスケジューリングを変えるというのも一考の価値がありそう。
+
+# [Workload isolation using shuffle-sharding](https://aws.amazon.com/builders-library/workload-isolation-using-shuffle-sharding)
+
+Shuffle shardingというのは初めて聞いたが、シンプルな割に過負荷時の可用性向上に効果が大きそうに思う。
+どのレイヤで実装するものなのかが気になる。Route 53やELBあたりで実装できると嬉しそうだが。
