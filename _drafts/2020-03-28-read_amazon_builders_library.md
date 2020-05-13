@@ -53,3 +53,6 @@ Shuffle shardingというのは初めて聞いたが、シンプルな割に過�
 - フォールバックのロジックはほとんど実行されず、またテストが難しいので、いざ必要となったときに想定通りに動作しないことが多い
   - フォールバック中十分なリソースが確保できず、トラフィックを捌ききれないなど
 - 中途半端な状態で動作を続けることで、状況を悪化させる場合もある
+
+# [Implementing health checks](https://aws.amazon.com/builders-library/implementing-health-checks)
+

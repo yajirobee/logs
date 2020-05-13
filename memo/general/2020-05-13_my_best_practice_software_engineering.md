@@ -14,3 +14,4 @@ Some best practices from my experience. This is a living document.
 # Metrics / Monitoring
 - Collect every metrics you come up with as much as performance, cost and security allow
 - Don't start an experiment without a hypothesis
+- Understand where a metrics come from before using it
