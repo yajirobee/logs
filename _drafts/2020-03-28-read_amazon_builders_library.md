@@ -47,3 +47,9 @@ load sheddingでは、最大コネクション数による制御と比較して�
 
 Shuffle shardingというのは初めて聞いたが、シンプルな割に過負荷時の可用性向上に効果が大きそうに思う。
 どのレイヤで実装するものなのかが気になる。Route 53やELBあたりで実装できると嬉しそうだが。
+
+# [Avoiding fallback in distributed systems](https://aws.amazon.com/builders-library/avoiding-fallback-in-distributed-systems)
+
+- フォールバックのロジックはほとんど実行されず、またテストが難しいので、いざ必要となったときに想定通りに動作しないことが多い
+  - フォールバック中十分なリソースが確保できず、トラフィックを捌ききれないなど
+- 中途半端な状態で動作を続けることで、状況を悪化させる場合もある
