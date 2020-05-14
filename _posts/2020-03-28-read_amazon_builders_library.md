@@ -41,7 +41,7 @@ load sheddingでは、最大コネクション数による制御と比較して�
 # [Avoiding insurmountable queue backlogs](https://aws.amazon.com/builders-library/avoiding-insurmountable-queue-backlogs/)
 
 平常時FIFOなキューの捌き方をしているアプリケーションでも、クライアントからすると実はバックログがたまった際のリカバリはLIFOがよいというケースも考えられる。
-平常時とリカバリ時のスケジューリングを変えるというのも一考の価値がありそう。
+平常時とリカバリ時のスケジューリングを変えるというのも一考の余地がありそう。
 
 # [Workload isolation using shuffle-sharding](https://aws.amazon.com/builders-library/workload-isolation-using-shuffle-sharding)
 
@@ -56,3 +56,45 @@ Shuffle shardingというのは初めて聞いたが、シンプルな割に過�
 
 # [Implementing health checks](https://aws.amazon.com/builders-library/implementing-health-checks)
 
+これまでWebサーバのヘルスチェックを実装していて、検知の範囲や異常の対処を場当たり的に考えていたことが多かったので、整理のために役立った。
+ヘルスチェックを実装する上で一番の課題は、false positiveを防ぎ、誤判断による状況悪化を防ぐことで、考え始めるとなかなか設計がまとまらなかった。
+典型的なパターンを理解して、手札を増やしておくのがよいと感じた。
+以下要点
+ヘルスチェックの範囲について、おおまかに4つに分類している。
+- Liveness checks  
+  ネットワークやプロセスの存在確認など最低限のチェック。アプリケーションレベルのチェックは含まない。  
+  （例）
+  - TCP接続待機確認
+  - HTTP疎通確認（200を返すだけのエンドポイントなど）
+- Local health checks  
+  Liveness checksよりは多くをカバーするが、サーバー外のリソースはチェックしない  
+  （例）
+  - local diskの読み書き
+  - 重要なプロセスでアプリケーションレベルの動作確認
+    - Server proxyのルーティング
+    - Metricsの収集
+- Dependency health checks  
+  （例）
+  - 依存するサービスの応答確認
+    - コネクション数上限
+    - deadlockによる無応答
+  - Anormaly detection  
+    クラスタ内のサーバー全体を見て異常を示すサーバーを確認する  
+    （例）
+    - Clock skew
+    - 旧バージョンのコード、設定
+また、ヘルスチェックエラーの対処方法についてもAmazonで多用される手法、ベストプラクティスの解説がある
+- Fail open
+  個別のサーバーのエラーではロードバランサーからのトラフィックの振り分けを停止するが、全てのサーバーでエラーとなった場合は全てのサーバーに振り分けを継続する。
+  AWS NLB, ALB, Route 53などはこの挙動をサポートしているとのこと。
+- Health checks without a circuit breaker
+  システム全体における異常の影響を考慮せずに、個々のサーバーでの個別の対処のみに終始していると、対処の方向性を誤り状況を悪化させる恐れがある。
+  そういった状況を避けるため、サーバー外からの監視の仕組みが必要になる。  
+  （例）
+  - タスクの振り分け側（ロードバランサーやキューのポーリングスレッドなど）で、振り分け先のサーバーのlivenessとlocal health checkを実行する
+    - サーバー内ローカルの異常がある場合のみサーバーを振り分け先から除外する
+  - 外部モニタリングシステムからdependency health checkやanormaly detectionを実行する
+
+
+
+今後も記事を追加する予定ということなので、更新を追っていきたいと思う。
