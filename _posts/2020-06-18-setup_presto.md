@@ -31,7 +31,7 @@ Hive metastore needs to run by [remove configuration](https://cwiki.apache.org/c
 ## Server (remote metastore) side
 + Edit configurations
   - `${HIVE_HOME}/conf/hive-site.xml`
-  ```
+  ```xml
     <property>
         <name>hive.server2.thrift.bind.host</name>
         <value>localhost</value>
@@ -45,7 +45,7 @@ $ $HIVE_HOME/bin/hive --service metastore
 ## Client (Hiveserver) side
 + Edit configurations
   - `${HIVE_HOME}/conf/hive-site.xml`
-  ```
+  ```xml
     <property>
         <name>hive.metastore.uris</name>
         <value>thrift://localhost:9083</value>
@@ -98,16 +98,17 @@ query.max-total-memory-per-node=2GB
 discovery-server.enabled=true
 discovery.uri=http://localhost:8080
     ```
-      - Worker
-      ```
+    - Worker
+    ```
 coordinator=false
 http-server.http.port=8081
 query.max-memory=16GB
 query.max-memory-per-node=1GB
 query.max-total-memory-per-node=2GB
 discovery.uri=http://localhost:8080
-      ```
-  - Catalog Properties (catalog/*.properties)
+    ```
+  - Catalog Properties (catalog/*.properties)  
+    Used the same config for coordinator and worker
     - hive.properties
     ```
 connector.name=hive-hadoop2
@@ -120,7 +121,7 @@ $PRESTO_HOME/bin/launcher start --etc-dir (worker etc dir)
 ```
   
 # Connect to Presto
-I used Presto CLI here.
+Used Presto CLI here.
 ```
 $ presto --server localhost:8080 --catalog hive
 ```
