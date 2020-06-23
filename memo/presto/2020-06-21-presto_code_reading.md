@@ -38,25 +38,29 @@ Definition is from [Presto: The Definitive Guide](https://www.oreilly.com/librar
 - Data Stream SPI
 
 # Query plan
-Query plan -> Distributed query plan
-
-- Distributed query plan
-  - Stages
-    - Tasks
-  - Dependency tree of stages
-
-Source stage -> pages (collection of rows in columnar format)
-
-Split: unit of data that a task process. Coordinator creates the list of splits with the metadata from the connector.  
+## Terminology
+- *Distributed query plan*: an extension of the simple query plan consisting of one or more stages
+- *Stage*: runtime incarnation of a plan fragment. Having more than one stage results in the creation of a dependency tree of stages.
+- *Tasks*: unit composes a stage. coordinator schedules tasks across the workers. It's the runtime incarnation of a plan fragment when assigned to a worker.
+- *Source task*: a task that scan data source and generate pages. It uses the data source SPI to fetch data from the underlying data source with the help of a connector.
+- *Split*: unit of data that a task process. It is the unit of parallelism and work assignment. Coordinator creates the list of splits with the metadata from the connector.  
 Coordinator tracks all splits available for processing including splits generated as intermediate data.
+- *Driver*: an instantiation of a pipeline of operators and performs the processing of the data in the split. A task instantiates a driver for each split.
+- *Pipeline*: Sequence of Operators within a task
+- *Operator*: processes input data to produces output data (pages) according to their semantics. e.g.
+  - table scan
+  - filters
+  - joins
+  - aggregations
+  - projections
+- *Page*: collection of rows in columnar format
 
-Operators: Produces pages
-  - filters drop rows
-  - projections produce pages with new derived columns
-  
-Pipeline: Sequence of Operators within a task
-
-Driver: an instantiation of a pipeline of operators and performs the processing of the data in the split. A task instantiates for each split.
+Relationship is as follows:
+- (Distributed query plan) has one or more Stages and stages have dependency
+- Stage has one or more Tasks
+- Coordinator creates the list of splits with the metadata from the connector
+- Using the list of splits, Coordinator schedules tasks on the workers
 
 # Table Statistics
 https://prestosql.io/docs/current/optimizer/statistics.html
+https://prestosql.io/docs/current/connector/hive.html#table-statistics
