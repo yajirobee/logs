@@ -56,10 +56,11 @@ Coordinator tracks all splits available for processing including splits generate
 - *Page*: collection of rows in columnar format
 
 Relationship is as follows:
-- (Distributed) query plan has one or more Stages and stages have dependency
+- (Distributed) query plan has one or more Stages and Stages have dependency
 - Stage has one or more Tasks
 - Coordinator creates the list of splits with the metadata from the connector
 - Using the list of splits, Coordinator schedules tasks on the workers
+- Task creates a Driver for each Split
 
 # Table Statistics
 https://prestosql.io/docs/current/optimizer/statistics.html
