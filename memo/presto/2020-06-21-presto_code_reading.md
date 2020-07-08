@@ -3,7 +3,7 @@ layout: memo
 title: Presto Code Reading
 ---
 
-Memo to read Presto code
+Memo for Presto code reading
 
 Following memo is based on PrestoSQL 336 which is the latest version as of June 21st, 2020.
 
@@ -65,3 +65,25 @@ Relationship is as follows:
 # Table Statistics
 https://prestosql.io/docs/current/optimizer/statistics.html
 https://prestosql.io/docs/current/connector/hive.html#table-statistics
+
+# Server
+## Bootstrap
+- io.prestosql.server.Server#doStart
+  -> add io.prestosql.server.ServerMainModule
+     -> for coordinator, install CoordinatorModule
+     -> for worker, install WorkerModule
+- io.prestosql.server.PluginManager#loadPlugins
+
+## Query
+### Coordinator
+- receive REST API request POST /v1/statement
+- io.prestosql.dispatcher.QueuedStatementResource  
+  - create query ID  
+  - respond queued URI  
+- receive REST API request queued/{queryId}/{slug}/{token}  
+  - Query#waitForDispatched  
+  - io.prestosql.dispatcher.DispatchManager#createQuery  
+    - select resource group  
+  - io.prestosql.execution.resourcegroups.ResourceGroupManager(InternalResourceGroupManager)#submit   
+  - io.prestosql.execution.resourcegroups.InternalResourceGroup#run  
+  - ..  
