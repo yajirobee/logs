@@ -69,21 +69,32 @@ https://prestosql.io/docs/current/connector/hive.html#table-statistics
 # Server
 ## Bootstrap
 - io.prestosql.server.Server#doStart
-  -> add io.prestosql.server.ServerMainModule
-     -> for coordinator, install CoordinatorModule
-     -> for worker, install WorkerModule
+  - add io.prestosql.server.ServerMainModule
+    - for coordinator, install CoordinatorModule
+    - for worker, install WorkerModule
 - io.prestosql.server.PluginManager#loadPlugins
 
 ## Query
 ### Coordinator
 - receive REST API request POST /v1/statement
-- io.prestosql.dispatcher.QueuedStatementResource  
-  - create query ID  
-  - respond queued URI  
-- receive REST API request queued/{queryId}/{slug}/{token}  
-  - Query#waitForDispatched  
-  - io.prestosql.dispatcher.DispatchManager#createQuery  
-    - select resource group  
-  - io.prestosql.execution.resourcegroups.ResourceGroupManager(InternalResourceGroupManager)#submit   
-  - io.prestosql.execution.resourcegroups.InternalResourceGroup#run  
-  - ..  
+- io.prestosql.dispatcher.QueuedStatementResource
+  - create query ID
+  - respond queued URI
+- receive REST API request queued/{queryId}/{slug}/{token}
+  - Query#waitForDispatched
+  - io.prestosql.dispatcher.DispatchManager#createQuery
+    - select resource group
+  - io.prestosql.execution.resourcegroups.ResourceGroupManager(InternalResourceGroupManager)#submit
+  - io.prestosql.execution.resourcegroups.InternalResourceGroup#run
+
+..
+
+- io.prestosql.sql.planner.DistributedExecutionPlanner.Visitor#visitScanAndFilter
+- io.prestosql.split.SplitManager#getSplits
+  - call ConnectorSplitManager#getSplits
+
+# Connector
+## Hive Connector
+- IO queue is in io.prestosql.plugin.hive.HiveSplitSource
+  - per query IO queue
+- File format is detected on io.prestosql.plugin.hive.HivePageSourceProvider#createHivePageSource
