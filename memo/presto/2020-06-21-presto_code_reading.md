@@ -84,14 +84,40 @@ https://prestosql.io/docs/current/connector/hive.html#table-statistics
   - Query#waitForDispatched
   - io.prestosql.dispatcher.DispatchManager#createQuery
     - select resource group
+    - io.prestosql.dispatcher.LocalDispatchQuery is created by io.prestosql.dispatcher.LocalDispatchQueryFactory
   - io.prestosql.execution.resourcegroups.ResourceGroupManager(InternalResourceGroupManager)#submit
   - io.prestosql.execution.resourcegroups.InternalResourceGroup#run
+  - io.prestosql.dispatcher.LocalDispatchQuery#startWaitingForResources
+    - wait for query execution to finish construction
+    - wait for minimum workers
+    - startExecution -> querySubmitter#accept (SqlQueryManager#createQuery)
+  - io.prestosql.execution.SqlQueryManager#createQuery
+  - io.prestosql.execution.QueryExecution#start
+    - for query (select / insert /delete): io.prestosql.execution.SqlQueryExecution
+    - for DDL: io.prestosql.execution.DataDefinitionExecution
+    - statemachine: transition to planning
 
-..
+#### Planning
+Describing query processing, not DDL
+- io.prestosql.execution.SqlQueryExecution#planQuery
+  - io.prestosql.sql.planner.LogicalPlanner#plan
+  - io.prestosql.sql.planner.InputExtractor#extractInputs
+    - visit plan nodes
+  - io.prestosql.sql.planner.PlanFragmenter#createSubPlans
+- io.prestosql.execution.SqlQueryExecution#planDistribution
+  - io.prestosql.sql.planner.DistributedExecutionPlanner#plan -> StageExecutionPlan
+    - get splits for this fragment, this is lazy so split assignments aren't actually calculated here  
+      io.prestosql.sql.planner.DistributedExecutionPlanner.Visitor#visitScanAndFilter
+      - io.prestosql.split.SplitManager#getSplits
+        - call ConnectorSplitManager#getSplits
+    - create child stages
+    - extract TableInfo
+  - set queryScheduler  
+    io.prestosql.execution.scheduler.SqlQueryScheduler#createSqlQueryScheduler
 
-- io.prestosql.sql.planner.DistributedExecutionPlanner.Visitor#visitScanAndFilter
-- io.prestosql.split.SplitManager#getSplits
-  - call ConnectorSplitManager#getSplits
+#### Execution
+Describing query processing, not DDL
+- SqlQueryScheduler#start
 
 # Connector
 ## Hive Connector
