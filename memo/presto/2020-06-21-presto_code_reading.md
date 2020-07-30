@@ -83,8 +83,11 @@ https://prestosql.io/docs/current/connector/hive.html#table-statistics
 - receive REST API request queued/{queryId}/{slug}/{token}
   - Query#waitForDispatched
   - io.prestosql.dispatcher.DispatchManager#createQuery
+    - decode session
     - select resource group
-    - io.prestosql.dispatcher.LocalDispatchQuery is created by io.prestosql.dispatcher.LocalDispatchQueryFactory
+    - io.prestosql.dispatcher.LocalDispatchQueryFactory
+      - io.prestosql.execution.SqlQueryExecution is asynchronously created by Future
+      - io.prestosql.dispatcher.LocalDispatchQuery is created 
   - io.prestosql.execution.resourcegroups.ResourceGroupManager(InternalResourceGroupManager)#submit
   - io.prestosql.execution.resourcegroups.InternalResourceGroup#run
   - io.prestosql.dispatcher.LocalDispatchQuery#startWaitingForResources
