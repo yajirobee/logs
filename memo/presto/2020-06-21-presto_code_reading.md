@@ -122,6 +122,14 @@ https://prestosql.io/docs/current/connector/hive.html#table-statistics
 - io.prestosql.execution.DataDefinitionExecution#start
 - io.prestosql.execution.DataDefinitionTask#execute
 
+e.g. CREATE TABLE
+- list table elements
+- get table properties
+  - io.prestosql.metadata.TablePropertyManager#getProperties  
+    accept properties provided by io.prestosql.spi.connector.Connector#getTableProperties
+- create table
+  - io.prestosql.metadata.MetadataManager#createTable
+  - io.prestosql.spi.connector.ConnectorMetadata#createTable
 
 #### Execution
 Describing query processing, not DDL
