@@ -101,7 +101,7 @@ https://prestosql.io/docs/current/connector/hive.html#table-statistics
     - statemachine: transition to planning
 
 #### Planning
-Describing query processing, not DDL
+##### Query processing
 - io.prestosql.execution.SqlQueryExecution#planQuery
   - io.prestosql.sql.planner.LogicalPlanner#plan
   - io.prestosql.sql.planner.InputExtractor#extractInputs
@@ -117,6 +117,11 @@ Describing query processing, not DDL
     - extract TableInfo
   - set queryScheduler  
     io.prestosql.execution.scheduler.SqlQueryScheduler#createSqlQueryScheduler
+
+##### DDL
+- io.prestosql.execution.DataDefinitionExecution#start
+- io.prestosql.execution.DataDefinitionTask#execute
+
 
 #### Execution
 Describing query processing, not DDL
