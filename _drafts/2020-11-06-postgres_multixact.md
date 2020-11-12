@@ -30,12 +30,14 @@ VACUUM removes old MultiXacts at the time of tuple freezing.
 # References
 - [PostgreSQL README of tuplock](https://github.com/postgres/postgres/blob/master/src/backend/access/heap/README.tuplock)
 - [Multixacts and Wraparound](https://www.postgresql.org/docs/13/routine-vacuuming.html#VACUUM-FOR-WRAPAROUND)
+- [pgrowlocks](https://www.postgresql.org/docs/13/pgrowlocks.html)
 - [Multixact members limit exceeded on 9.4](https://www.postgresql-archive.org/Multixact-members-limit-exceeded-td5976890.html)
 
 [^tupheader]: [tuple header layout](https://www.postgresql.org/docs/13/storage-page-layout.html#STORAGE-TUPLE-LAYOUT)
 
 # Memo
-## SQL
+## check code path
+### SQL
 ```
 create database test;
 
@@ -51,8 +53,9 @@ select * from test_lock;
 select * from test_lock for share;
 ```
 
-## gdb
+### gdb
 - `select * from test_lock for share;`
+
 ```
 (gdb) info b
 Num     Type           Disp Enb Address            What
@@ -83,4 +86,356 @@ Breakpoint 1, heap_lock_tuple (relation=relation@entry=0x7f8d0b166fb8, tuple=tup
 #13 ServerLoop () at postmaster.c:1739
 #14 0x000055ce83eb5a9b in PostmasterMain (argc=3, argv=<optimized out>) at postmaster.c:1412
 #15 0x000055ce83c50b10 in main (argc=3, argv=0x55ce85fa8110) at main.c:210
+```
+
+## check xmax values
+```
+-- process 1
+test=# begin;
+BEGIN
+test=*# select * from test_lock for share;
+ id | name
+----|------
+  1 | a
+  2 | b
+(2 rows)
+
+-- monitoring process
+test=# select * from pgrowlocks('test_lock');
+ locked_row | locker | multi | xids  |     modes     |  pids
+------------|--------|-------|-------|---------------|---------
+ (0,1)      |    507 | f     | {507} | {"For Share"} | {49337}
+ (0,2)      |    507 | f     | {507} | {"For Share"} | {49337}
+(2 rows)
+
+-- process 2
+test=# begin;
+BEGIN
+test=*# select * from test_lock for share;
+ id | name
+----|------
+  1 | a
+  2 | b
+(2 rows)
+
+-- monitoring process
+test=# select * from pgrowlocks('test_lock');
+ locked_row | locker | multi |   xids    |     modes     |     pids
+------------|--------|-------|-----------|---------------|---------------
+ (0,1)      |      5 | t     | {507,508} | {Share,Share} | {49337,49346}
+ (0,2)      |      5 | t     | {507,508} | {Share,Share} | {49337,49346}
+(2 rows)
+
+-- process 3
+test=# begin;
+BEGIN
+test=*# select * from test_lock for share;
+ id | name
+----|------
+  1 | a
+  2 | b
+(2 rows)
+
+-- monitoring process
+test=# select * from pgrowlocks('test_lock');
+ locked_row | locker | multi |     xids      |        modes        |        pids
+------------|--------|-------|---------------|---------------------|---------------------
+ (0,1)      |      6 | t     | {507,508,509} | {Share,Share,Share} | {49337,49346,49400}
+ (0,2)      |      6 | t     | {507,508,509} | {Share,Share,Share} | {49337,49346,49400}
+(2 rows)
+
+test=# select relname, age(relfrozenxid), mxid_age(relminmxid) from pg_class where relname = 'test_lock';
+  relname  | age | mxid_age
+-----------|-----|----------
+ test_lock |  24 |        6
+(1 row)
+
+-- process 4
+test=# begin;
+BEGIN
+test=*# select * from test_lock for share;
+ id | name
+----|------
+  1 | a
+  2 | b
+(2 rows)
+
+-- monitoring process
+test=# select * from pgrowlocks('test_lock');
+ locked_row | locker | multi |       xids        |           modes           |           pids
+------------|--------|-------|-------------------|---------------------------|---------------------------
+ (0,1)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,49346,49400,49787}
+ (0,2)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,49346,49400,49787}
+(2 rows)
+
+test=# select relname, age(relfrozenxid), mxid_age(relminmxid) from pg_class where relname = 'test_lock';
+  relname  | age | mxid_age
+-----------|-----|----------
+ test_lock |  25 |        7
+(1 row)
+
+-- process 4
+test=*# abort;
+ROLLBACK
+
+-- monitoring process
+test=# select * from pgrowlocks('test_lock');
+ locked_row | locker | multi |       xids        |           modes           |         pids
+------------|--------|-------|-------------------|---------------------------|-----------------------
+ (0,1)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,49346,49400,0}
+ (0,2)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,49346,49400,0}
+(2 rows)
+
+-- process 3
+test=*# commit;
+COMMIT
+
+-- monitoring process
+test=# select * from pgrowlocks('test_lock');
+ locked_row | locker | multi |       xids        |           modes           |       pids
+------------|--------|-------|-------------------|---------------------------|-------------------
+ (0,1)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,49346,0,0}
+ (0,2)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,49346,0,0}
+(2 rows)
+
+test=# select relname, age(relfrozenxid), mxid_age(relminmxid) from pg_class where relname = 'test_lock';
+  relname  | age | mxid_age
+-----------|-----|----------
+ test_lock |  25 |        7
+(1 row)
+
+-- process 3
+test=# begin;
+BEGIN
+test=*# select * from test_lock for update;
+
+-- monitoring process
+test=# select * from pgrowlocks('test_lock');
+ locked_row | locker | multi |       xids        |           modes           |       pids
+------------|--------|-------|-------------------|---------------------------|-------------------
+ (0,1)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,49346,0,0}
+ (0,2)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,49346,0,0}
+(2 rows)
+
+test=# select relname, age(relfrozenxid), mxid_age(relminmxid) from pg_class where relname = 'test_lock';
+  relname  | age | mxid_age
+-----------|-----|----------
+ test_lock |  25 |        7
+(1 row)
+
+-- process 2
+test=*# commit;
+COMMIT
+
+-- monitoring process
+test=# select * from pgrowlocks('test_lock');
+ locked_row | locker | multi |       xids        |           modes           |     pids
+------------|--------|-------|-------------------|---------------------------|---------------
+ (0,1)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,0,0,0}
+ (0,2)      |      7 | t     | {507,508,509,510} | {Share,Share,Share,Share} | {49337,0,0,0}
+(2 rows)
+
+-- process 1
+test=*# commit;
+COMMIT
+
+-- monitoring process
+test=# select * from pgrowlocks('test_lock');
+ locked_row | locker | multi | xids  |     modes      |  pids
+------------|--------|-------|-------|----------------|---------
+ (0,1)      |    511 | f     | {511} | {"For Update"} | {49400}
+ (0,2)      |    511 | f     | {511} | {"For Update"} | {49400}
+(2 rows)
+
+test=# select relname, age(relfrozenxid), mxid_age(relminmxid) from pg_class where relname = 'test_lock';
+  relname  | age | mxid_age
+-----------|-----|----------
+ test_lock |  26 |        7
+(1 row)
+
+-- process 3
+ id | name
+----|------
+  1 | a
+  2 | b
+(2 rows)
+
+test=*# commit;
+COMMIT
+
+-- monitoring process
+test=# select relname, age(relfrozenxid), mxid_age(relminmxid) from pg_class where relname = 'test_lock';
+  relname  | age | mxid_age
+-----------|-----|----------
+ test_lock |  26 |        7
+(1 row)
+
+```
+
+## check pg\_locks view
+> Although tuples are a lockable type of object, information about row-level locks is stored on disk, not in memory, and therefore row-level locks normally do not appear in this view. If a process is waiting for a row-level lock, it will usually appear in the view as waiting for the permanent transaction ID of the current holder of that row lock.
+
+(from https://www.postgresql.org/docs/current/view-pg-locks.html)
+
+```
+-- process 1
+test=# select pg_backend_pid();
+ pg_backend_pid
+----------------
+           5918
+(1 row)
+
+test=# select * from test_lock ;
+ id | name
+----|------
+  1 | a
+  2 | b
+(2 rows)
+
+test=# begin;
+BEGIN
+test=*# select * from test_lock for update;
+ id | name
+----|------
+  1 | a
+  2 | b
+(2 rows)
+
+-- monitoring process
+test=# select *, relation::regclass from pg_locks where pid <> pg_backend_pid() order by pid, locktype;
+   locktype    | database | relation | page | tuple | virtualxid | transactionid | classid | objid | objsubid | virtualtransaction | pid  |      mode       | granted | fastpath |    relation
+---------------|----------|----------|------|-------|------------|---------------|---------|-------|----------|--------------------|------|-----------------|---------|----------|-----------------------------------
+ relation      |    16384 |    16391 |      |       |            |               |         |       |          | 3/6                | 5918 | RowShareLock    | t       | t        | test_lock_pkey
+ relation      |    16384 |    16385 |      |       |            |               |         |       |          | 3/6                | 5918 | RowShareLock    | t       | t        | test_lock
+ relation      |    16384 |     3455 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock | t       | t        | pg_class_tblspc_relfilenode_index
+ relation      |    16384 |     2663 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock | t       | t        | pg_class_relname_nsp_index
+ relation      |    16384 |     2662 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock | t       | t        | pg_class_oid_index
+ relation      |    16384 |     2685 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock | t       | t        | pg_namespace_oid_index
+ relation      |    16384 |     2684 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock | t       | t        | pg_namespace_nspname_index
+ relation      |    16384 |     2615 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock | t       | t        | pg_namespace
+ relation      |    16384 |     1259 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock | t       | t        | pg_class
+ transactionid |          |          |      |       |            |           503 |         |       |          | 3/6                | 5918 | ExclusiveLock   | t       | f        |
+ virtualxid    |          |          |      |       | 3/6        |               |         |       |          | 3/6                | 5918 | ExclusiveLock   | t       | t        |
+(11 rows)
+
+-- process 2
+test=# select pg_backend_pid();
+ pg_backend_pid
+----------------
+           5921
+(1 row)
+
+test=# begin;
+BEGIN
+test=*# select * from test_lock for update;
+
+-- monitoring process 
+test=# select *, relation::regclass from pg_locks where pid <> pg_backend_pid() order by pid, locktype;
+   locktype    | database | relation | page | tuple | virtualxid | transactionid | classid | objid | objsubid | virtualtransaction | pid  |        mode         | granted | fastpath |        relation
+---------------|----------|----------|------|-------|------------|---------------|---------|-------|----------|--------------------|------|---------------------|---------|----------|-----------------------------------
+ relation      |    16384 |     2684 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_namespace_nspname_index
+ relation      |    16384 |     1259 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class
+ relation      |    16384 |     2615 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_namespace
+ relation      |    16384 |    16391 |      |       |            |               |         |       |          | 3/6                | 5918 | RowShareLock        | t       | t        | test_lock_pkey
+ relation      |    16384 |    16385 |      |       |            |               |         |       |          | 3/6                | 5918 | RowShareLock        | t       | t        | test_lock
+ relation      |    16384 |     3455 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class_tblspc_relfilenode_index
+ relation      |    16384 |     2663 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class_relname_nsp_index
+ relation      |    16384 |     2662 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class_oid_index
+ relation      |    16384 |     2685 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_namespace_oid_index
+ transactionid |          |          |      |       |            |           503 |         |       |          | 3/6                | 5918 | ExclusiveLock       | t       | f        |
+ virtualxid    |          |          |      |       | 3/6        |               |         |       |          | 3/6                | 5918 | ExclusiveLock       | t       | t        |
+ relation      |    16384 |    16385 |      |       |            |               |         |       |          | 4/3                | 5921 | RowShareLock        | t       | t        | test_lock
+ relation      |    16384 |    16391 |      |       |            |               |         |       |          | 4/3                | 5921 | RowShareLock        | t       | t        | test_lock_pkey
+ transactionid |          |          |      |       |            |           503 |         |       |          | 4/3                | 5921 | ShareLock           | f       | f        |
+ tuple         |    16384 |    16385 |    0 |     1 |            |               |         |       |          | 4/3                | 5921 | AccessExclusiveLock | t       | f        | test_lock
+ virtualxid    |          |          |      |       | 4/3        |               |         |       |          | 4/3                | 5921 | ExclusiveLock       | t       | t        |
+(16 rows)
+
+test=# select pg_blocking_pids(5921);
+ pg_blocking_pids
+------------------
+ {5918}
+(1 row)
+
+-- process 3
+test=# select pg_backend_pid();
+ pg_backend_pid
+----------------
+           5925
+(1 row)
+
+test=# begin;
+BEGIN
+test=*# select * from test_lock for update;
+
+-- monitoring process
+test=# select *, relation::regclass from pg_locks where pid <> pg_backend_pid() order by pid, locktype;
+   locktype    | database | relation | page | tuple | virtualxid | transactionid | classid | objid | objsubid | virtualtransaction | pid  |        mode         | granted | fastpath |        relation
+---------------|----------|----------|------|-------|------------|---------------|---------|-------|----------|--------------------|------|---------------------|---------|----------|-----------------------------------
+ relation      |    16384 |     2663 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class_relname_nsp_index
+ relation      |    16384 |     1259 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class
+ relation      |    16384 |     2615 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_namespace
+ relation      |    16384 |     2684 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_namespace_nspname_index
+ relation      |    16384 |     2685 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_namespace_oid_index
+ relation      |    16384 |     2662 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class_oid_index
+ relation      |    16384 |    16391 |      |       |            |               |         |       |          | 3/6                | 5918 | RowShareLock        | t       | t        | test_lock_pkey
+ relation      |    16384 |    16385 |      |       |            |               |         |       |          | 3/6                | 5918 | RowShareLock        | t       | t        | test_lock
+ relation      |    16384 |     3455 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class_tblspc_relfilenode_index
+ transactionid |          |          |      |       |            |           503 |         |       |          | 3/6                | 5918 | ExclusiveLock       | t       | f        |
+ virtualxid    |          |          |      |       | 3/6        |               |         |       |          | 3/6                | 5918 | ExclusiveLock       | t       | t        |
+ relation      |    16384 |    16385 |      |       |            |               |         |       |          | 4/3                | 5921 | RowShareLock        | t       | t        | test_lock
+ relation      |    16384 |    16391 |      |       |            |               |         |       |          | 4/3                | 5921 | RowShareLock        | t       | t        | test_lock_pkey
+ transactionid |          |          |      |       |            |           503 |         |       |          | 4/3                | 5921 | ShareLock           | f       | f        |
+ tuple         |    16384 |    16385 |    0 |     1 |            |               |         |       |          | 4/3                | 5921 | AccessExclusiveLock | t       | f        | test_lock
+ virtualxid    |          |          |      |       | 4/3        |               |         |       |          | 4/3                | 5921 | ExclusiveLock       | t       | t        |
+ relation      |    16384 |    16385 |      |       |            |               |         |       |          | 5/3                | 5925 | RowShareLock        | t       | t        | test_lock
+ relation      |    16384 |    16391 |      |       |            |               |         |       |          | 5/3                | 5925 | RowShareLock        | t       | t        | test_lock_pkey
+ tuple         |    16384 |    16385 |    0 |     1 |            |               |         |       |          | 5/3                | 5925 | AccessExclusiveLock | f       | f        | test_lock
+ virtualxid    |          |          |      |       | 5/3        |               |         |       |          | 5/3                | 5925 | ExclusiveLock       | t       | t        |
+(20 rows)
+
+test=# select pg_blocking_pids(5921);
+ pg_blocking_pids
+------------------
+ {5918}
+(1 row)
+
+test=# select pg_blocking_pids(5925);
+ pg_blocking_pids
+------------------
+ {5921}
+(1 row)
+
+-- process 2
+^CCancel request sent
+ERROR:  canceling statement due to user request
+CONTEXT:  while locking tuple (0,1) in relation "test_lock"
+
+-- monitoring process
+test=# select *, relation::regclass from pg_locks where pid <> pg_backend_pid() order by pid, locktype;
+   locktype    | database | relation | page | tuple | virtualxid | transactionid | classid | objid | objsubid | virtualtransaction | pid  |        mode         | granted | fastpath |        relation
+---------------|----------|----------|------|-------|------------|---------------|---------|-------|----------|--------------------|------|---------------------|---------|----------|-----------------------------------
+ relation      |    16384 |     2684 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_namespace_nspname_index
+ relation      |    16384 |     1259 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class
+ relation      |    16384 |     2615 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_namespace
+ relation      |    16384 |    16391 |      |       |            |               |         |       |          | 3/6                | 5918 | RowShareLock        | t       | t        | test_lock_pkey
+ relation      |    16384 |    16385 |      |       |            |               |         |       |          | 3/6                | 5918 | RowShareLock        | t       | t        | test_lock
+ relation      |    16384 |     3455 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class_tblspc_relfilenode_index
+ relation      |    16384 |     2663 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class_relname_nsp_index
+ relation      |    16384 |     2662 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_class_oid_index
+ relation      |    16384 |     2685 |      |       |            |               |         |       |          | 3/6                | 5918 | AccessShareLock     | t       | t        | pg_namespace_oid_index
+ transactionid |          |          |      |       |            |           503 |         |       |          | 3/6                | 5918 | ExclusiveLock       | t       | f        |
+ virtualxid    |          |          |      |       | 3/6        |               |         |       |          | 3/6                | 5918 | ExclusiveLock       | t       | t        |
+ relation      |    16384 |    16385 |      |       |            |               |         |       |          | 5/3                | 5925 | RowShareLock        | t       | t        | test_lock
+ relation      |    16384 |    16391 |      |       |            |               |         |       |          | 5/3                | 5925 | RowShareLock        | t       | t        | test_lock_pkey
+ transactionid |          |          |      |       |            |           503 |         |       |          | 5/3                | 5925 | ShareLock           | f       | f        |
+ tuple         |    16384 |    16385 |    0 |     1 |            |               |         |       |          | 5/3                | 5925 | AccessExclusiveLock | t       | f        | test_lock
+ virtualxid    |          |          |      |       | 5/3        |               |         |       |          | 5/3                | 5925 | ExclusiveLock       | t       | t        |
+(16 rows)
+
+test=# select pg_blocking_pids(5925);
+ pg_blocking_pids
+------------------
+ {5918}
+(1 row)
 ```
