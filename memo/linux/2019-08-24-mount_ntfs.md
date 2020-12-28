@@ -56,4 +56,4 @@ WantedBy=local-fs-pre.target
 ```
 
 # References
-- https://wiki.archlinux.org/index.php/Dynamic_Disks
+- [NTFS-3G intro for archilinux](https://wiki.archlinux.org/index.php/NTFS-3G)

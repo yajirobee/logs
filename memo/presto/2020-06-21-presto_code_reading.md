@@ -63,8 +63,8 @@ Relationship is as follows:
 - Task creates a Driver for each Split
 
 # Table Statistics
-https://prestosql.io/docs/current/optimizer/statistics.html
-https://prestosql.io/docs/current/connector/hive.html#table-statistics
+- [Available Table statistics](https://prestosql.io/docs/current/optimizer/statistics.html)
+- [Table statistics for hive connector](https://prestosql.io/docs/current/connector/hive.html#table-statistics)
 
 # Server
 ## Bootstrap

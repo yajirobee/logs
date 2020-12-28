@@ -9,7 +9,7 @@ As of 2020/12/23, I'm based on PostgreSQL 13.
 
 # Setup
 ## DB parameters
-https://www.postgresql.org/docs/13/logical-replication-config.html
+Logical replication related [PostgreSQL paramters](https://www.postgresql.org/docs/13/logical-replication-config.html)
 
 ### Publisher DB
      | parameter name          | value                      |
@@ -28,7 +28,7 @@ Note: These parameters are set by rds.logical_replication = 1 on RDS PostgreSQL
      | max\_worker\_processes             | > max\_logical\_replication\_workers                              |
 
 ## DB role
-https://www.postgresql.org/docs/11/logical-replication-security.html
+[PostgreSQL doc for role configuration of logical replication](https://www.postgresql.org/docs/11/logical-replication-security.html)
 
 ### Publisher DB
 ```
@@ -85,25 +85,23 @@ DROP SUBSCRIPTION
 ## Refresh subscription is required to replicate a table created on the publisher DB after CREATE SUBSCRIPTION
 
 Even if a publication is defined with FOR ALL TABLES, a subscriber doesn't learn the creation of a new table automatically.
+(Refer [this blog post](https://www.2ndquadrant.com/en/blog/logical-replication-postgresql-10/) for further info)
 
 ```
 ALTER SUBSCRIPTION sub_test REFRESH PUBLICATION;
 ```
 
-https://www.2ndquadrant.com/en/blog/logical-replication-postgresql-10/
-
 ## Sequence data is not replicated
 
 Sequences should be synchronized manually when a subscriber DB becomes a new master DB.
-
-https://www.postgresql.org/docs/11/logical-replication-restrictions.html
+(Reference [PostgreSQL doc](https://www.postgresql.org/docs/13/logical-replication-restrictions.html))
 
 ## Replication is only possible from base tables to base tables
 
 Partition root tables can't be replicated, so it can't be used for table repartioning.
 
 # References
-- introduction of logical replication : https://www.postgresql.org/docs/13/logical-replication.html
-- create publication : https://www.postgresql.org/docs/13/sql-createpublication.html
-- replication related parameters : https://www.postgresql.org/docs/13/runtime-config-replication.html
-- introduction of logical replication on RDS for PostgreSQL : https://aws.amazon.com/blogs/database/using-logical-replication-to-replicate-managed-amazon-rds-for-postgresql-and-amazon-aurora-to-self-managed-postgresql/
+- [introduction of logical replication](https://www.postgresql.org/docs/13/logical-replication.html)
+- [create publication](https://www.postgresql.org/docs/13/sql-createpublication.html)
+- [replication related parameters](https://www.postgresql.org/docs/13/runtime-config-replication.html)
+- [introduction of logical replication on RDS for PostgreSQL](https://aws.amazon.com/blogs/database/using-logical-replication-to-replicate-managed-amazon-rds-for-postgresql-and-amazon-aurora-to-self-managed-postgresql/)
