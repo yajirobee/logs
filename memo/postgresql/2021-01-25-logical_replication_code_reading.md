@@ -6,7 +6,7 @@ title: Logical replication code reading
 Memo for logical replication code reading
 
 # Replication side
-As of https://github.com/postgres/postgres/tree/REL_12_5
+As of [12.5](https://github.com/postgres/postgres/tree/REL_12_5)
 
 - Boot flow
   - logical replication launcher assign a subscription to a slot
