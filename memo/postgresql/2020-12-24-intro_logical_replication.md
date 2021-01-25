@@ -100,6 +100,10 @@ Sequences should be synchronized manually when a subscriber DB becomes a new mas
 
 Partition root tables can't be replicated, so it can't be used for table repartioning.
 
+## Replication apply worker is likely to be a bottleneck.
+
+It’s better to split publications and subscriptions to parallelize replication apply for tables that have heavy traffic.
+
 # References
 - [introduction of logical replication](https://www.postgresql.org/docs/13/logical-replication.html)
 - [create publication](https://www.postgresql.org/docs/13/sql-createpublication.html)
