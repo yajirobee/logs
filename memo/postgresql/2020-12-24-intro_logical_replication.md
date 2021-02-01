@@ -113,7 +113,7 @@ When you create a table and add it to a publication or you use `CREATE PUBLICATI
 select pg_current_wal_lsn() - replay_lsn lsn_lag from pg_stat_replication;
   ```
     - If the lag keeps increasing, amount of updates on the primary is too much and the replica can’t catch up. You may need to multiplexing replication connections described on the next section.
-- When asynchronous replication is used, `replay_lag` shows time elapsed between flushing WAL on the primary and receiving notification that the standby server has written, flushed and applied it. https://www.postgresql.org/docs/13/monitoring-stats.html#PG-STAT-REPLICATION-VIEW
+- When asynchronous replication is used, `replay_lag` shows time elapsed between flushing WAL on the primary and receiving notification that the standby server has written, flushed and applied it. ([reference](https://www.postgresql.org/docs/13/monitoring-stats.html#PG-STAT-REPLICATION-VIEW))
   - When a large transaction is committed, `replay_lag` may increase.
 - `pg_stat_activity`
 
