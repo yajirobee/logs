@@ -73,6 +73,8 @@ To create a subscription, the user must be a superuser. (On RDS, `rds_superuser`
   - [reference](https://www.postgresql.org/docs/13/logical-replication-restrictions.html)
 - Replication is only possible from base tables to base tables
   - Partition root tables can't be replicated, so it can't be used for table repartitioning.
+- Replica identity must be set if the published table doesn't have a primary key.
+  - [reference](https://www.postgresql.org/docs/13/sql-altertable.html#SQL-CREATETABLE-REPLICA-IDENTITY)
 
 ## Setup Example on RDS
 ### Publisher DB
