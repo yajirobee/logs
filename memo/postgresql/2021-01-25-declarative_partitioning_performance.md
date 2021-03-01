@@ -7,35 +7,70 @@ check the basic performance of declarative partitioning.
 
 # Setup
 ## Table
+### No partitioning
 ```sql
 create table notpartitioned (id int primary key);
 insert into notpartitioned select * from generate_series(0, 1048575);
 ```
 
 ### 64 partition tables
-```sh
-psql -c "create table partitioned_64 (id int primary key) partition by range (id);"
+```sql
+create table partitioned_64 (id int primary key) partition by range (id);
 
-for i in {1..128}; do
-  from=$(( (i-1) * (1 << 14) ))
-  to=$(( i * (1 << 14) ))
-  psql -c "create table partitioned_64_$i partition of partitioned_64 for values from ($from) to ($to);"
-done
+do $$
+  declare
+    n_part int = 64;
+    head int;
+    tail int;
+  begin
+    for i in 1..n_part loop
+      head = (i-1) * (1 << 14);
+      tail = i * (1 << 14);
+      execute format('
+        create table partitioned_%s_%s 
+        partition of partitioned_%s 
+        for values from (%s) to (%s)',
+        n_part,
+        i,
+        n_part,
+        head,
+        tail
+      );
+    end loop;
+  end
+$$;
 
-psql -c "insert into partitioned_64 select * from generate_series(0, 1048575);"
+insert into partitioned_64 select * from generate_series(0, 1048575);
 ```
 
 ### 2048 partition tables
 ```sh
-psql -c "create table partitioned_2048 (id int primary key) partition by range (id);"
+create table partitioned_2048 (id int primary key) partition by range (id);
 
-for i in {1..2048}; do
-  from=$(( (i-1) * (1 << 9) ))
-  to=$(( i * (1 << 9) ))
-  psql -c "create table partitioned_2048_$i partition of partitioned_2048 for values from ($from) to ($to);"
-done
+do $$
+  declare
+    n_part int = 2048;
+    head int;
+    tail int;
+  begin
+    for i in 1..n_part loop
+      head = (i-1) * (1 << 9);
+      tail = i * (1 << 9);
+      execute format('
+        create table partitioned_%s_%s 
+        partition of partitioned_%s 
+        for values from (%s) to (%s)',
+        n_part,
+        i,
+        n_part,
+        head,
+        tail
+      );
+    end loop;
+  end
+$$;
 
-psql -c "insert into partitioned_2048 select * from generate_series(0, 1048575);"
+insert into partitioned_2048 select * from generate_series(0, 1048575);
 ```
 
 ## Queries
