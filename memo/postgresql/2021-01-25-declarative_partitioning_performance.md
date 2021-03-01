@@ -44,7 +44,7 @@ insert into partitioned_64 select * from generate_series(0, 1048575);
 ```
 
 ### 2048 partition tables
-```sh
+```sql
 create table partitioned_2048 (id int primary key) partition by range (id);
 
 do $$
