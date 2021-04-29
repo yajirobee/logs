@@ -1,24 +1,24 @@
 ---
 layout: memo
-title: Presto Code Reading
+title: Trino Code Reading
 ---
 
-Memo for Presto code reading
+Memo for Trino code reading
 
-Following memo is based on PrestoSQL 336 which is the latest version as of June 21st, 2020.
+Following memo is based on Trino 355 which is the latest version as of April 29, 2021.
 
 # Connector Implementation
-- io.prestosql.spi.Plugin  
-Entory point of a Plugin. Provides `io.prestosql.spi.connector.ConnectorFactory`  
+- io.trino.spi.Plugin  
+Entory point of a Plugin. Provides `io.trino.spi.connector.ConnectorFactory`  
 configuration is provided here.  
-  - reference: [SPI overview](https://prestosql.io/docs/current/develop/spi-overview.html)
-- io.prestosql.spi.connector.Connector / ConnectorFactory  
+  - reference: [SPI overview](https://trino.io/docs/current/develop/spi-overview.html)
+- io.trino.spi.connector.Connector / ConnectorFactory  
 `Collector` provides the instances of the following services:
-  - io.prestosql.spi.connector.ConnectorMetadata
-  - io.prestosql.spi.connector.ConnectorSplitManager
-  - io.prestosql.spi.connector.ConnectorHandleResolver
-  - io.prestosql.spi.connector.ConnectorRecordSetProvider
-  - reference: [Connectors](https://prestosql.io/docs/current/develop/connectors.html)
+  - io.trino.spi.connector.ConnectorMetadata
+  - io.trino.spi.connector.ConnectorSplitManager
+  - io.trino.spi.connector.ConnectorHandleResolver
+  - io.trino.spi.connector.ConnectorRecordSetProvider
+  - reference: [Connectors](https://trino.io/docs/current/develop/connectors.html)
 
 # Service Provider interfaces (SPI)
 Definition is from [Presto: The Definitive Guide](https://www.oreilly.com/library/view/presto-the-definitive/9781492044260/) (p48, Figure 4-5).
@@ -63,73 +63,73 @@ Relationship is as follows:
 - Task creates a Driver for each Split
 
 # Table Statistics
-- [Available Table statistics](https://prestosql.io/docs/current/optimizer/statistics.html)
-- [Table statistics for hive connector](https://prestosql.io/docs/current/connector/hive.html#table-statistics)
+- [Available Table statistics](https://trino.io/docs/current/optimizer/statistics.html)
+- [Table statistics for hive connector](https://trino.io/docs/current/connector/hive.html#table-statistics)
 
 # Server
 ## Bootstrap
-- io.prestosql.server.Server#doStart
-  - add io.prestosql.server.ServerMainModule
+- io.trino.server.Server#doStart
+  - add io.trino.server.ServerMainModule
     - for coordinator, install CoordinatorModule
     - for worker, install WorkerModule
-- io.prestosql.server.PluginManager#loadPlugins
+- io.trino.server.PluginManager#loadPlugins
 
 ## Query
 ### Coordinator
 - receive REST API request POST /v1/statement
-- io.prestosql.dispatcher.QueuedStatementResource
+- io.trino.dispatcher.QueuedStatementResource
   - create query ID
   - respond queued URI
 - receive REST API request queued/{queryId}/{slug}/{token}
   - Query#waitForDispatched
-  - io.prestosql.dispatcher.DispatchManager#createQuery
+  - io.trino.dispatcher.DispatchManager#createQuery
     - decode session
     - select resource group
-    - io.prestosql.dispatcher.LocalDispatchQueryFactory
-      - io.prestosql.execution.SqlQueryExecution is asynchronously created by Future
-      - io.prestosql.dispatcher.LocalDispatchQuery is created 
-  - io.prestosql.execution.resourcegroups.ResourceGroupManager(InternalResourceGroupManager)#submit
-  - io.prestosql.execution.resourcegroups.InternalResourceGroup#run
-  - io.prestosql.dispatcher.LocalDispatchQuery#startWaitingForResources
+    - io.trino.dispatcher.LocalDispatchQueryFactory
+      - io.trino.execution.SqlQueryExecution is asynchronously created by Future
+      - io.trino.dispatcher.LocalDispatchQuery is created 
+  - io.trino.execution.resourcegroups.ResourceGroupManager(InternalResourceGroupManager)#submit
+  - io.trino.execution.resourcegroups.InternalResourceGroup#run
+  - io.trino.dispatcher.LocalDispatchQuery#startWaitingForResources
     - wait for query execution to finish construction
     - wait for minimum workers
     - startExecution -> querySubmitter#accept (SqlQueryManager#createQuery)
-  - io.prestosql.execution.SqlQueryManager#createQuery
-  - io.prestosql.execution.QueryExecution#start
-    - for query (select / insert /delete): io.prestosql.execution.SqlQueryExecution
-    - for DDL: io.prestosql.execution.DataDefinitionExecution
+  - io.trino.execution.SqlQueryManager#createQuery
+  - io.trino.execution.QueryExecution#start
+    - for query (select / insert /delete): io.trino.execution.SqlQueryExecution
+    - for DDL: io.trino.execution.DataDefinitionExecution
     - statemachine: transition to planning
 
 #### Planning
 ##### Query processing
-- io.prestosql.execution.SqlQueryExecution#planQuery
-  - io.prestosql.sql.planner.LogicalPlanner#plan
-  - io.prestosql.sql.planner.InputExtractor#extractInputs
+- io.trino.execution.SqlQueryExecution#planQuery
+  - io.trino.sql.planner.LogicalPlanner#plan
+  - io.trino.sql.planner.InputExtractor#extractInputs
     - visit plan nodes
-  - io.prestosql.sql.planner.PlanFragmenter#createSubPlans
-- io.prestosql.execution.SqlQueryExecution#planDistribution
-  - io.prestosql.sql.planner.DistributedExecutionPlanner#plan -> StageExecutionPlan
+  - io.trino.sql.planner.PlanFragmenter#createSubPlans
+- io.trino.execution.SqlQueryExecution#planDistribution
+  - io.trino.sql.planner.DistributedExecutionPlanner#plan -> StageExecutionPlan
     - get splits for this fragment, this is lazy so split assignments aren't actually calculated here  
-      io.prestosql.sql.planner.DistributedExecutionPlanner.Visitor#visitScanAndFilter
-      - io.prestosql.split.SplitManager#getSplits
+      io.trino.sql.planner.DistributedExecutionPlanner.Visitor#visitScanAndFilter
+      - io.trino.split.SplitManager#getSplits
         - call ConnectorSplitManager#getSplits
     - create child stages
     - extract TableInfo
   - set queryScheduler  
-    io.prestosql.execution.scheduler.SqlQueryScheduler#createSqlQueryScheduler
+    io.trino.execution.scheduler.SqlQueryScheduler#createSqlQueryScheduler
 
 ##### DDL
-- io.prestosql.execution.DataDefinitionExecution#start
-- io.prestosql.execution.DataDefinitionTask#execute
+- io.trino.execution.DataDefinitionExecution#start
+- io.trino.execution.DataDefinitionTask#execute
 
 e.g. CREATE TABLE
 - list table elements
 - get table properties
-  - io.prestosql.metadata.TablePropertyManager#getProperties  
-    accept properties provided by io.prestosql.spi.connector.Connector#getTableProperties
+  - io.trino.metadata.TablePropertyManager#getProperties  
+    accept properties provided by io.trino.spi.connector.Connector#getTableProperties
 - create table
-  - io.prestosql.metadata.MetadataManager#createTable
-  - io.prestosql.spi.connector.ConnectorMetadata#createTable
+  - io.trino.metadata.MetadataManager#createTable
+  - io.trino.spi.connector.ConnectorMetadata#createTable
 
 #### Execution
 Describing query processing, not DDL
@@ -137,6 +137,6 @@ Describing query processing, not DDL
 
 # Connector
 ## Hive Connector
-- IO queue is in io.prestosql.plugin.hive.HiveSplitSource
+- IO queue is in io.trino.plugin.hive.HiveSplitSource
   - per query IO queue
-- File format is detected on io.prestosql.plugin.hive.HivePageSourceProvider#createHivePageSource
+- File format is detected on io.trino.plugin.hive.HivePageSourceProvider#createHivePageSource
