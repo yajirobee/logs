@@ -3,7 +3,7 @@ layout: blog
 title: "Read Book: The Manager's Path"
 ---
 
-[Fournier, Camille. The Manager's Path](https://www.amazon.co.jp/Managers-Path-Leaders-Navigating-English-ebook/dp/B06XP3GJ7F)
+読んだ本：[Fournier, Camille. The Manager's Path](https://www.amazon.co.jp/Managers-Path-Leaders-Navigating-English-ebook/dp/B06XP3GJ7F)
 
 2019年11月20日に購入して、先日ようやく読み終えた。同僚のすすめで読んでみたが学びが多かった。
 今後すぐどうということではないが、将来のキャリアパスの選択肢について考える上で得られた知識は多かったと思う。
