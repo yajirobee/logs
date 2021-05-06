@@ -1,12 +1,11 @@
 <a href="{{ include.url | prepend: site.baseurl }}" class="catalogue-item">
-    <div>
-        <time datetime="{{ include.date }}" class="catalogue-time">{{ include.date | date: "%B %d, %Y" }}</time>
-        <h1 class="catalogue-title">{{ include.title }}</h1>
-        <div class="catalogue-line"></div>
+  <div>
+    <time datetime="{{ include.date }}" class="catalogue-time">{{ include.date | date: "%B %d, %Y" }}</time>
+    <h1 class="catalogue-title">{{ include.title }}</h1>
+    <div class="catalogue-line"></div>
 
-        <p>
-            {{ include.excerpt | strip_html | truncatewords: 30 }}
-        </p>
-
-    </div>
+    <p>
+      {{ include.excerpt | strip_html | truncatewords: 30 }}
+    </p>
+  </div>
 </a>

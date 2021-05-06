@@ -9,11 +9,13 @@ permalink: /tags/
     <h2 class="tags-header-title">{{ page.title }}</h2>
     <div class="tags-header-line"></div>
   </div>
+
   <div class="tags-clouds">
     {% for tag in site.tags %}
     <a href="#{{ tag[0] }}">{{ tag[0] }}</a>
     {% endfor %}
   </div>
+
   {% for tag in site.tags %}
   <div class="tags-item" id="{{ tag[0] }}">
     <svg
