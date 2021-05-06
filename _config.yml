@@ -2,6 +2,8 @@ remote_theme: chesterhow/tale
 
 title: Keisuke Suzuki
 
+encoding: UTF-8
+
 plugins:
   - jekyll-paginate
   - jekyll-remote-theme
