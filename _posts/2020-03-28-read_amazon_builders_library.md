@@ -1,6 +1,7 @@
 ---
 layout: blog
 title: "Read: The Amazon Builders' Library"
+tags: Book
 ---
 
 読んだ記事：[The Amazon Builders' Library](https://aws.amazon.com/builders-library/)

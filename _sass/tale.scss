@@ -6,9 +6,10 @@
 @import 'tale/layout';
 @import 'tale/pagination';
 @import 'tale/catalogue';
+@import 'tale/tags';
 
 @import 'tale/memo';
 
 main, .nav-container {
-    max-width: unset;
+    max-width: 900px;
 }

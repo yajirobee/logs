@@ -1,6 +1,7 @@
 ---
 layout: blog
 title: "Setup Presto"
+tags: Trino
 ---
 
 Continues from [the post of Hive setup]({{ site.baseurl }}{% link _posts/2020-06-11-setup_hive3.md %}).

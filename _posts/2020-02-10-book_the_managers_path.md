@@ -1,6 +1,7 @@
 ---
 layout: blog
 title: "Read Book: The Manager's Path"
+tags: Book
 ---
 
 読んだ本：[Fournier, Camille. The Manager's Path](https://www.amazon.co.jp/Managers-Path-Leaders-Navigating-English-ebook/dp/B06XP3GJ7F)
