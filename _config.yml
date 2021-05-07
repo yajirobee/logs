@@ -15,3 +15,5 @@ excerpt_separator: "<!--end_excerpt-->"
 # custom parameters
 author:
   name: Keisuke Suzuki
+
+repository: yajirobee/logs
