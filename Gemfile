@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 
-gem "jekyll", "~> 3.0"
+gem "jekyll", "~> 4.2"
 
 group :jekyll_plugins do
-  gem "github-pages"
   gem "jekyll-remote-theme"
+  gem "jekyll-paginate"
+  gem "jekyll-feed"
+  gem "jekyll-seo-tag"
 end
