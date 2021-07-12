@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>My Best Practice of Software Engineering | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="My Best Practice of Software Engineering" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="My Best Practice of Software Engineering" />
+<script type="application/ld+json">
+{"url":"/memo/general/2020-05-13-my_best_practice_software_engineering.html","@type":"WebPage","author":{"@type":"Person","name":"Keisuke Suzuki"},"headline":"My Best Practice of Software Engineering","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <p>Some best practices from my experience. This is a living document.</p>
+
+<h1 id="protocol">Protocol</h1>
+<ul>
+  <li>Generally avoid custom serialization format</li>
+  <li>A receiver of a message should have a way to verify that the message was derivered correctly</li>
+  <li>Data format should have a distinct and explicit version</li>
+  <li>Sometimes completeness of specification should be compromised to take easiness of implementation</li>
+</ul>
+
+<h1 id="metrics--monitoring">Metrics / Monitoring</h1>
+<ul>
+  <li>Collect every metrics you come up with as much as performance, cost and security allow</li>
+  <li>Don’t start an experiment without a hypothesis</li>
+  <li>Understand where a metrics come from before using it</li>
+</ul>
+
+
+<div class="pagination">
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2021-07-12 13:00:30 +0000">2021</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

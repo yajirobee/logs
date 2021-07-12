@@ -1,0 +1,1378 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.0">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2021-07-12T13:00:30+00:00</updated><id>/feed.xml</id><title type="html">Keisuke Suzuki</title><author><name>Keisuke Suzuki</name></author><entry><title type="html">Read Book: A Philosophy of Software Design</title><link href="/2021/05/05/book_a_philosophy_of_software_design.html" rel="alternate" type="text/html" title="Read Book: A Philosophy of Software Design" /><published>2021-05-05T00:00:00+00:00</published><updated>2021-05-05T00:00:00+00:00</updated><id>/2021/05/05/book_a_philosophy_of_software_design</id><content type="html" xml:base="/2021/05/05/book_a_philosophy_of_software_design.html">&lt;p&gt;読んだ本：&lt;a href=&quot;https://www.amazon.co.jp/dp/B07N1XLQ7D/ref=cm_sw_em_r_mt_dp_JMCWYZ63EQGY1Q6BTGST&quot;&gt;Ousterhout, John. A Philosophy of Software Design&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;よいソフトウェアデザイン、コードとは何か、ソフトウェア開発で常に考えるテーマです。
+経験を通じて直観的な感覚は養われていくのですが、この本はその点を言語化し、体系化を試みており、自分の知見の整理に役立ちました。
+実体験を踏まえ、印象に残った点をまとめます。
+&lt;!--end_excerpt--&gt;&lt;/p&gt;
+
+&lt;p&gt;この本のテーマは大まかに2点で、1) ソフトウェアの複雑さとは何か、なぜよいデザインが重要かについてと、
+2) デザインを向上する技法についてです。
+2章が前者で、3章以降は後者の説明に充てられています。自分の感想もこの2点に分けてまとめます。&lt;/p&gt;
+
+&lt;h1 id=&quot;ソフトウェアの複雑さについて&quot;&gt;ソフトウェアの複雑さについて&lt;/h1&gt;
+&lt;p&gt;著者はソフトウェアの複雑さを、ソフトウェアの構成要素のうち、システムの理解及び変更修正の難度を上げる全ての要因と定義しています。
+これは個人的にも納得感のある定義でした。ソフトウェアエンジニアの役割とは、実世界の変わりゆく要求・課題に対して、
+計算機を活用することで解決に導くことであると考えるので、システムの変化への適応性は本質的に重要な要素と思います。&lt;/p&gt;
+
+&lt;p&gt;また、より多くの時間開発者の目に触れる箇所ほど、複雑さを増す弊害が大きいと述べられています。
+この点は、特に仕事としてチームで開発していると強く感じるところです。
+コードを注意深く読まないと挙動が理解できないソフトウェアは、チームの生産性に悪影響を与えます。
+より多くの開発者の目に触れるであろうソフトウェアほど、よいデザインを作ることのレバレッジが大きくなります。
+さらに、後ろの章でも触れられていますが、ソフトウェアデザインは開発者にとっての利便性より、
+コードを読み、利用する人にとっての複雑さを重視するべきというのも大事なポイントです。
+一般的に開発期間と運用期間では、後者が大半を占めるわけですし、その間多くの人がデザインを目にする場合、
+各個人が理解にかかる時間を短くする方が、オリジナルの開発者の時間を節約するより効果が大きいです。&lt;/p&gt;
+
+&lt;p&gt;複雑度が高いシステムの弊害として、以下の3点が挙げられています。&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Change amplification&lt;/li&gt;
+  &lt;li&gt;Cognitive load&lt;/li&gt;
+  &lt;li&gt;Unknown unknowns&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;コードを読んだり変更修正する際にこうした影響を受けるわけですが、最初の2つはまだましで、コードの理解や変更に
+余計な時間がかかることが主なデメリットと思います。（それ自体もバグを生む遠因となり得るので決してよくはありませんが。）
+一方で、”Unknown unknowns”については、理解を妨げるだけでなく、変更の影響範囲が特定できなくなるため、
+容易に破壊的な変更を埋め込んでしまうようになります。コードに触れる人が想定できないような挙動は、可能であれば排除し、
+避けられない場合もドキュメント等で十分な注意喚起をするべきです。&lt;/p&gt;
+
+&lt;h1 id=&quot;ソフトウェアデザインを向上する技法について&quot;&gt;ソフトウェアデザインを向上する技法について&lt;/h1&gt;
+&lt;p&gt;3章以降は、よいデザインを作り上げるための技法の、トピック別での解説になっています。
+数が多いので、ここでは印象の強かった箇所のみ取り上げます。&lt;/p&gt;
+
+&lt;h2 id=&quot;working-code-isnt-enough&quot;&gt;Working Code Isn’t Enough&lt;/h2&gt;
+&lt;p&gt;本の中では、Strategic (戦略的な) ProgrammingとTactical (急場しのぎの) Programmingという対比で論じられていますが、
+スピード感を求められる現場では、往々にして多少の複雑さを許容して、短い期間での開発を要求されることがあります。
+ビジネスの都合上ある程度は避けられないのですが、一旦ソフトウェアに入り込んだ複雑さは大体想定よりも早い段階で悪影響を及ぼします。
+自分の意見としては、一時しのぎのコードを書かざるを得ない場合は、併せてリファクタリングの計画も立てておくべきと思います。
+複雑さは積もり上がっていくので、時間が経てば経つほど、リファクタリングが大変になります。
+また、経験的に複雑なコードは作者であっても、すぐに意図がわからなくなりがちです。
+最初のコードを書いた記憶が鮮明なうちに直した方が効率も良いと思います。&lt;br /&gt;
+さらに、そのリファクタリングは可能な限りオリジナルの開発者が実施するべきです。
+リファクタリング前の複雑なコードのままでは、引継ぎのコストも高くなるため非効率です。&lt;/p&gt;
+
+&lt;p&gt;鉄は熱いうちに打てで、早いうちに、小さく、繰り返しリファクタリングするのが最も効率的なのではないかと思います。
+複雑なコードを放置するリスクは非常に高いのですが、機能追加要求などみかけ上優先度の高そうなタスクはいくらでもあるので、
+落ち着いたらいつか直そうくらいの感覚でいると直す日はやってこないです。&lt;/p&gt;
+
+&lt;p&gt;16章と19章からですが、以下の2つのフレーズはよく的を得ているとおもいます。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Ideally, when you have finished with each change, the system will have the structure it would have had if you had designed it from the start with that change in mind. (p.136)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;the increments of development should be abstractions, not features. (p.154)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;安全にリファクタリングするための原則として、機能開発とリファクタリングを同時に実施するべきではないという考え方もありますが、
+個人的には外部仕様に影響がない範囲で、かつレビューが大変になりすぎない程度であれば混ぜてしまっても良いと考えています。
+機能でなく、ソフトウェアの構造上の変化を変更単位と考えると筋が通ります。
+先ほど述べた通り、リファクタリングを遅らせるほど、複雑さは積み上がり、リファクタリングが大変になりがちです。
+インクリメンタルに小さなリファクタリングを実施する方が、見通しよくコードが書けると思います。&lt;/p&gt;
+
+&lt;p&gt;自分のこれまでの仕事で、既存サービスを統合や分離するタスクがありましたが、これも単にコードを統合、
+分離する作業ではないです。
+そのタスクが発生している時点で、システムに対する要件が変化しているわけなので、
+デザインのレイヤで変化を織り込む必要があり、するとコードのリファクタリングも必要になると思います。&lt;/p&gt;
+
+&lt;h2 id=&quot;modules-should-be-deep&quot;&gt;Modules Should Be Deep&lt;/h2&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;Classitis may result in classes that are individually simple, but it increases the complexity of the overall system. Small classes don’t contribute much functionality, so there have to be a lot of them, each with its own interface. (p.26)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;これは単純に反省ですが、自分も長いクラスやメソッドがあったときに、処理の流れを明確にする意図で、
+処理の単位毎に、クラス・メソッドの分離をよくやっていました。
+分離すると元のクラス・メソッドはシンプルになるんですが、詳細な動作を追うときに別の箇所に飛ばないといけなくなり
+全体としてはかえって見通しが悪くなってしまいます。
+いままで漠然と、長いクラス・メソッドは読みにくいといった先入観があったのですが、長さは大きな問題ではないと認識を改めました。&lt;/p&gt;
+
+&lt;h2 id=&quot;better-together-or-better-apart&quot;&gt;Better Together Or Better Apart?&lt;/h2&gt;
+&lt;p&gt;メソッドをまとめる・分ける際の指標として、情報が共有されているか、まとめることでインターフェースがシンプルになるか、
+コードの重複があるか、一般的なケースの処理か特定のケースの処理か、といった観点が解説されています。
+この9章では、おそらく単一モジュールであるということが前提になっていると想定します。&lt;/p&gt;
+
+&lt;p&gt;複数のモジュールやマイクロサービスを抱えるチームでの開発では、モジュール・サービスの分割をどうするかという点も
+課題になると思います。
+うまく言語化できないのですが、上記の要因以外にも、チームの規模やリリース頻度、組織構成などといった要因も絡みそうです。
+こうした大規模システムデザインについて、まとまった文献があるのかは気になります。
+思いつく範囲だと、&lt;a href=&quot;http://www.melconway.com/Home/Conways_Law.html&quot;&gt;Conway’s Law&lt;/a&gt;やマイクロサービスなどの
+キーワードが関係するんでしょうか。&lt;/p&gt;
+
+&lt;h1 id=&quot;まとめ&quot;&gt;まとめ&lt;/h1&gt;
+&lt;p&gt;ソフトウェアデザインについて簡潔にまとまっており、ページ数もそれほど多くないので読みやすかったです。
+新たな観点が得られた他にも、今まで感覚的に理解していた内容が言語化され、語彙を増やす意味でも学びがありました。&lt;/p&gt;</content><author><name>Keisuke Suzuki</name></author><category term="Book" /><summary type="html">読んだ本：Ousterhout, John. A Philosophy of Software Design よいソフトウェアデザイン、コードとは何か、ソフトウェア開発で常に考えるテーマです。 経験を通じて直観的な感覚は養われていくのですが、この本はその点を言語化し、体系化を試みており、自分の知見の整理に役立ちました。 実体験を踏まえ、印象に残った点をまとめます。</summary></entry><entry><title type="html">Study Hive 3</title><link href="/2020/06/21/study_hive3.html" rel="alternate" type="text/html" title="Study Hive 3" /><published>2020-06-21T00:00:00+00:00</published><updated>2020-06-21T00:00:00+00:00</updated><id>/2020/06/21/study_hive3</id><content type="html" xml:base="/2020/06/21/study_hive3.html">&lt;p&gt;Continues from &lt;a href=&quot;/2020/06/11/setup_hive3.html&quot;&gt;the previous post&lt;/a&gt;. This is randam study memo to understand internal behavior of Hive.
+&lt;!--end_excerpt--&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;play-with-queries&quot;&gt;Play with Queries&lt;/h1&gt;
+&lt;h2 id=&quot;simple-insert-by-mr&quot;&gt;Simple insert By MR&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Create table by Beeline
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; CREATE TABLE test (id int, value int);
+...
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=...); Time taken: 0.056 seconds
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Insert
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; INSERT INTO insert into test values (1, 1), (2, 2), (3, 3);
+...
+INFO  : Total jobs = 3
+INFO  : Launching Job 1 out of 3
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Number of reduce tasks determined at compile time: 1
+INFO  : In order to change the average load for a reducer (in bytes):
+INFO  :   set hive.exec.reducers.bytes.per.reducer=&amp;lt;number&amp;gt;
+INFO  : In order to limit the maximum number of reducers:
+INFO  :   set hive.exec.reducers.max=&amp;lt;number&amp;gt;
+INFO  : In order to set a constant number of reducers:
+INFO  :   set mapreduce.job.reduces=&amp;lt;number&amp;gt;
+INFO  : number of splits:1
+INFO  : Submitting tokens for job: job_1591875950345_0001
+INFO  : Executing with tokens: []
+...
+INFO  : Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+INFO  : 2020-06-11 23:00:23,692 Stage-1 map = 0%,  reduce = 0%
+INFO  : 2020-06-11 23:00:27,818 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.02 sec
+INFO  : 2020-06-11 23:00:32,923 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.19 sec
+INFO  : MapReduce Total cumulative CPU time: 3 seconds 190 msec
+INFO  : Ended Job = job_1591875950345_0002
+INFO  : Starting task [Stage-7:CONDITIONAL] in serial mode
+INFO  : Stage-4 is selected by condition resolver.
+INFO  : Stage-3 is filtered out by condition resolver.
+INFO  : Stage-5 is filtered out by condition resolver.
+INFO  : Starting task [Stage-4:MOVE] in serial mode
+INFO  : Moving data to directory hdfs://localhost:9000/user/hive/warehouse/test/.hive-staging_hive_2020-06-11_23-00-19_051_1627075465863944744-2/-ext-10000 from hdfs://localhost:9000/user/hive/warehouse/test/.hive-staging_hive_2020-06-11_23-00-19_051_1627075465863944744-2/-ext-10002
+INFO  : Starting task [Stage-0:MOVE] in serial mode
+INFO  : Loading data to table default.test from hdfs://localhost:9000/user/hive/warehouse/test/.hive-staging_hive_2020-06-11_23-00-19_051_1627075465863944744-2/-ext-10000
+INFO  : Starting task [Stage-2:STATS] in serial mode
+INFO  : MapReduce Jobs Launched:
+INFO  : Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.19 sec   HDFS Read: 14302 HDFS Write: 263 SUCCESS
+INFO  : Total MapReduce CPU Time Spent: 3 seconds 190 msec
+INFO  : Completed executing command(queryId=...); Time taken: 14.843 seconds
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Check file structure and format on FS
+    &lt;ul&gt;
+      &lt;li&gt;Default file format (‘hive.default.fileformat’) is textfile that columns are separated by ascii 001&lt;/li&gt;
+      &lt;li&gt;partition files are stored under ${hive.metastore.warehouse.dir}/${table_name}/
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ ./bin/hadoop fs -ls /user/hive/warehouse/test
+Found 1 items
+-rw-r--r--   1 ... supergroup         12 2020-06-11 23:00 /user/hive/warehouse/test/000000_0
+$ ./bin/hadoop fs -get /user/hive/warehouse/test/000000_0 .
+$ od -Ax -tx1z -v 000000_0
+000000 31 01 31 0a 32 01 32 0a 33 01 33 0a              &amp;gt;1.1.2.2.3.3.&amp;lt;
+00000c
+$ od -t c 000000_0
+0000000   1 001   1  \n   2 001   2  \n   3 001   3  \n
+0000014
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;insert-by-tez-and-orc-format&quot;&gt;Insert by Tez and ORC format&lt;/h2&gt;
+&lt;p&gt;I enabled explain output (hive.log.explain.output = true) this time.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create table by Beeline&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt; create table test_orc (id int, value int) stored as orc;
+...
+INFO  : EXPLAIN output for queryid ... : STAGE DEPENDENCIES:
+  Stage-0 is a root stage [DDL]
+
+STAGE PLANS:
+  Stage: Stage-0
+      Create Table Operator:
+        Create Table
+          columns: id int, value int
+          input format: org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+          output format: org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+          serde name: org.apache.hadoop.hive.ql.io.orc.OrcSerde
+          name: default.test_orc
+
+
+INFO  : Completed compiling command(queryId=...); Time taken: 0.031 seconds
+...
+No rows affected (0.112 seconds)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;Insert&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;0: jdbc:hive2://localhost:10000&amp;gt; insert into test_orc values (1, 1), (2, 2), (3, 3);
+...
+INFO  : Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:col1, type:int, comment:null), FieldSchema(name:col2, type:int, comment:null)], properties:null)
+INFO  : EXPLAIN output for queryid ... : STAGE DEPENDENCIES:
+  Stage-1 is a root stage [MAPRED]
+  Stage-2 depends on stages: Stage-1 [DEPENDENCY_COLLECTION]
+  Stage-0 depends on stages: Stage-2 [MOVE]
+  Stage-3 depends on stages: Stage-0 [STATS]
+
+STAGE PLANS:
+  Stage: Stage-1
+    Tez
+      DagId: ...
+      Edges:
+        Reducer 2 &amp;lt;- Map 1 (CUSTOM_SIMPLE_EDGE)
+      DagName: ...
+      Vertices:
+        Map 1
+            Map Operator Tree:
+                TableScan
+                  alias: _dummy_table
+                  Row Limit Per Split: 1
+                  Statistics: Num rows: 1 Data size: 10 Basic stats: COMPLETE Column stats: COMPLETE
+                  GatherStats: false
+                  Select Operator
+                    expressions: array(const struct(1,1),const struct(2,2),const struct(3,3)) (type: array&amp;lt;struct&amp;lt;col1:int,col2:int&amp;gt;&amp;gt;)
+                    outputColumnNames: _col0
+                    Statistics: Num rows: 1 Data size: 64 Basic stats: COMPLETE Column stats: COMPLETE
+                    UDTF Operator
+                      Statistics: Num rows: 1 Data size: 64 Basic stats: COMPLETE Column stats: COMPLETE
+                      function name: inline
+                      Select Operator
+                        expressions: col1 (type: int), col2 (type: int)
+                        outputColumnNames: _col0, _col1
+                        Statistics: Num rows: 1 Data size: 8 Basic stats: COMPLETE Column stats: COMPLETE
+                        File Output Operator
+                          compressed: false
+                          GlobalTableId: 1
+                          directory: hdfs://localhost:9000/user/hive/warehouse/test_orc/.hive-staging_hive_2020-06-16_22-39-50_981_8937473827142056315-1/-ext-10000
+                          NumFilesPerFileSink: 1
+                          Statistics: Num rows: 1 Data size: 8 Basic stats: COMPLETE Column stats: COMPLETE
+                          Stats Publishing Key Prefix: hdfs://localhost:9000/user/hive/warehouse/test_orc/.hive-staging_hive_2020-06-16_22-39-50_981_8937473827142056315-1/-ext-10000/
+                          table:
+                              input format: org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+                              output format: org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+                              properties:
+                                COLUMN_STATS_ACCURATE {&quot;BASIC_STATS&quot;:&quot;true&quot;,&quot;COLUMN_STATS&quot;:{&quot;id&quot;:&quot;true&quot;,&quot;value&quot;:&quot;true&quot;}}
+                                bucket_count -1
+                                bucketing_version 2
+                                column.name.delimiter ,
+                                columns id,value
+                                columns.comments
+                                columns.types int:int
+                                file.inputformat org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+                                file.outputformat org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+                                location hdfs://localhost:9000/user/hive/warehouse/test_orc
+                                name default.test_orc
+                                numFiles 0
+                                numRows 0
+                                rawDataSize 0
+                                serialization.ddl struct test_orc { i32 id, i32 value}
+                                serialization.format 1
+                                serialization.lib org.apache.hadoop.hive.ql.io.orc.OrcSerde
+                                totalSize 0
+                                transient_lastDdlTime 1592309097
+                              serde: org.apache.hadoop.hive.ql.io.orc.OrcSerde
+                              name: default.test_orc
+                          TotalFiles: 1
+                          GatherStats: true
+                          MultiFileSpray: false
+                        Select Operator
+                          expressions: _col0 (type: int), _col1 (type: int)
+                          outputColumnNames: id, value
+                          Statistics: Num rows: 1 Data size: 8 Basic stats: COMPLETE Column stats: COMPLETE
+                          Group By Operator
+                            aggregations: compute_stats(id, 'hll'), compute_stats(value, 'hll')
+                            mode: hash
+                            outputColumnNames: _col0, _col1
+                            Statistics: Num rows: 1 Data size: 848 Basic stats: COMPLETE Column stats: COMPLETE
+                            Reduce Output Operator
+                              null sort order:
+                              sort order:
+                              Statistics: Num rows: 1 Data size: 848 Basic stats: COMPLETE Column stats: COMPLETE
+                              tag: -1
+                              value expressions: _col0 (type: struct&amp;lt;columntype:string,min:bigint,max:bigint,countnulls:bigint,bitvector:binary&amp;gt;), _col1 (type: struct&amp;lt;columntype:string,min:bigint,max:bigint,countnulls:bigint,bitvector:binary&amp;gt;)
+                              auto parallelism: false
+            Path -&amp;gt; Alias:
+              hdfs://localhost:9000/tmp/hive/...
+            Path -&amp;gt; Partition:
+              hdfs://localhost:9000/tmp/hive/...
+                Partition
+                  base file name: dummy_path
+                  input format: org.apache.hadoop.hive.ql.io.NullRowsInputFormat
+                  output format: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+                  properties:
+                    bucket_count -1
+                    bucketing_version 2
+                    column.name.delimiter ,
+                    columns
+                    columns.comments
+                    columns.types
+                    file.inputformat org.apache.hadoop.hive.ql.io.NullRowsInputFormat
+                    file.outputformat org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+                    location hdfs://localhost:9000/tmp/hive/...
+                    name _dummy_database._dummy_table
+                    serialization.ddl struct _dummy_table { }
+                    serialization.format 1
+                    serialization.lib org.apache.hadoop.hive.serde2.NullStructSerDe
+                  serde: org.apache.hadoop.hive.serde2.NullStructSerDe
+
+                    input format: org.apache.hadoop.hive.ql.io.NullRowsInputFormat
+                    output format: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+                    properties:
+                      bucket_count -1
+                      bucketing_version 2
+                      column.name.delimiter ,
+                      columns
+                      columns.comments
+                      columns.types
+                      file.inputformat org.apache.hadoop.hive.ql.io.NullRowsInputFormat
+                      file.outputformat org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+                      location hdfs://localhost:9000/tmp/hive/...
+                      name _dummy_database._dummy_table
+                      serialization.ddl struct _dummy_table { }
+                      serialization.format 1
+                      serialization.lib org.apache.hadoop.hive.serde2.NullStructSerDe
+                    serde: org.apache.hadoop.hive.serde2.NullStructSerDe
+                    name: _dummy_database._dummy_table
+                  name: _dummy_database._dummy_table
+            Truncated Path -&amp;gt; Alias:
+              hdfs://localhost:9000/tmp/hive/...
+        Reducer 2
+            Needs Tagging: false
+            Reduce Operator Tree:
+              Group By Operator
+                aggregations: compute_stats(VALUE._col0), compute_stats(VALUE._col1)
+                mode: mergepartial
+                outputColumnNames: _col0, _col1
+                Statistics: Num rows: 1 Data size: 880 Basic stats: COMPLETE Column stats: COMPLETE
+                File Output Operator
+                  compressed: false
+                  GlobalTableId: 0
+                  directory: hdfs://localhost:9000/tmp/hive/...
+                  NumFilesPerFileSink: 1
+                  Statistics: Num rows: 1 Data size: 880 Basic stats: COMPLETE Column stats: COMPLETE
+                  Stats Publishing Key Prefix: hdfs://localhost:9000/tmp/hive/...
+                  table:
+                      input format: org.apache.hadoop.mapred.SequenceFileInputFormat
+                      output format: org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat
+                      properties:
+                        columns _col0,_col1
+                        columns.types struct&amp;lt;columntype:string,min:bigint,max:bigint,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary&amp;gt;:struct&amp;lt;columntype:string,min:bigint,max:bigint,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary&amp;gt;
+                        escape.delim \
+                        hive.serialization.extend.additional.nesting.levels true
+                        serialization.escape.crlf true
+                        serialization.format 1
+                        serialization.lib org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe
+                      serde: org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe
+                  TotalFiles: 1
+                  GatherStats: false
+                  MultiFileSpray: false
+
+  Stage: Stage-2
+    Dependency Collection
+
+  Stage: Stage-0
+    Move Operator
+      tables:
+          replace: false
+          source: hdfs://localhost:9000/user/hive/warehouse/test_orc/.hive-staging_hive_2020-06-16_22-39-50_981_8937473827142056315-1/-ext-10000
+          table:
+              input format: org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+              output format: org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+              properties:
+                COLUMN_STATS_ACCURATE {&quot;BASIC_STATS&quot;:&quot;true&quot;,&quot;COLUMN_STATS&quot;:{&quot;id&quot;:&quot;true&quot;,&quot;value&quot;:&quot;true&quot;}}
+                bucket_count -1
+                bucketing_version 2
+                column.name.delimiter ,
+                columns id,value
+                columns.comments
+                columns.types int:int
+                file.inputformat org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+                file.outputformat org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+                location hdfs://localhost:9000/user/hive/warehouse/test_orc
+                name default.test_orc
+                numFiles 0
+                numRows 0
+                rawDataSize 0
+                serialization.ddl struct test_orc { i32 id, i32 value}
+                serialization.format 1
+                serialization.lib org.apache.hadoop.hive.ql.io.orc.OrcSerde
+                totalSize 0
+                transient_lastDdlTime 1592309097
+              serde: org.apache.hadoop.hive.ql.io.orc.OrcSerde
+              name: default.test_orc
+
+  Stage: Stage-3
+    Stats Work
+      Basic Stats Work:
+          Stats Aggregation Key Prefix: hdfs://localhost:9000/user/hive/warehouse/test_orc/.hive-staging_hive_2020-06-16_22-39-50_981_8937473827142056315-1/-ext-10000/
+      Column Stats Desc:
+          Columns: id, value
+          Column Types: int, int
+          Table: default.test_orc
+          Is Table Level Stats: true
+
+INFO  : Completed compiling command(queryId=...); Time taken: 0.565 seconds
+...
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+...
+No rows affected (8.489 seconds)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;Check file structure and format on FS&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ hdfs dfs -ls '/user/hive/warehouse/test_orc'
+Found 1 items
+-rw-r--r--   1 ... supergroup        246 2020-06-16 22:39 /user/hive/warehouse/test_orc/000000_0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Metastore&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hive_metastore=# select &quot;TBL_ID&quot;, &quot;DB_ID&quot;, &quot;RETENTION&quot;, &quot;SD_ID&quot;, &quot;TBL_NAME&quot;, &quot;TBL_TYPE&quot;, &quot;IS_REWRITE_ENABLED&quot; from &quot;TBLS&quot;;
+ TBL_ID | DB_ID | RETENTION | SD_ID | TBL_NAME |   TBL_TYPE    | IS_REWRITE_ENABLED
+--------|-------|-----------|-------|----------|---------------|--------------------
+      6 |     1 |         0 |     6 | test     | MANAGED_TABLE | f
+     11 |     1 |         0 |    11 | test_orc | MANAGED_TABLE | f
+(2 rows)
+
+hive_metastore=# select * from &quot;TABLE_PARAMS&quot;;
+ TBL_ID |       PARAM_KEY       |                            PARAM_VALUE
+--------|-----------------------|--------------------------------------------------------------------
+      6 | COLUMN_STATS_ACCURATE | {&quot;BASIC_STATS&quot;:&quot;true&quot;,&quot;COLUMN_STATS&quot;:{&quot;id&quot;:&quot;true&quot;,&quot;value&quot;:&quot;true&quot;}}
+      6 | bucketing_version     | 2
+      6 | transient_lastDdlTime | 1592307774
+      6 | totalSize             | 12
+      6 | numRows               | 34
+      6 | rawDataSize           | 102
+      6 | numFiles              | 1
+     11 | COLUMN_STATS_ACCURATE | {&quot;BASIC_STATS&quot;:&quot;true&quot;,&quot;COLUMN_STATS&quot;:{&quot;id&quot;:&quot;true&quot;,&quot;value&quot;:&quot;true&quot;}}
+     11 | bucketing_version     | 2
+     11 | transient_lastDdlTime | 1592314799
+     11 | totalSize             | 246
+     11 | numRows               | 3
+     11 | rawDataSize           | 24
+     11 | numFiles              | 1
+(14 rows)
+
+hive_metastore=# select * from &quot;TAB_COL_STATS&quot;;
+ CS_ID | CAT_NAME | DB_NAME | TABLE_NAME | COLUMN_NAME | COLUMN_TYPE | TBL_ID | LONG_LOW_VALUE | LONG_HIGH_VALUE | DOUBLE_LOW_VALUE | DOUBLE_HIGH_VALUE | BIG_DECIMAL_LOW_VALUE | BIG_DECIMAL_HIGH_VALUE | NUM_NULLS | NUM_DISTINCTS |                BIT_VECTOR                | AVG_COL_LEN | MAX_COL_LEN | NUM_TRUES | NUM_FALSES | LAST_ANALYZED
+-------|----------|---------|------------|-------------|-------------|--------|----------------|-----------------|------------------|-------------------|-----------------------|------------------------|-----------|---------------|------------------------------------------|-------------|-------------|-----------|------------|---------------
+     6 | hive     | default | test       | id          | int         |      6 |              1 |               3 |                  |                   |                       |                        |         0 |             3 | \x484c4ca00303c1f3be48c1bbac62c2d2f48e03 |             |             |           |            |    1592307774
+     7 | hive     | default | test       | value       | int         |      6 |              1 |               4 |                  |                   |                       |                        |         0 |             3 | \x484c4ca00303c1f3be48c1bbac62c2d2f48e03 |             |             |           |            |    1592307774
+    11 | hive     | default | test_orc   | id          | int         |     11 |              1 |               3 |                  |                   |                       |                        |         0 |             3 | \x484c4ca00303c1f3be48c1bbac62c2d2f48e03 |             |             |           |            |    1592314799
+    12 | hive     | default | test_orc   | value       | int         |     11 |              1 |               3 |                  |                   |                       |                        |         0 |             3 | \x484c4ca00303c1f3be48c1bbac62c2d2f48e03 |             |             |           |            |    1592314799
+(4 rows)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Keisuke Suzuki</name></author><category term="Hive" /><summary type="html">Continues from the previous post. This is randam study memo to understand internal behavior of Hive.</summary></entry><entry><title type="html">Setup Presto</title><link href="/2020/06/18/setup_presto.html" rel="alternate" type="text/html" title="Setup Presto" /><published>2020-06-18T00:00:00+00:00</published><updated>2020-06-18T00:00:00+00:00</updated><id>/2020/06/18/setup_presto</id><content type="html" xml:base="/2020/06/18/setup_presto.html">&lt;p&gt;Continues from &lt;a href=&quot;/2020/06/11/setup_hive3.html&quot;&gt;the post of Hive setup&lt;/a&gt;.
+Setting up Presto on Hive next.
+&lt;!--end_excerpt--&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;goal&quot;&gt;Goal&lt;/h1&gt;
+&lt;p&gt;Executing queries to data stored on Hive / HDFS by Presto.&lt;br /&gt;
+Note: Presto only uses data files and Hive metastore as mentioned on &lt;a href=&quot;https://prestosql.io/docs/current/connector/hive.html#overview&quot;&gt;the document&lt;/a&gt;. Hive’s query execution environment isn’t used.&lt;/p&gt;
+
+&lt;h1 id=&quot;environment-and-software-versions&quot;&gt;Environment and Software Versions&lt;/h1&gt;
+&lt;p&gt;Hardware and Hive / Hadoop are the same as &lt;a href=&quot;/2020/06/11/setup_hive3.html&quot;&gt;the previous post&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ java -version
+openjdk version &quot;11.0.7&quot; 2020-04-14
+OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-3ubuntu1)
+OpenJDK 64-Bit Server VM (build 11.0.7+10-post-Ubuntu-3ubuntu1, mixed mode, sharing)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Note java vesion was different from Hive / Hadoop.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Presto 333 from &lt;a href=&quot;https://prestosql.io/&quot;&gt;PrestoSQL&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Both coordinator and worker were deployed in single server as well as Hive &amp;amp; Hadoop&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;setup-remote-hive-metastore-server&quot;&gt;Setup Remote Hive Metastore Server&lt;/h1&gt;
+&lt;p&gt;Hive metastore needs to run by &lt;a href=&quot;https://cwiki.apache.org/confluence/display/Hive/AdminManual+Metastore+Administration#AdminManualMetastoreAdministration-RemoteMetastoreServer&quot;&gt;remove configuration&lt;/a&gt; as Presto communicates.&lt;/p&gt;
+
+&lt;h2 id=&quot;server-remote-metastore-side&quot;&gt;Server (remote metastore) side&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Edit configurations
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${HIVE_HOME}/conf/hive-site.xml&lt;/code&gt;
+        &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;hive.server2.thrift.bind.host&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;localhost&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Start metastore
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ $HIVE_HOME/bin/hive --service metastore
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;client-hiveserver-side&quot;&gt;Client (Hiveserver) side&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Edit configurations
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${HIVE_HOME}/conf/hive-site.xml&lt;/code&gt;
+        &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;hive.metastore.uris&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;thrift://localhost:9083&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Start hiveserver2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;setup-presto&quot;&gt;Setup Presto&lt;/h1&gt;
+&lt;p&gt;Follow &lt;a href=&quot;https://prestosql.io/docs/current/installation/deployment.html&quot;&gt;deployment steps&lt;/a&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Get Presto distribution&lt;/li&gt;
+  &lt;li&gt;Edit configurations
+    &lt;ul&gt;
+      &lt;li&gt;Node Properties (node.properties)
+        &lt;ul&gt;
+          &lt;li&gt;Coordinator
+            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;node.environment=dev
+node.id=ffffffff-ffff-ffff-ffff-ffffffffffff
+node.data-dir=(some filesystem path)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
+          &lt;/li&gt;
+          &lt;li&gt;Worker
+            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;node.environment=dev
+node.id=ffffffff-ffff-ffff-ffff-fffffffffff1
+node.data-dir=(some filesystem path)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;JVM Config (jvm.config)&lt;br /&gt;
+Used the same config for coordinator and worker
+        &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;-server
+-Xmx8G
+-XX:-UseBiasedLocking
+-XX:+UseG1GC
+-XX:G1HeapRegionSize=32M
+-XX:+ExplicitGCInvokesConcurrent
+-XX:+ExitOnOutOfMemoryError
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:ReservedCodeCacheSize=512M
+-Djdk.attach.allowAttachSelf=true
+-Djdk.nio.maxCachedBufferSize=2000000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;        &lt;/div&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Config Properties (config.properties)
+        &lt;ul&gt;
+          &lt;li&gt;Coordinator
+            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;coordinator=true
+node-scheduler.include-coordinator=false
+http-server.http.port=8080
+query.max-memory=16GB
+query.max-memory-per-node=1GB
+query.max-total-memory-per-node=2GB
+discovery-server.enabled=true
+discovery.uri=http://localhost:8080
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
+          &lt;/li&gt;
+          &lt;li&gt;Worker
+            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;coordinator=false
+http-server.http.port=8081
+query.max-memory=16GB
+query.max-memory-per-node=1GB
+query.max-total-memory-per-node=2GB
+discovery.uri=http://localhost:8080
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;Catalog Properties (catalog/*.properties)&lt;br /&gt;
+Used the same config for coordinator and worker
+        &lt;ul&gt;
+          &lt;li&gt;hive.properties
+            &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;connector.name=hive-hadoop2
+hive.metastore.url=thrift://localhost:9083 # hive.metastore.port
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;            &lt;/div&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Launch Presto
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$PRESTO_HOME/bin/launcher start --etc-dir (coordinator etc dir)
+$PRESTO_HOME/bin/launcher start --etc-dir (worker etc dir)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;connect-to-presto&quot;&gt;Connect to Presto&lt;/h1&gt;
+&lt;p&gt;Used Presto CLI here.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ presto --server localhost:8080 --catalog hive
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now you can see tables created by Hive.&lt;/p&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ beeline -u jdbc:hive2://localhost:10000
+...
+0: jdbc:hive2://localhost:10000&amp;gt; create table test (id int, value int) stored as orc;
+...
+0: jdbc:hive2://localhost:10000&amp;gt; insert into test values (1, 1), (2, 2), (3, 3);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ presto --server localhost:8080 --catalog hive
+presto&amp;gt; show schemas;
+       Schema
+--------------------
+ default
+ information_schema
+(2 rows)
+
+Query 20200618_135504_00010_5w9je, FINISHED, 2 nodes
+Splits: 19 total, 19 done (100.00%)
+0:00 [2 rows, 35B] [8 rows/s, 146B/s]
+
+presto&amp;gt; use default;
+USE
+presto:default&amp;gt; show tables;
+ Table
+-------
+(0 rows)
+
+Query 20200618_135534_00014_5w9je, FINISHED, 2 nodes
+Splits: 19 total, 19 done (100.00%)
+0:00 [0 rows, 0B] [0 rows/s, 0B/s]
+
+presto:default&amp;gt; show tables;
+ Table
+-------
+ test
+(1 row)
+
+Query 20200618_135653_00015_5w9je, FINISHED, 2 nodes
+Splits: 19 total, 19 done (100.00%)
+
+presto:default&amp;gt; select * from test;
+ id | value
+----|-------
+  1 |     1
+  2 |     2
+  3 |     3
+(3 rows)
+
+Query 20200618_140226_00021_5w9je, FINISHED, 1 node
+Splits: 17 total, 17 done (100.00%)
+0:01 [3 rows, 246B] [4 rows/s, 342B/s]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Keisuke Suzuki</name></author><category term="Trino" /><summary type="html">Continues from the post of Hive setup. Setting up Presto on Hive next.</summary></entry><entry><title type="html">Setup Hadoop 3 and Hive 3</title><link href="/2020/06/11/setup_hive3.html" rel="alternate" type="text/html" title="Setup Hadoop 3 and Hive 3" /><published>2020-06-11T00:00:00+00:00</published><updated>2020-06-11T00:00:00+00:00</updated><id>/2020/06/11/setup_hive3</id><content type="html" xml:base="/2020/06/11/setup_hive3.html">&lt;p&gt;I’ve been working for a while in the company that provides data analytics platform and enjoying interesting 
+storage layer problems. I may roughly understand the whole picture of our Presto / Hive based MPP architecture. 
+However, I recently feels that I need deeper understanding of their internal behavior to tackle 
+complicated performance problems&lt;/p&gt;
+
+&lt;p&gt;This work is to create a sandbox environment to study the latest Hive and Hadoop.
+&lt;!--end_excerpt--&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;goal&quot;&gt;Goal&lt;/h1&gt;
+&lt;p&gt;Executing queries by hive on top of HDFS and MapReduce / Tez. 
+I also think to use this environment to run Presto in the next step.&lt;/p&gt;
+
+&lt;p&gt;Note: I setup my enviroment just as a sandbox so security, reliability and availability are not considered well.&lt;/p&gt;
+
+&lt;h1 id=&quot;environment-and-software-versions&quot;&gt;Environment and Software Versions&lt;/h1&gt;
+&lt;h2 id=&quot;hardware&quot;&gt;Hardware&lt;/h2&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ lscpu
+Architecture:                    x86_64
+CPU op-mode(s):                  32-bit, 64-bit
+Byte Order:                      Little Endian
+Address sizes:                   39 bits physical, 48 bits virtual
+CPU(s):                          6
+On-line CPU(s) list:             0-5
+Thread(s) per core:              1
+Core(s) per socket:              6
+Socket(s):                       1
+NUMA node(s):                    1
+Vendor ID:                       GenuineIntel
+CPU family:                      6
+Model:                           158
+Model name:                      Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
+Stepping:                        10
+CPU MHz:                         2394.513
+CPU max MHz:                     4100.0000
+CPU min MHz:                     800.0000
+BogoMIPS:                        6000.00
+Virtualization:                  VT-x
+L1d cache:                       192 KiB
+L1i cache:                       192 KiB
+L2 cache:                        1.5 MiB
+L3 cache:                        9 MiB
+NUMA node0 CPU(s):               0-5
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;All processes run on single server.&lt;/p&gt;
+
+&lt;h2 id=&quot;software&quot;&gt;Software&lt;/h2&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ uname -srvmo
+Linux 5.4.0-29-generic #33-Ubuntu SMP Wed Apr 29 14:32:27 UTC 2020 x86_64 GNU/Linux
+
+$ java -version
+openjdk version &quot;1.8.0_252&quot;
+OpenJDK Runtime Environment (build 1.8.0_252-8u252-b09-1ubuntu1-b09)
+OpenJDK 64-Bit Server VM (build 25.252-b09, mixed mode)
+
+$ ./bin/hadoop version
+Hadoop 3.2.1
+Source code repository https://gitbox.apache.org/repos/asf/hadoop.git -r b3cbbb467e22ea829b3808f4b7b01d07e0bf3842
+Compiled by rohithsharmaks on 2019-09-10T15:56Z
+Compiled with protoc 2.5.0
+From source with checksum 776eaf9eee9c0ffc370bcbc1888737
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Hadoop run by &lt;a href=&quot;https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation&quot;&gt;pseudo-distributed mode&lt;/a&gt; .&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Hive 3.1.2
+    &lt;ul&gt;
+      &lt;li&gt;replaced guava jar bundled on hive with the one of Hadoop as a workaround of &lt;a href=&quot;https://issues.apache.org/jira/browse/HIVE-22126&quot;&gt;guava version incompatibility problem&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;PostgreSQL 12.3 (for metastore)
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ docker run --name pg-12 -e POSTGRES_PASSWORD= -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Tez 0.9.2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;setup-hdfs--yarn&quot;&gt;Setup HDFS &amp;amp; YARN&lt;/h1&gt;
+&lt;p&gt;Follow steps of &lt;a href=&quot;https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operatio&quot;&gt;pseudo-distributed mode&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Install dependencies
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# apt-get install ssh pdsh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Check ssh to the localhost without password&lt;/li&gt;
+  &lt;li&gt;Get hadoop distribution&lt;/li&gt;
+  &lt;li&gt;Edit configurations
+    &lt;ul&gt;
+      &lt;li&gt;etc/hadoop/core-site.xml&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;fs.defaultFS&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;hdfs://localhost:9000&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;etc/hadoop/hdfs-site.xml&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;dfs.replication&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;Format HDFS
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ $HADOOP_HOME/bin/hdfs namenode -format
+$ $HADOOP_HOME/sbin/start-dfs.sh
+$ $HADOOP_HOME/sbin/start-yarn.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note: HDFS data dir (dfs.datanode.data.dir) is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp/hadoop-${user.name}/dfs/data&lt;/code&gt; so it disappears by reboot.&lt;/p&gt;
+
+&lt;p&gt;Now HDFS NameNode and YARN ResourceManager Web UI are available&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;NameNode UI: dfs.namenode.http-address (default: namenode_host:9870)&lt;/li&gt;
+  &lt;li&gt;ResourceManager UI: yarn.resourcemanager.webapp.address (default: resourcemanager_host:8088)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;setup-hive&quot;&gt;Setup Hive&lt;/h1&gt;
+&lt;p&gt;Follow &lt;a href=&quot;https://cwiki.apache.org/confluence/display/Hive/GettingStarted&quot;&gt;GettingStarted page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Get Hive distribution and extract&lt;/li&gt;
+  &lt;li&gt;Set &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HADOOP_HOME&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HIVE_HOME&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Create directories to store Hive tables
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ $HADOOP_HOME/bin/hadoop fs -mkdir /tmp
+$ $HADOOP_HOME/bin/hadoop fs -mkdir -p /user/hive/warehouse  # hive.metastore.warehouse.dir
+$ $HADOOP_HOME/bin/hadoop fs -chmod g+w /tmp
+$ $HADOOP_HOME/bin/hadoop fs -chmod g+w /user/hive/warehouse
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Edit configure to use PostgreSQL for metastore
+    &lt;ul&gt;
+      &lt;li&gt;hive-site.xml (see &lt;a href=&quot;https://cwiki.apache.org/confluence/display/Hive/AdminManual+Configuration&quot;&gt;here&lt;/a&gt; for configuration defail)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;javax.jdo.option.ConnectionDriverName&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;org.postgresql.Driver&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;Driver class name for a JDBC metastore&lt;span class=&quot;nt&quot;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;javax.jdo.option.ConnectionURL&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;jdbc:postgresql://${HOST}:${PORT}/hive_metastore&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;
+            JDBC connect string for a JDBC metastore.
+            To use SSL to encrypt/authenticate the connection, provide database-specific SSL flag in the connection URL.
+            For example, jdbc:postgresql://myhost/db?ssl=true for postgres database.
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;javax.jdo.option.ConnectionUserName&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;postgres&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;Username to use against metastore database&lt;span class=&quot;nt&quot;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;javax.jdo.option.ConnectionPassword&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;password to use against metastore database&lt;span class=&quot;nt&quot;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;hive.server2.enable.doAs&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;false&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;description&amp;gt;&lt;/span&gt;
+            Setting this property to true will have HiveServer2 execute
+            Hive operations as the user making the calls to it.
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;/description&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;Initialize metastore schema
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ $HIVE_HOME/bin/schematool -dbType postgres -initSchema
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Boot hiveserver2
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ $HIVE_HOME/bin/hiveserver2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;HiveServer2 Web UI is available at hive.server2.webui.host:hive.server2.webui.port (default: localhost:10002).&lt;/p&gt;
+
+&lt;h1 id=&quot;connect-to-hiveserver&quot;&gt;Connect to Hiveserver&lt;/h1&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ $HIVE_HOME/bin/beeline -u jdbc:hive2://localhost:10000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note: Bootstrap of hiveserver may take some time.
+Now it’s ready to execute queries.&lt;/p&gt;
+
+&lt;h1 id=&quot;install-tez&quot;&gt;Install Tez&lt;/h1&gt;
+&lt;p&gt;Follow &lt;a href=&quot;https://tez.apache.org/install.html&quot;&gt;Install instruction&lt;/a&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Get tez binary tarball and extract
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ tar zxvf apache-tez-0.9.2-bin.tar.gz
+$ cd apache-tez-0.9.2-bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;Given &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TEZ_HOME&lt;/code&gt; is the directory tez binary tarball was extracted after here.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;server-side&quot;&gt;Server side&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Copy full tarball on HDFS
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ $HADOOP_HOME/bin/hadoop fs -mkdir -p /apps/tez-0.9.2
+$ $HADOOP_HOME/bin/hadoop fs -copyFromLocal share/tez.tar.gz /apps/tez-0.9.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+    &lt;p&gt;Note: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apache-tez-0.9.2-bin.tar.gz&lt;/code&gt; is not the one to upload but &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${TEZ_HOME}/share/tez.tar.gz&lt;/code&gt; is the one.
+see &lt;a href=&quot;https://cwiki.apache.org/confluence/display/TEZ/Tez+Release+FAQ&quot;&gt;here&lt;/a&gt; for the detail.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Workaround of &lt;a href=&quot;https://issues.apache.org/jira/browse/HDFS-12920&quot;&gt;HDFS-12920&lt;/a&gt;&lt;br /&gt;
+To avoid the issue, following configuration was required on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${HADOOP_HOME}/conf/hdfs-site.xml&lt;/code&gt;.
+    &lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;dfs.namenode.decommission.interval&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;30&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;dfs.client.datanode-restart.timeout&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;30&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;client-side&quot;&gt;Client side&lt;/h2&gt;
+&lt;p&gt;To try tez applications, following configurations are required on a client.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create tez-site.xml on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${TEZ_HOME}/conf&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;configuration&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;tez.lib.uris&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;${fs.defaultFS}/apps/tez-0.9.2/tez.tar.gz&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Note: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;tez-default-template.xml&lt;/code&gt; is a template of configuration file.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Set hadop classpath
+    &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export HADOOP_CLASSPATH=${TEZ_HOME}/conf:${TEZ_HOME}/*:${TEZ_HOME}/lib/*
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;hive-on-tez&quot;&gt;Hive on Tez&lt;/h2&gt;
+&lt;p&gt;Set Hive configuration as follows and start hiveserver2&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${HIVE_HOME}/conf/hive-env.sh&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export HADOOP_CLASSPATH=${TEZ_HOME}/conf:${TEZ_HOME}/*:${TEZ_HOME}/lib/*:${HADOOP_CLASSPATH}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;${HIVE_HOME}/conf/hive-site.xml&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;    &lt;span class=&quot;nt&quot;&gt;&amp;lt;property&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;name&amp;gt;&lt;/span&gt;hive.execution.engine&lt;span class=&quot;nt&quot;&gt;&amp;lt;/name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;tez&lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/property&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Start hiveserver2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That’s it. Now Hive is set up on Tez. I will set up Presto on &lt;a href=&quot;/2020/06/18/setup_presto.html&quot;&gt;the next post&lt;/a&gt;.&lt;/p&gt;</content><author><name>Keisuke Suzuki</name></author><category term="Hive" /><summary type="html">I’ve been working for a while in the company that provides data analytics platform and enjoying interesting storage layer problems. I may roughly understand the whole picture of our Presto / Hive based MPP architecture. However, I recently feels that I need deeper understanding of their internal behavior to tackle complicated performance problems This work is to create a sandbox environment to study the latest Hive and Hadoop.</summary></entry><entry><title type="html">Read: The Amazon Builders’ Library</title><link href="/2020/03/28/read_amazon_builders_library.html" rel="alternate" type="text/html" title="Read: The Amazon Builders’ Library" /><published>2020-03-28T00:00:00+00:00</published><updated>2020-03-28T00:00:00+00:00</updated><id>/2020/03/28/read_amazon_builders_library</id><content type="html" xml:base="/2020/03/28/read_amazon_builders_library.html">&lt;p&gt;読んだ記事：&lt;a href=&quot;https://aws.amazon.com/builders-library/&quot;&gt;The Amazon Builders’ Library&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;re:Invent 2019にて公開された、ソフトウェアエンジニアリングのベストプラクティス集。
+内容は主に分散Webサービスに関するもの。Amazon ECサイトやAWSのサービス構築で培った知見がベースになっているとのことで、分散システムの要点がよくまとまっていて参考になった。いくつか印象に残った記事についてまとめる。&lt;/p&gt;
+
+&lt;!--end_excerpt--&gt;
+&lt;h1 id=&quot;using-load-shedding-to-avoid-overload&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/&quot;&gt;Using Load shedding to avoid overload&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;Webサービスを題材に、load sheddingを用いたサーバー高負荷時のサービスのスループットを維持する戦略について解説している。
+以下要点&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;サービス応答時間は、サーバーのリソース使用率上昇に応じて線形以上に増大する
+    &lt;ul&gt;
+      &lt;li&gt;Universal Scalability Low&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;クライアントのタイムアウトにより、応答時間が一定以上になるとエラー率が増大する。結果として、システム全体のスループットは低下する
+    &lt;ul&gt;
+      &lt;li&gt;記事内では、クライアントからのリクエスト数をthroughput (offered throughput) と呼び、成功したリクエスト数をgoodputと呼んでいる&lt;/li&gt;
+      &lt;li&gt;goodputはthroughputが一定以上の点から急激に減少する&lt;/li&gt;
+      &lt;li&gt;クライアントタイムアウトが発生した場合、サーバーがその処理に費やした時間は無駄になる。クライアント側は共倒れ状態になり、一切の処理がすすめられなくなる&lt;/li&gt;
+      &lt;li&gt;さらにクライアントはリクエストをリトライするため、サーバーにはリクエストが滞留し、過負荷状態が継続してしまう&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;load sheddingの考え方は、サーバーが過負荷状態に近づいてきたら、過剰なリクエストを拒否し、受付済リクエストに集中するというもの
+    &lt;ul&gt;
+      &lt;li&gt;offered throughputの増大に対しgoodputが低下しにくくなる&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;性能テストによりgoodputが飽和する点、goodputが低下し始める点など性能特性を明らかにする
+    &lt;ul&gt;
+      &lt;li&gt;Amazonではこうした性能テストにかなりの時間を費やしているとのこと&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;load sheddingとオートスケールの組み合わせについてもテストしておく
+    &lt;ul&gt;
+      &lt;li&gt;閾値の設定が悪いとload sheddingによってオートスケールが発火しなくなる可能性がある&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;リクエストの優先度を判断する
+    &lt;ul&gt;
+      &lt;li&gt;重要でないクライアントのリクエストの優先度を下げる&lt;/li&gt;
+      &lt;li&gt;リトライ上限 (回数、合計実行時間) が近いリクエストを優先する&lt;/li&gt;
+      &lt;li&gt;複数リクエストがセットになっている場合、セットの途中のリクエストの優先度を上げる&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;過負荷対策を多層化する
+    &lt;ul&gt;
+      &lt;li&gt;低レイヤで拒否する方がオーバーヘッドは小さくなるが一方で、優先度判定の情報量が少なかったり、取得できるメトリクスが少ないといったマイナスもある&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;load sheddingでは、最大コネクション数による制御と比較して、フレキシブルな制御が可能になるので、リクエストの処理内容によって応答時間が大きく異なるようなケースで有効性が高いように思う。
+また、クライアントタイムアウトが減るのでリソース使用効率が向上することが見込める。
+一方で、制御の複雑さは増すため、実装やテストのコストは高くなってしまう。
+サービス立ち上げの初期の段階では、最大コネクション数等比較的簡易な仕組みを利用しておいて、トラフィックやサーバー数の増大に従って導入していくのがいいのではないかと考える。&lt;/p&gt;
+
+&lt;h1 id=&quot;avoiding-insurmountable-queue-backlogs&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/builders-library/avoiding-insurmountable-queue-backlogs/&quot;&gt;Avoiding insurmountable queue backlogs&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;平常時FIFOなキューの捌き方をしているアプリケーションでも、クライアントからすると実はバックログがたまった際のリカバリはLIFOがよいというケースも考えられる。
+平常時とリカバリ時のスケジューリングを変えるというのも一考の余地がありそう。&lt;/p&gt;
+
+&lt;h1 id=&quot;workload-isolation-using-shuffle-sharding&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/builders-library/workload-isolation-using-shuffle-sharding&quot;&gt;Workload isolation using shuffle-sharding&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;Shuffle shardingというのは初めて聞いたが、シンプルな割に過負荷時の可用性向上に効果が大きそうに思う。
+どのレイヤで実装するものなのかが気になる。Route 53やELBあたりで実装できると嬉しそうだが。&lt;/p&gt;
+
+&lt;h1 id=&quot;avoiding-fallback-in-distributed-systems&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/builders-library/avoiding-fallback-in-distributed-systems&quot;&gt;Avoiding fallback in distributed systems&lt;/a&gt;&lt;/h1&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;フォールバックのロジックはほとんど実行されず、またテストが難しいので、いざ必要となったときに想定通りに動作しないことが多い
+    &lt;ul&gt;
+      &lt;li&gt;フォールバック中十分なリソースが確保できず、トラフィックを捌ききれないなど&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;中途半端な状態で動作を続けることで、状況を悪化させる場合もある&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;implementing-health-checks&quot;&gt;&lt;a href=&quot;https://aws.amazon.com/builders-library/implementing-health-checks&quot;&gt;Implementing health checks&lt;/a&gt;&lt;/h1&gt;
+
+&lt;p&gt;これまでWebサーバのヘルスチェックを実装していて、検知の範囲や異常の対処を場当たり的に考えていたことが多かったので、整理のために役立った。
+ヘルスチェックを実装する上で一番の課題は、false positiveを防ぎ、誤判断による状況悪化を防ぐことで、考え始めるとなかなか設計がまとまらなかった。
+典型的なパターンを理解して、手札を増やしておくのがよいと感じた。
+以下要点
+ヘルスチェックの範囲について、おおまかに4つに分類している。&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Liveness checks&lt;br /&gt;
+ネットワークやプロセスの存在確認など最低限のチェック。アプリケーションレベルのチェックは含まない。&lt;br /&gt;
+（例）
+    &lt;ul&gt;
+      &lt;li&gt;TCP接続待機確認&lt;/li&gt;
+      &lt;li&gt;HTTP疎通確認（200を返すだけのエンドポイントなど）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Local health checks&lt;br /&gt;
+Liveness checksよりは多くをカバーするが、サーバー外のリソースはチェックしない&lt;br /&gt;
+（例）
+    &lt;ul&gt;
+      &lt;li&gt;local diskの読み書き&lt;/li&gt;
+      &lt;li&gt;重要なプロセスでアプリケーションレベルの動作確認
+        &lt;ul&gt;
+          &lt;li&gt;Server proxyのルーティング&lt;/li&gt;
+          &lt;li&gt;Metricsの収集&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Dependency health checks&lt;br /&gt;
+（例）
+    &lt;ul&gt;
+      &lt;li&gt;依存するサービスの応答確認
+        &lt;ul&gt;
+          &lt;li&gt;コネクション数上限&lt;/li&gt;
+          &lt;li&gt;deadlockによる無応答&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Anormaly detection&lt;br /&gt;
+クラスタ内のサーバー全体を見て異常を示すサーバーを確認する&lt;br /&gt;
+（例）
+    &lt;ul&gt;
+      &lt;li&gt;Clock skew&lt;/li&gt;
+      &lt;li&gt;旧バージョンのコード、設定&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;また、ヘルスチェックエラーの対処方法についてもAmazonで多用される手法、ベストプラクティスの解説がある&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Fail open
+個別のサーバーのエラーではロードバランサーからのトラフィックの振り分けを停止するが、全てのサーバーでエラーとなった場合は全てのサーバーに振り分けを継続する。
+AWS NLB, ALB, Route 53などはこの挙動をサポートしているとのこと。&lt;/li&gt;
+  &lt;li&gt;Health checks without a circuit breaker
+システム全体における異常の影響を考慮せずに、個々のサーバーでの個別の対処のみに終始していると、対処の方向性を誤り状況を悪化させる恐れがある。
+そういった状況を避けるため、サーバー外からの監視の仕組みが必要になる。&lt;br /&gt;
+（例）
+    &lt;ul&gt;
+      &lt;li&gt;タスクの振り分け側（ロードバランサーやキューのポーリングスレッドなど）で、振り分け先のサーバーのlivenessとlocal health checkを実行する
+        &lt;ul&gt;
+          &lt;li&gt;サーバー内ローカルの異常がある場合のみサーバーを振り分け先から除外する&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;外部モニタリングシステムからdependency health checkやanormaly detectionを実行する&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;今後も記事を追加する予定ということなので、更新を追っていきたいと思う。&lt;/p&gt;</content><author><name>Keisuke Suzuki</name></author><category term="Book" /><summary type="html">読んだ記事：The Amazon Builders’ Library re:Invent 2019にて公開された、ソフトウェアエンジニアリングのベストプラクティス集。 内容は主に分散Webサービスに関するもの。Amazon ECサイトやAWSのサービス構築で培った知見がベースになっているとのことで、分散システムの要点がよくまとまっていて参考になった。いくつか印象に残った記事についてまとめる。</summary></entry><entry><title type="html">Read Book: The Manager’s Path</title><link href="/2020/02/10/book_the_managers_path.html" rel="alternate" type="text/html" title="Read Book: The Manager’s Path" /><published>2020-02-10T00:00:00+00:00</published><updated>2020-02-10T00:00:00+00:00</updated><id>/2020/02/10/book_the_managers_path</id><content type="html" xml:base="/2020/02/10/book_the_managers_path.html">&lt;p&gt;読んだ本：&lt;a href=&quot;https://www.amazon.co.jp/Managers-Path-Leaders-Navigating-English-ebook/dp/B06XP3GJ7F&quot;&gt;Fournier, Camille. The Manager’s Path&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;2019年11月20日に購入して、先日ようやく読み終えた。同僚のすすめで読んでみたが学びが多かった。
+今後すぐどうということではないが、将来のキャリアパスの選択肢について考える上で得られた知識は多かったと思う。
+後の参考のため、以下に印象に残った箇所をメモしておく。
+&lt;!--end_excerpt--&gt;&lt;/p&gt;
+
+&lt;p&gt;なお、この本の論じているマネジメントは、ソフトウェアエンジニアリングチームについてであり、一般全てのマネジメントではない。
+特に断りない限り以下では、「エンジニア」「メンバー」はソフトウェアエンジニアを指し、「マネージャー」はソフトウエアエンジニアリングマネージャーを指す。&lt;/p&gt;
+
+&lt;h2 id=&quot;1-management-101&quot;&gt;1. Management 101&lt;/h2&gt;
+&lt;h3 id=&quot;what-to-expect-from-a-manager&quot;&gt;What to Expect from a Manager&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;マネージャーはチームのスループットを最大化すること、タイムリーなデリバリーを実現することに責任を負う。&lt;/li&gt;
+  &lt;li&gt;Individual Contributer (IC)はプロダクト、サービス、コードのデリバリーに責任を負う。&lt;/li&gt;
+  &lt;li&gt;ICの稼働の範疇で完結できるタスクについては、ICに権限を移譲することが適切。ICはプロダクト、サービス、コードの特定の範囲について最も詳しいはずなので、その人間が判断できることが重要。&lt;/li&gt;
+  &lt;li&gt;信頼関係無しに権限を移譲することはできない。当然ながら信頼関係を構築するために、日常会話や1-1は重要なツールと思う。&lt;/li&gt;
+  &lt;li&gt;双方の記憶が鮮明なうちにフィードバックをすることが重要。早期に指摘することで、改善のチャンスも多く得られるし、同じ過ちを繰り返すリスクも減る。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;how-to-be-managed&quot;&gt;How to Be Managed&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;よいマネージャーは、社内で何が重視され何が求められるか理解している。それはICへの適切なフィードバックのためにも必要。&lt;/li&gt;
+  &lt;li&gt;適切なネットワーク構築はチームのスループットを向上するために必須。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;2-mentoring&quot;&gt;2. Mentoring&lt;/h2&gt;
+&lt;h3 id=&quot;being-a-mentor&quot;&gt;Being a Mentor&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;フィードバックを早期にと同じだが、方向性がおかしいことに気づいた場合は直ちに修正すること。失敗するまで待ってはいけない。&lt;/li&gt;
+  &lt;li&gt;わからないことについて、他人に質問するまでの時間の目安を明言するのはよい方法と思う。それをコンテキストとして共有することで受け手も質問が来ることを想定するし、質問者も躊躇しづらくなる。&lt;/li&gt;
+  &lt;li&gt;組織の外から来た人から得られるフィードバックは貴重。その人が「組織内の人」になるまでの時間は極めて短い。&lt;/li&gt;
+  &lt;li&gt;新しい人とのネットワーク構築の労力を惜しまず、習慣化すること。&lt;/li&gt;
+  &lt;li&gt;シニアグレードではチーム外ともメンタリングの関係が自発的に形成されるべき。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;good-manager-bad-manager-the-alpha-geek&quot;&gt;Good Manager, Bad Manager: The Alpha Geek&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;アルファギークとは
+    &lt;ul&gt;
+      &lt;li&gt;チーム内の最も優れたエンジニアの1人。&lt;/li&gt;
+      &lt;li&gt;知性とテクニカルスキルにを置き、それを有するものが意思決定をするべきと考える。&lt;/li&gt;
+      &lt;li&gt;チーム内でテクニカルな権威であろうとし、それをサポートするメッセージにしか反応しない。&lt;/li&gt;
+      &lt;li&gt;
+        &lt;blockquote&gt;
+          &lt;p&gt;The alpha geek tries to create a culture of excellence, but ends up creating a culture of fear.&lt;/p&gt;
+        &lt;/blockquote&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;テクニカルスキルがあるにも関わらず他人が相談にこない、アルファギークの一つの兆候。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;tips-for-the-manager-of-a-mentor&quot;&gt;Tips for the Manager of a Mentor&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;メンタリング関係を組むとき、その目的は明確でなければならない。メンターの時間をいたずらに奪ってはいけない。&lt;/li&gt;
+  &lt;li&gt;メンタリングによりメンターには一つ責任が増える。その分生産性が落ちることは明確に考慮されなければならない。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;key-takeaways-for-the-mentor&quot;&gt;Key Takeaways for the Mentor&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;視座を合わせ、同じコンテキストでコミュニケーションをとる。一方的なレクチャーであったり、相手の理解していない内容、反対している内容について議論するのは最悪。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;3-tech-lead&quot;&gt;3. Tech Lead&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Tech leadは最も経験あるエンジニアのポジションではない。確立した定義はないが、コードを書くだけではなく一定のグループのマネジメントにも責任を持つというのが例。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;all-great-tech-leads-know-this-one-weird-trick&quot;&gt;All Great Tech Leads Know This One Weird Trick&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;マネジメントトラックの最初の一歩として、コーディングとマネジメントのバランスをとることがTech leadの挑戦の一つとなる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;being-a-tech-lead-101&quot;&gt;Being a Tech Lead 101&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;健全な組織では課題は早期に周知される。情報がtransparentであることは組織の健全性の指標となる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;managing-projects&quot;&gt;Managing Projects&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;マネジメントトラックを進んでいくために、個人のスコープを超えてタスクを適切にブレイクダウンする方法を習得していかなければならない。&lt;/li&gt;
+  &lt;li&gt;情報を正しく伝達することに十分時間を費やす。Poor communication creates more work.&lt;/li&gt;
+  &lt;li&gt;よいプランニングプロセスとは、正確でなくともタスクがどの程度の時間や労力を要するか知ることができるもの。&lt;/li&gt;
+  &lt;li&gt;自分のテクニカルスキルにある程度満足するまでマネジメントトラックに乗るべきでないといのが著者の考え。これはよい指標と思う。マネージメントのポジションに就く前に、マネージメントのリテラシーを挙げておくのも良いと思う。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;good-manager-bad-manager-the-process-czar&quot;&gt;Good Manager, Bad Manager: The Process Czar&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Process Czarとは
+    &lt;ul&gt;
+      &lt;li&gt;正しいプロセスは1つのみであると考える。それが正しくデザインされ、正しく運用されれば全てのチームの主要な問題は解決すると考える。&lt;/li&gt;
+      &lt;li&gt;on-call, core review, release等のプロセスについて詳細なアイディアを持ち、プロセスが詳細まで整然と規定されていることを好む。&lt;/li&gt;
+      &lt;li&gt;agile, Kanban, scrum, lean, waterfall等特定のプロセスに傾倒している場合もある。&lt;/li&gt;
+      &lt;li&gt;タスクを厳格に管理し、漏れがでないことから、プロジェクトマネジメントチームからは賞賛される。&lt;/li&gt;
+      &lt;li&gt;最善のプロセスに従わない者を非難する。プロセスに柔軟性を持たせる選択肢を持たない。&lt;/li&gt;
+      &lt;li&gt;計測しやすいメトリクスのみに注目する。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;プロセスに頼りすぎてはいけない。フィットするプロセス、ツール、ワークスタイルは、全てのチームで異なることを理解する。&lt;/li&gt;
+  &lt;li&gt;プロセスに違反したものを過剰に非難するような体制にするべきではない。人が合わせやすいようプロセスを変えることも常に選択肢に入れる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;how-to-be-a-great-tech-lead&quot;&gt;How to Be a Great Tech Lead&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Tech leadのポジションでは、シニアより下のエンジニアのために、成長の機会のためのタスクを残しておかなければならない。チームのレベルを引き上げるのはシニアエンジニアの役割。&lt;/li&gt;
+  &lt;li&gt;ライティングとスピーキングのスキルをあげる。リーダーには議論を先導することが求められる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;4-managing-people&quot;&gt;4. Managing People&lt;/h2&gt;
+&lt;h3 id=&quot;different-1-1-styles&quot;&gt;Different 1-1 Styles&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;個々のメンバーの不満や愚痴に付き合いすぎないように。面と向き合い過ぎてしまうとおそらく事態は悪化する。そうしたトラブルに対しては、すぐに対処するか、合意の元いったん保留する。無言で放置しない。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;practical-advice-for-delegating-effectively&quot;&gt;Practical Advice for Delegating Effectively&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;自分で集められる情報をメンバーをいちいち小突いて聞き出すのは最悪のマイクロマネージメント。チケット、アラート、メトリクス、コードの変更など一次ソースを少し見てわかるものは自分で確認する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;creating-a-culture-of-continuous-feedback&quot;&gt;Creating a Culture of Continuous Feedback&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;継続的かつ頻繁にフィードバックする文化を作る。個々人に注意を払うようになるし、結果として才能の発掘や育成にも役に立つ。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;performance-reviews&quot;&gt;Performance Reviews&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;フィードバックに仕方に気を付ける。いきなり改善点から始めない。&lt;/li&gt;
+  &lt;li&gt;ポテンシャルは早期に成果となって現れる。高いポテンシャルを持った人のパフォーマンスが低く徐々に上がっていくケースはほとんどない。ポテンシャルがあると考えるならそれが発揮できるポジションへの異動を考える。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;cultivating-careers&quot;&gt;Cultivating Careers&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;アーリーキャリアのポジションでは、promote or quitといった雇用方針も有効。日本の労働法では実現は難しいだろうが、西海岸ではこうした慣行で雇用されることがあるということを理解しておいたほうがよい。&lt;/li&gt;
+  &lt;li&gt;昇進が近いと考えるメンバーに対しては、それに値するか見極めるためのプロジェクトを用意してサポートする。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;challenging-situations-firing-underperformers&quot;&gt;Challenging Situations: Firing Underperformers&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;マネージメントの大原則の一つは、メンバーにとってのサプライズを避けること。マイナスのニュースについては、特に伝え方に気を付ける。例えば、期待するパフォーマンスを満たしていないメンバーには、できるだけ早期からかつ繰り返しそのことを明確に伝える。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;5-managing-a-team&quot;&gt;5. Managing a Team&lt;/h2&gt;
+&lt;h3 id=&quot;staying-technical&quot;&gt;Staying Technical&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;単一チームのマネージャーは、なおテクニカルであり続けなければならない。よいマネージャーは開発の最短経路を見つけることに長けている。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;debugging-dysfunctional-teams-the-basics&quot;&gt;Debugging Dysfunctional Teams: The Basics&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;リリースのプロセスが複雑でかつ頻度が低いと、それが作業の衝突の原因となる。リリース順序の調整などコミュニケーションのオーバーヘッドが発生し、それが生産性を低下させる。リリースの頻度を増やすことでそうした非効率を解消できる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;how-to-drive-good-decisions&quot;&gt;How to Drive Good Decisions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;見過ごされがちだがプロジェクトが終了したらレビューをする。もし失敗に終わったとしても、そこから学べば時間の無駄ではない。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;good-manager-bad-manager-conflict-avoider-conflict-tamer&quot;&gt;Good Manager, Bad Manager: Conflict Avoider, Conflict Tamer&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;チームに課題や衝突がないかのように見せかけてはいけない。取り返しのつかなくなるまで悪化しないと顕在化しないようなチーム運営は最悪。面倒事はあろうとも、反対意見が言える組織の方が遥かによい。&lt;/li&gt;
+  &lt;li&gt;コンセンサスや多数決に頼りすぎない。専門性や立場の違いにより、判断のために必要な情報を持ち合わせるのは一部のメンバーだけである場合がほとんどだし、関係者が増えるほどコンセンサスに費やす手間も増大する。実行者に権限と責任を移譲するプロセスを活用する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;advanced-project-management&quot;&gt;Advanced Project Management&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;稼働日を全て埋めるような計画を立ててはいけない。unplannedなタスクに多くの時間が費やされることを考慮する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;6-managing-multiple-teams&quot;&gt;6. Managing Multiple Teams&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;週に半日は何かクリエイティブなことをするための時間を作っておこう。（エンジニアリングブログ執筆、カンファレンス登壇準備、OSS等）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;managing-your-time-whats-important-anyway&quot;&gt;Managing Your Time: What’s Important, Anyway?&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;緊急ではないが重要なタスクの例として、健全なミーティング運営があげられる。健全なミーティングは関係者を網羅しつつも、短時間で生産的であり、全ての参加者が事前準備をして臨むものである。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;challenging-situations-strategies-for-saying-no&quot;&gt;Challenging Situations: Strategies for Saying No&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;配下のテックリードにマネージメントのスキルを与え、自信を持たせることが一つの役割。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;measuring-the-health-of-your-development-team&quot;&gt;Measuring the Health of Your Development Team&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;リリース頻度が低いことの弊害は、エンジニアのクオリティに対する責任感の欠落させ、QAチームに全てを押し付けるようになる。またそれによりコミュニケーションのオーバーヘッドが生じる。リリースが失敗したときのロールバックに時間がかかる。多くのチームの問題はリリースを頻繁にできていないことから生じる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;good-manager-bad-manager-us-versus-them-team-player&quot;&gt;Good Manager, Bad Manager: Us Versus Them, Team Player&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;チームの弱点、課題に気を取られすぎない。複数チームのマネージャーとして、会社のビジョン、文化にフィットするチーム作りをしていかなければならないが、それは欠点を直すことでなく、長所を伸ばすことで実現するべき。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;7-managing-managers&quot;&gt;7. Managing Managers&lt;/h2&gt;
+&lt;h3 id=&quot;skip-level-meetings&quot;&gt;Skip-Level Meetings&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;このポジションでは、情報収集方法のトレードオフを常に念頭に置く必要がある。コミュニケーションをどの程度綿密に行うかと、時間と労力はトレードオフにあるので、パーフェクトな方法というのは存在しない。悪い知らせを知るのが極端に遅い場合、バランスを見直す機会である。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;good-manager-bad-manager-the-people-pleaser&quot;&gt;Good Manager, Bad Manager: The People Pleaser&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Noと言えない環境や、意思決定を過剰に頼ることが、People pleaserが生じさせる一因となる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;managing-experienced-managers&quot;&gt;Managing Experienced Managers&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;マネジメントは会社のカルチャーに密接に関係するタスクなので、マネジメントのポジションで採用するときは、カルチャーフィットは最重要項目となる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;hiring-managers&quot;&gt;Hiring Managers&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;時にカルチャーの一部は変化が必要になる。そして、新しいマネージャーを採用することでその速度は助長される。成長中のスタートアップでは、経験豊富なマネージャーや幹部を採用して、経験不足を補完することがよくあるが、これは非常にうまくいくことも、破滅的に失敗することもある。なのでカルチャーに変化を生じさせるときは十分過程の出来事に注意を払う。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;debugging-dysfunctional-organizations&quot;&gt;Debugging Dysfunctional Organizations&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;退屈で非生産的なミーティングはカルチャーが悪化している兆候。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;8-the-big-leagues&quot;&gt;8. The Big Leagues&lt;/h2&gt;
+&lt;h3 id=&quot;models-for-thinking-about-tech-senior-leadership&quot;&gt;Models for Thinking About Tech Senior Leadership&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;リーダーシップポジションの役割
+    &lt;ul&gt;
+      &lt;li&gt;Decision Making: 不完全な情報でチーム全体に影響しうる意思決定をすること。意思決定は精神を消耗するストレスフルなタスクである。&lt;/li&gt;
+      &lt;li&gt;Technology strategy/visionary: ビジネス環境とテクノロジーの変遷を見極め、次のプロダクト開発戦略を決定する役割を担う。ビジネスに重点が置かれる点で、R&amp;amp;Dとは異なる。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;whats-a-vp-of-engineering&quot;&gt;What’s a VP of Engineering?&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;CTOとVPoE両方のポジションがある場合、多くはVPoEがチームのプロセスの実施に重点を置き、CTOが長期の戦略やビジョンの策定に重点を置く。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;changing-priorities&quot;&gt;Changing Priorities&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;ビジネス環境の変化等により、リーダーシップからの路線変更の通達は予告なしに起こることもある。一方で現場では、現場のプライオリティがあるが、リーダーシップポジションでは日々のオペレーションから切り離されているが故に、その認識合わせがうまくいかず変化に時間を要することがある。変化に早急に対応するために、現場も現在優先されているタスクがなぜ優先される必要があるのか意義を説明できるようになっている必要がある。&lt;/li&gt;
+  &lt;li&gt;チーム外の人が同じコンテキストを持っている思い違いをして説明するために、理解がすりあわず衝突してしまうことは多々ある。現在のチームのタスクの至急性が理解されていないとき、より明確にコミュニケーションをとらなければならない。&lt;/li&gt;
+  &lt;li&gt;組織が大きくなるとコミュニケーションは非常に難しくなる。著者の体感として、大体の場合本当に理解が得られるまでは3回同じことを繰り返す必要がある。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;senior-peers-in-other-functions&quot;&gt;Senior Peers in Other Functions&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;peerとマネジメントスタイルや意見が合わない場合、それが自分のチームに影響しない限りは、干渉しないようにする。相手の専門性を尊重し、反対しつつも違うアプローチがあることを許容する姿勢を持つ。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;the-echo&quot;&gt;The Echo&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;難しい判断を迫られたとき、ストレスを和らげるため社内の誰かに相談をしたくなることがあるかもしれないが、リーダーシップポジションではそれは慎むべき。相談相手にとっては、手の打ちようがない問題を打ち明けられただけで、リーダーシップポジションへの不信につながる。リーダーシップポジションではなかったときと違って、その手の情報共有はチームにとって大きな不安の元となる。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;9-bootstrapping-culture&quot;&gt;9. Bootstrapping Culture&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;カルチャーを作るにあたって、自分にとって、会社にとって、また会社の増えゆく同僚達にとってなにが重要となるかという感覚が必要になる。会社の成長とともに知識や仕事をスケールさせる枠組みを見据える。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;assessing-your-role&quot;&gt;Assessing Your Role&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;失敗から学ぶ。失敗の全ての要因を洗い出し、チームストラクチャーの発展に活用する。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;cross-functional-teams&quot;&gt;Cross-Functional Teams&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;目的の達成のためには関係する全てのチームを巻き込んで臨む。”us versus them”パターンに陥らないようにする。（自チームのスコープ外のタスクについて無関心で丸投げ状態となること。）
+&lt;a href=&quot;http://www.melconway.com/Home/Conways_Law.html&quot;&gt;Conway’s Law&lt;/a&gt;にあるように、プロダクトデザインは組織のコミュニケーション構造をコピーしたものになる。
+    &lt;blockquote&gt;
+      &lt;p&gt;Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization’s communication structure.&lt;/p&gt;
+    &lt;/blockquote&gt;
+  &lt;/li&gt;
+  &lt;li&gt;プロジェクトのスコープが単一チームを超えるとき、cross-functionalチームを立ち上げるのも一つの方法である。
+cross-functionalチームでは、各メンバーのレポートラインは変えないが、タスクの割り当てについてはそのチーム内での判断で決定される。&lt;/li&gt;
+&lt;/ul&gt;</content><author><name>Keisuke Suzuki</name></author><category term="Book" /><summary type="html">読んだ本：Fournier, Camille. The Manager’s Path 2019年11月20日に購入して、先日ようやく読み終えた。同僚のすすめで読んでみたが学びが多かった。 今後すぐどうということではないが、将来のキャリアパスの選択肢について考える上で得られた知識は多かったと思う。 後の参考のため、以下に印象に残った箇所をメモしておく。</summary></entry></feed>
