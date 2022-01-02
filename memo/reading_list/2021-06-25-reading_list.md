@@ -20,3 +20,15 @@ title: Reading list
 
 # Software Architecture
 - [AWS well architected framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
+
+# Web
+- [Learn web development by MDN](https://developer.mozilla.org/en-US/docs/Learn)
+- [HTML spec](https://html.spec.whatwg.org/)
+- [Responsive design basic](https://web.dev/responsive-web-design-basics/)
+- [SEO starter guide by Google](https://developers.google.com/search/docs/beginner/seo-starter-guide)
+
+## Style sheet
+- [SaSS basic](https://sass-lang.com/guide)
+
+## Wordpress
+- [Developing wordpress themes](https://developer.wordpress.org/themes/)
