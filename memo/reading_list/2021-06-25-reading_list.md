@@ -29,6 +29,7 @@ title: Reading list
 
 ## Style sheet
 - [SaSS basic](https://sass-lang.com/guide)
+- [CSS Selector Reference](https://www.w3schools.com/cssref/css_selectors.asp)
 
 ## Wordpress
 - [Developing wordpress themes](https://developer.wordpress.org/themes/)
