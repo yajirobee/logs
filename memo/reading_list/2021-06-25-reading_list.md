@@ -9,6 +9,9 @@ title: Reading list
 ## Data lineage
 - [Data lineage system in a dada warehouse](https://cloud.google.com/solutions/architecture-concept-data-lineage-systems-in-a-data-warehouse)
 
+## Personal Data Market
+- [DBSJ lecture](https://www.youtube.com/watch?v=5OJsopZj66s&list=PL_VdUcCLzEklgChG2t07jMoZJ5Uonso52)
+
 ## Differential Privacy
 - [Differential Privacy: The Pursuit of Protections by Default](https://cacm.acm.org/magazines/2021/2/250080-differential-privacy/fulltext)
 - [Differential Privacy in the Wild](http://sigmod2017.org/wp-content/uploads/2017/03/04-Differential-Privacy-in-the-wild-1.pdf)
