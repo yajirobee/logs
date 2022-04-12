@@ -25,6 +25,7 @@ title: Reading list
 - [Capability based security](https://en.wikipedia.org/wiki/Capability-based_security)
 - [XACML](https://en.wikipedia.org/wiki/XACML)
 - [MITRE ATT&CK](https://attack.mitre.org/)
+- [OWASP Cheat sheet series](https://cheatsheetseries.owasp.org/index.html)
 
 # Software Architecture
 - [AWS well architected framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
