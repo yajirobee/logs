@@ -6,7 +6,7 @@ tags: Book
 
 読んだ本：[Ousterhout, John. A Philosophy of Software Design](https://www.amazon.co.jp/dp/B07N1XLQ7D/ref=cm_sw_em_r_mt_dp_JMCWYZ63EQGY1Q6BTGST)
 
-よいソフトウェアデザイン、コードとは何か、ソフトウェア開発で常に考えるテーマです。
+よいソフトウェアデザイン、コードとは何か、ソフトウェア開発で常につきまとうテーマです。
 経験を通じて直観的な感覚は養われていくのですが、この本はその点を言語化し、体系化を試みており、自分の知見の整理に役立ちました。
 実体験を踏まえ、印象に残った点をまとめます。
 <!--end_excerpt-->
