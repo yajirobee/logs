@@ -4,10 +4,8 @@ title: Reading list
 ---
 
 # Databases
-- [CMU 15-721 Reading list](https://15721.courses.cs.cmu.edu/spring2020/schedule.html)
-
 ## Data lineage
-- [Data lineage system in a dada warehouse](https://cloud.google.com/solutions/architecture-concept-data-lineage-systems-in-a-data-warehouse)
+- [Data lineage system in a data warehouse](https://cloud.google.com/solutions/architecture-concept-data-lineage-systems-in-a-data-warehouse)
 
 ## Personal Data Market
 - [DBSJ lecture](https://www.youtube.com/watch?v=5OJsopZj66s&list=PL_VdUcCLzEklgChG2t07jMoZJ5Uonso52)
