@@ -1,6 +1,6 @@
 ---
 layout: memo
-title: My Best Practice of Software Engineering
+title: Lessons of Software Engineering learned from my experience
 ---
 
 Lessons and best practices from my experience. This is a living document.
@@ -11,6 +11,7 @@ Lessons and best practices from my experience. This is a living document.
 - Data format should have a distinct and explicit version
 - Sometimes completeness of specification should be compromised to take easiness of implementation
   - [Worse is Better](https://www.dreamsongs.com/RiseOfWorseIsBetter.html)
+  - > There is never enough time to do it right, but there is always enough time to do it over.
 
 # Metrics / Monitoring
 - Collect every metrics you come up with as long as performance, cost and security allow
