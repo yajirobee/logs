@@ -1,3 +1,8 @@
+---
+layout: memo
+title: Study Technologies of Data Privacy
+---
+
 # Terminologies
 - [k-anonymity](https://en.wikipedia.org/wiki/K-anonymity)
 - [Differential privacy](https://en.wikipedia.org/wiki/Differential_privacy)
