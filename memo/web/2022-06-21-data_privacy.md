@@ -6,6 +6,7 @@
 - [Google's Privacy Budget Proposal](https://github.com/mikewest/privacy-budget)
   - https://developer.chrome.com/docs/privacy-sandbox/privacy-budget/
   - https://blog.mozilla.org/en/mozilla/google-privacy-budget-analysis/
+    > Even if individual values are not particularly unique, the combination of values can be unique
 
 # Differential privacy
 - [Differential Privacy: The Pursuit of Protections by Default](https://cacm.acm.org/magazines/2021/2/250080-differential-privacy/fulltext)
