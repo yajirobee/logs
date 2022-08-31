@@ -17,6 +17,11 @@ title: Study Technologies of Data Privacy
 - [Differential Privacy: The Pursuit of Protections by Default](https://cacm.acm.org/magazines/2021/2/250080-differential-privacy/fulltext)
 - [Differential Privacy in the Wild](http://sigmod2017.org/wp-content/uploads/2017/03/04-Differential-Privacy-in-the-wild-1.pdf)
 - [google differential privacy implementation](https://github.com/google/differential-privacy)
+- [Programming Differential Privacy](https://programming-dp.com/notebooks/ch3.html)
+
+# Secure Join of Identity data
+- [UID 2.0](https://github.com/UnifiedID2/uid2docs)
+- [RDID](https://developers.google.com/ads-data-hub/guides/rdid-matching)
 
 # Other References
 - [Google Ads Data Hub privacy checks](https://developers.google.com/ads-data-hub/guides/privacy-checks)
