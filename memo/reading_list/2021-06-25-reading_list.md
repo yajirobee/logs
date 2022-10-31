@@ -4,6 +4,9 @@ title: Reading list
 ---
 
 # Databases
+## Distributed Transaction
+- [An In-Depth Analysis of Distributed Transaction Solutions](https://www.alibabacloud.com/blog/an-in-depth-analysis-of-distributed-transaction-solutions_597232)
+
 ## Data lineage
 - [Data lineage system in a data warehouse](https://cloud.google.com/solutions/architecture-concept-data-lineage-systems-in-a-data-warehouse)
 
