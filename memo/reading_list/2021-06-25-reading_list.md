@@ -38,3 +38,6 @@ title: Reading list
 
 ## Wordpress
 - [Developing wordpress themes](https://developer.wordpress.org/themes/)
+
+# General Engineering
+- [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
