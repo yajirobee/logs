@@ -12,12 +12,17 @@ Opinions are my own.
 
 ## Links
 - [LinkedIn](https://www.linkedin.com/in/keisuke-suzuki/)
-- [SlideShare](https://www.slideshare.net/keisuke-suzuki)
 - [Twitter](https://twitter.com/yajilobee)
 - [Github](https://github.com/yajirobee)
 
 ## Presentations
+- [Speaker Deck](https://speakerdeck.com/yajirobee)
+- [SlideShare](https://www.slideshare.net/keisuke-suzuki)
+
+### 2022
+- 11/29 "Journey to Improve Stability and Scalability of Plazma" @ [TreasureData Tech Talk 2022](https://techplay.jp/event/879660)
+
 ### 2018
-- 9/20 [db tech showcase Tokyo 2018](https://www.db-tech-showcase.com/2018/tokyo.html)
-- 10/16 [TD Tech Talk 2018](https://techplay.jp/eventreport/694467)
-- 12/12 [PGConf.ASIA 2018](https://www.pgconf.asia/EN/2018/day2/#B7)
+- 12/12 "How to Upgrade Major Version of Your Production PostgreSQL" @ [PGConf.ASIA 2018](https://www.pgconf.asia/EN/2018/day2/#B7)
+- 10/16 "Dive into PlazmaDB Performance Characteristics And Future Challenges" @ [TD Tech Talk 2018](https://techplay.jp/eventreport/694467)
+- 9/20 "PlazmaDB ペタバイトオーダのデータ分析基盤を支える分散ストレージのアーキテクチャとその運用" @ [db tech showcase Tokyo 2018](https://www.db-tech-showcase.com/2018/tokyo.html)
