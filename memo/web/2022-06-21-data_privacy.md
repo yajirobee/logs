@@ -9,7 +9,7 @@ title: Study Technologies of Data Privacy
 
 # Differential privacy
 ## Books & Papers & Posts
-- [Programming Differential Privacy](https://programming-dp.com/notebooks/ch3.html)
+- [Programming Differential Privacy](https://programming-dp.com/)
 - [Designing Access with Differential Privacy](https://admindatahandbook.mit.edu/book/v1.0/diffpriv.html)
 - [Differential Privacy: The Pursuit of Protections by Default](https://cacm.acm.org/magazines/2021/2/250080-differential-privacy/fulltext)
 - [Differential Privacy in the Wild](http://sigmod2017.org/wp-content/uploads/2017/03/04-Differential-Privacy-in-the-wild-1.pdf)
