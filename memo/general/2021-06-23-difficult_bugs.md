@@ -11,6 +11,12 @@ Difficult and impressive bugs I've experienced.
 - Related components: Kotlin (jvm) >= 1.5.0 < 1.5.30
 - Root cause: [`Result` was wrapped twice](https://youtrack.jetbrains.com/issue/KT-46924)
 
+## Crisis of XID wraparound
+- Symptom: XID was about to run out
+- Related components: PostgreSQL 11
+- Root cause: deleted too many tuples by backlog of GC batch
+- Detail: presented at [TreasureData Tech Talk 2022](https://techplay.jp/event/879660)
+
 # 2020
 ## Rarely failed to send HTTP response by chunked transfer encoding
 - Symptom: Rarely jersey server sent incomplete http response when `ChunkedOutput` was used.
