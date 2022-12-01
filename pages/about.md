@@ -22,6 +22,10 @@ Opinions are my own.
 ### 2022
 - 11/29 "Journey to Improve Stability and Scalability of Plazma" @ [TreasureData Tech Talk 2022](https://techplay.jp/event/879660)
 
+### 2021
+- 9/27 [CMUデータベース輪読会 第8回](https://database-paper-reading.connpass.com/event/225073/)
+  - [slide](https://docs.google.com/presentation/d/1m34wY6Pq6xyutZX5s0gEQ4x9fgoiExY97U4sMXBQprs/edit?usp=sharing)
+
 ### 2018
 - 12/12 "How to Upgrade Major Version of Your Production PostgreSQL" @ [PGConf.ASIA 2018](https://www.pgconf.asia/EN/2018/day2/#B7)
 - 10/16 "Dive into PlazmaDB Performance Characteristics And Future Challenges" @ [TD Tech Talk 2018](https://techplay.jp/eventreport/694467)
