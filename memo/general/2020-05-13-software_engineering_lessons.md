@@ -14,7 +14,7 @@ Lessons and best practices from my experience. This is a living document.
   - > There is never enough time to do it right, but there is always enough time to do it over.
 
 # Metrics / Monitoring
-- Collect every metrics you come up with as long as performance, cost and security allow
+- Collect all metrics you come up with as long as performance, space, cost, privacy and security allow
 - Don't start an experiment without a hypothesis
 - Understand where a metric come from before using it
   - Be aware whether the metric is leading or lagging indicator
