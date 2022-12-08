@@ -15,6 +15,7 @@ title: Study Technologies of Data Privacy
 - [Differential Privacy in the Wild](http://sigmod2017.org/wp-content/uploads/2017/03/04-Differential-Privacy-in-the-wild-1.pdf)
 - [A friendly, non-technical introduction to differential privacy](https://desfontain.es/privacy/friendly-intro-to-differential-privacy.html)
 - [Readings in Differential Privacy](https://github.com/xerial/dp-readings)
+- [Differential privacy trends](https://speakerdeck.com/line_developers/privacy-tech-overview-and-differential-privacy-trends)
 
 ## Tools
 - [google differential privacy implementation](https://github.com/google/differential-privacy)
