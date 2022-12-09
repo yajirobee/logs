@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Logical replication code reading | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Logical replication code reading" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Logical replication code reading" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Keisuke Suzuki"},"headline":"Logical replication code reading","url":"/memo/postgresql/2021-01-25-logical_replication_code_reading.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <p>Memo for logical replication code reading</p>
+
+<h1 id="replication-side">Replication side</h1>
+<p>As of <a href="https://github.com/postgres/postgres/tree/REL_12_5">12.5</a></p>
+
+<ul>
+  <li>Boot flow
+    <ul>
+      <li>logical replication launcher assign a subscription to a slot (set slot as main arg)</li>
+      <li><a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/postmaster/bgworker.c#L701">bgworker launch</a> logical replication apply worker</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="logical-replication-launcher">Logical replication launcher</h2>
+<p><a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/replication/logical/launcher.c#L972">Entry point</a></p>
+
+<ul>
+  <li><a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/replication/logical/launcher.c#L1021">list subscriptions</a></li>
+  <li><a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/replication/logical/launcher.c#L294">launch logical replication worker</a><br />
+Wait if replication slot is not available.</li>
+</ul>
+
+<h2 id="logical-replication-apply-worker">Logical replication apply worker</h2>
+<p><a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/replication/logical/worker.c#L1605">Entry point</a> Note : this entry point is used for both replication apply worker and table synchronization worker.</p>
+
+<h3 id="bootstrap">Bootstrap</h3>
+<ul>
+  <li>Launch replication apply worker
+    <ul>
+      <li>Get replication origin (RepOriginId)</li>
+      <li>Connect to publisher</li>
+      <li>Start streaming</li>
+      <li>Enter <a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/replication/logical/worker.c#L1131">main loop</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="main-loop">Main loop</h3>
+<p>Receive WAL and process based on (<a href="https://www.postgresql.org/docs/12/protocol-replication.html">Replication Protocol</a>)</p>
+
+<ul>
+  <li>Process messages until the buffer will be empty (inner loop)
+    <ul>
+      <li>“XLogData (B)”
+        <ul>
+          <li><a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/replication/logical/worker.c#L989">apply dispatch</a></li>
+        </ul>
+      </li>
+      <li>“Primary keepalive message (B)”
+        <ul>
+          <li><a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/replication/logical/worker.c#L1359">send feedback</a> Send “Standby status update (F)”</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>send_feedback</li>
+  <li><a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/replication/logical/worker.c#L1248-L1260">reread subscription and process syncing tables if not in remote transaction</a>
+    <ul>
+      <li>Process all tables that are being synchronized
+        <ul>
+          <li><a href="https://github.com/postgres/postgres/blob/6bb1b38fa5388a4aa39ed9e56ef477f618fb28e1/src/backend/replication/logical/tablesync.c#L513">Launch a table synchronization worker</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+
+<div class="pagination">
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Setup Presto | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Setup Presto" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Continues from the post of Hive setup. Setting up Presto on Hive next." />
+<meta property="og:description" content="Continues from the post of Hive setup. Setting up Presto on Hive next." />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-18T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Setup Presto" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Keisuke Suzuki"},"dateModified":"2020-06-18T00:00:00+00:00","datePublished":"2020-06-18T00:00:00+00:00","description":"Continues from the post of Hive setup. Setting up Presto on Hive next.","headline":"Setup Presto","mainEntityOfPage":{"@type":"WebPage","@id":"/2020/06/18/setup_presto.html"},"url":"/2020/06/18/setup_presto.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <div class="post">
+    <h1 class="post-title">Setup Presto</h1>
+    <div class="post-info">
+        <time datetime="2020-06-18 00:00:00 +0000">Written&nbsp;on:&nbsp;June 18, 2020</time>
+    </div>
+    <div class="post-line"></div>
+
+    <p>Continues from <a href="/2020/06/11/setup_hive3.html">the post of Hive setup</a>.
+Setting up Presto on Hive next.
+<!--end_excerpt--></p>
+
+<h1 id="goal">Goal</h1>
+<p>Executing queries to data stored on Hive / HDFS by Presto.<br />
+Note: Presto only uses data files and Hive metastore as mentioned on <a href="https://prestosql.io/docs/current/connector/hive.html#overview">the document</a>. Hive’s query execution environment isn’t used.</p>
+
+<h1 id="environment-and-software-versions">Environment and Software Versions</h1>
+<p>Hardware and Hive / Hadoop are the same as <a href="/2020/06/11/setup_hive3.html">the previous post</a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java -version
+openjdk version "11.0.7" 2020-04-14
+OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-3ubuntu1)
+OpenJDK 64-Bit Server VM (build 11.0.7+10-post-Ubuntu-3ubuntu1, mixed mode, sharing)
+</code></pre></div></div>
+<p>Note java vesion was different from Hive / Hadoop.</p>
+
+<ul>
+  <li>Presto 333 from <a href="https://prestosql.io/">PrestoSQL</a>
+    <ul>
+      <li>Both coordinator and worker were deployed in single server as well as Hive &amp; Hadoop</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="setup-remote-hive-metastore-server">Setup Remote Hive Metastore Server</h1>
+<p>Hive metastore needs to run by <a href="https://cwiki.apache.org/confluence/display/Hive/AdminManual+Metastore+Administration#AdminManualMetastoreAdministration-RemoteMetastoreServer">remove configuration</a> as Presto communicates.</p>
+
+<h2 id="server-remote-metastore-side">Server (remote metastore) side</h2>
+<ul>
+  <li>Edit configurations
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">${HIVE_HOME}/conf/hive-site.xml</code>
+        <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;property&gt;</span>
+    <span class="nt">&lt;name&gt;</span>hive.server2.thrift.bind.host<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;value&gt;</span>localhost<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>  
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>Start metastore
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ $HIVE_HOME/bin/hive --service metastore
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="client-hiveserver-side">Client (Hiveserver) side</h2>
+<ul>
+  <li>Edit configurations
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">${HIVE_HOME}/conf/hive-site.xml</code>
+        <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;property&gt;</span>
+    <span class="nt">&lt;name&gt;</span>hive.metastore.uris<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;value&gt;</span>thrift://localhost:9083<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+  <li>Start hiveserver2</li>
+</ul>
+
+<h1 id="setup-presto">Setup Presto</h1>
+<p>Follow <a href="https://prestosql.io/docs/current/installation/deployment.html">deployment steps</a>.</p>
+
+<ul>
+  <li>Get Presto distribution</li>
+  <li>Edit configurations
+    <ul>
+      <li>Node Properties (node.properties)
+        <ul>
+          <li>Coordinator
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node.environment=dev
+node.id=ffffffff-ffff-ffff-ffff-ffffffffffff
+node.data-dir=(some filesystem path)
+</code></pre></div>            </div>
+          </li>
+          <li>Worker
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>node.environment=dev
+node.id=ffffffff-ffff-ffff-ffff-fffffffffff1
+node.data-dir=(some filesystem path)
+</code></pre></div>            </div>
+          </li>
+        </ul>
+      </li>
+      <li>JVM Config (jvm.config)<br />
+Used the same config for coordinator and worker
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-server
+-Xmx8G
+-XX:-UseBiasedLocking
+-XX:+UseG1GC
+-XX:G1HeapRegionSize=32M
+-XX:+ExplicitGCInvokesConcurrent
+-XX:+ExitOnOutOfMemoryError
+-XX:+HeapDumpOnOutOfMemoryError
+-XX:ReservedCodeCacheSize=512M
+-Djdk.attach.allowAttachSelf=true
+-Djdk.nio.maxCachedBufferSize=2000000
+</code></pre></div>        </div>
+      </li>
+      <li>Config Properties (config.properties)
+        <ul>
+          <li>Coordinator
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>coordinator=true
+node-scheduler.include-coordinator=false
+http-server.http.port=8080
+query.max-memory=16GB
+query.max-memory-per-node=1GB
+query.max-total-memory-per-node=2GB
+discovery-server.enabled=true
+discovery.uri=http://localhost:8080
+</code></pre></div>            </div>
+          </li>
+          <li>Worker
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>coordinator=false
+http-server.http.port=8081
+query.max-memory=16GB
+query.max-memory-per-node=1GB
+query.max-total-memory-per-node=2GB
+discovery.uri=http://localhost:8080
+</code></pre></div>            </div>
+          </li>
+        </ul>
+      </li>
+      <li>Catalog Properties (catalog/*.properties)<br />
+Used the same config for coordinator and worker
+        <ul>
+          <li>hive.properties
+            <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>connector.name=hive-hadoop2
+hive.metastore.url=thrift://localhost:9083 # hive.metastore.port
+</code></pre></div>            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Launch Presto
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$PRESTO_HOME/bin/launcher start --etc-dir (coordinator etc dir)
+$PRESTO_HOME/bin/launcher start --etc-dir (worker etc dir)
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h1 id="connect-to-presto">Connect to Presto</h1>
+<p>Used Presto CLI here.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ presto --server localhost:8080 --catalog hive
+</code></pre></div></div>
+
+<p>Now you can see tables created by Hive.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ beeline -u jdbc:hive2://localhost:10000
+...
+0: jdbc:hive2://localhost:10000&gt; create table test (id int, value int) stored as orc;
+...
+0: jdbc:hive2://localhost:10000&gt; insert into test values (1, 1), (2, 2), (3, 3);
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ presto --server localhost:8080 --catalog hive
+presto&gt; show schemas;
+       Schema
+--------------------
+ default
+ information_schema
+(2 rows)
+
+Query 20200618_135504_00010_5w9je, FINISHED, 2 nodes
+Splits: 19 total, 19 done (100.00%)
+0:00 [2 rows, 35B] [8 rows/s, 146B/s]
+
+presto&gt; use default;
+USE
+presto:default&gt; show tables;
+ Table
+-------
+(0 rows)
+
+Query 20200618_135534_00014_5w9je, FINISHED, 2 nodes
+Splits: 19 total, 19 done (100.00%)
+0:00 [0 rows, 0B] [0 rows/s, 0B/s]
+
+presto:default&gt; show tables;
+ Table
+-------
+ test
+(1 row)
+
+Query 20200618_135653_00015_5w9je, FINISHED, 2 nodes
+Splits: 19 total, 19 done (100.00%)
+
+presto:default&gt; select * from test;
+ id | value
+----|-------
+  1 |     1
+  2 |     2
+  3 |     3
+(3 rows)
+
+Query 20200618_140226_00021_5w9je, FINISHED, 1 node
+Splits: 17 total, 17 done (100.00%)
+0:01 [3 rows, 246B] [4 rows/s, 342B/s]
+</code></pre></div></div>
+
+</div>
+
+
+
+<div class="pagination">
+    
+    <a href="/2020/06/21/study_hive3.html" class="left arrow">&#8592;</a>
+    
+    
+    <a href="/2020/06/11/setup_hive3.html" class="right arrow">&#8594;</a>
+    
+
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

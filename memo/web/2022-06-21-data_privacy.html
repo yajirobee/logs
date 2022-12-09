@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Study Technologies of Data Privacy | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Study Technologies of Data Privacy" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Study Technologies of Data Privacy" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Keisuke Suzuki"},"headline":"Study Technologies of Data Privacy","url":"/memo/web/2022-06-21-data_privacy.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <h1 id="terminologies">Terminologies</h1>
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/K-anonymity">k-anonymity</a></li>
+  <li><a href="https://en.wikipedia.org/wiki/Differential_privacy">Differential privacy</a></li>
+</ul>
+
+<h1 id="differential-privacy">Differential privacy</h1>
+<h2 id="books--papers--posts">Books &amp; Papers &amp; Posts</h2>
+<ul>
+  <li><a href="https://programming-dp.com/">Programming Differential Privacy</a></li>
+  <li><a href="https://admindatahandbook.mit.edu/book/v1.0/diffpriv.html">Designing Access with Differential Privacy</a></li>
+  <li><a href="https://cacm.acm.org/magazines/2021/2/250080-differential-privacy/fulltext">Differential Privacy: The Pursuit of Protections by Default</a></li>
+  <li><a href="http://sigmod2017.org/wp-content/uploads/2017/03/04-Differential-Privacy-in-the-wild-1.pdf">Differential Privacy in the Wild</a></li>
+  <li><a href="https://desfontain.es/privacy/friendly-intro-to-differential-privacy.html">A friendly, non-technical introduction to differential privacy</a></li>
+  <li><a href="https://github.com/xerial/dp-readings">Readings in Differential Privacy</a></li>
+  <li><a href="https://speakerdeck.com/line_developers/privacy-tech-overview-and-differential-privacy-trends">Differential privacy trends</a></li>
+</ul>
+
+<h2 id="tools">Tools</h2>
+<ul>
+  <li><a href="https://github.com/google/differential-privacy">google differential privacy implementation</a></li>
+  <li><a href="https://opendp.org/">OpenDP</a></li>
+  <li><a href="https://docs.tmlt.dev/core/latest/tutorials/first-tutorial.html">Tumult</a>
+    <ul>
+      <li><a href="https://gitlab.com/tumult-labs/core">code</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="privacy-attacks">Privacy Attacks</h2>
+<ul>
+  <li><a href="https://www.tmlt.io/research/tiny-bits-matter-precision-based-attacks-on-differential-privacy">precision based attacks</a></li>
+</ul>
+
+<h2 id="conferences">Conferences</h2>
+<ul>
+  <li><a href="https://tpdp.journalprivacyconfidentiality.org/2022/">Theory and Practice of Differential Privacy (TPDP)</a></li>
+</ul>
+
+<h1 id="privacy-budget">Privacy budget</h1>
+<ul>
+  <li><a href="https://github.com/mikewest/privacy-budget">Google’s Privacy Budget Proposal</a>
+    <ul>
+      <li>https://developer.chrome.com/docs/privacy-sandbox/privacy-budget/</li>
+      <li>https://blog.mozilla.org/en/mozilla/google-privacy-budget-analysis/
+        <blockquote>
+          <p>Even if individual values are not particularly unique, the combination of values can be unique</p>
+        </blockquote>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="secure-join-of-identity-data">Secure Join of Identity data</h1>
+<ul>
+  <li><a href="https://github.com/UnifiedID2/uid2docs">UID 2.0</a></li>
+  <li><a href="https://developers.google.com/ads-data-hub/guides/rdid-matching">RDID</a></li>
+</ul>
+
+<h1 id="other-references">Other References</h1>
+<ul>
+  <li><a href="https://developers.google.com/ads-data-hub/guides/privacy-checks">Google Ads Data Hub privacy checks</a>
+    <ul>
+      <li>Aggregation requirements</li>
+      <li>Difference checks</li>
+    </ul>
+  </li>
+</ul>
+
+
+<div class="pagination">
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

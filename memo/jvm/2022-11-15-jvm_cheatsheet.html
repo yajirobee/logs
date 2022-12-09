@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>JVM cheatsheet | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="JVM cheatsheet" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="JVM cheatsheet" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Keisuke Suzuki"},"headline":"JVM cheatsheet","url":"/memo/jvm/2022-11-15-jvm_cheatsheet.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <h1 id="settings">Settings</h1>
+<h2 id="select-heap-size-by-a-percentage-of-available-ram">Select heap size by a percentage of available RAM</h2>
+<p>Use <code class="language-plaintext highlighter-rouge">-XX:MaxRAMPercentage</code> / <code class="language-plaintext highlighter-rouge">-XX:MinRAMPercentage</code> / <code class="language-plaintext highlighter-rouge">-XX:InitialRAMPercentage</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ java -XX:+PrintFlagsFinal -version | grep RAMPercentage
+   double InitialRAMPercentage                     = 1.562500                                  {product} {default}
+   double MaxRAMPercentage                         = 25.000000                                 {product} {default}
+   double MinRAMPercentage                         = 50.000000                                 {product} {default}
+openjdk version "11.0.16.1" 2022-08-12
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://bugs.openjdk.org/browse/JDK-8186248">Reference</a></li>
+</ul>
+
+<h2 id="set-the-ttl-for-dns-name-lookups">Set the TTL for DNS Name Lookups</h2>
+<p>Use <code class="language-plaintext highlighter-rouge">networkaddress.cache.ttl</code> / <code class="language-plaintext highlighter-rouge">networkaddress.cache.negative.ttl</code></p>
+
+<ul>
+  <li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/doc-files/net-properties.html">java 11 Networking Properties</a></li>
+</ul>
+
+<h1 id="monitoring">Monitoring</h1>
+<h2 id="native-memory-tracking">Native Memory Tracking</h2>
+<p>Enable NMT by <code class="language-plaintext highlighter-rouge">-XX:NativeMemoryTracking=[summary | detail]</code> and execute</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>jcmd &lt;pid&gt; VM.native_memory [summary | detail | baseline | summary.diff | detail.diff | shutdown] [scale= KB | MB | GB]
+</code></pre></div></div>
+
+<ul>
+  <li><a href="https://docs.oracle.com/en/java/javase/11/vm/native-memory-tracking.html#GUID-710CAEA1-7C6D-4D80-AB0C-B0958E329407">java 11 Native Memory Tracking</a></li>
+</ul>
+
+<h2 id="count-theads">Count Theads</h2>
+<p>Check the Safe Memory Reclamation (SMR) info of thread dump. <code class="language-plaintext highlighter-rouge">length</code> is count of non-JVM internal threads.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Threads class SMR info:
+_java_thread_list=0x00007f7d40428050, length=252, elements={
+</code></pre></div></div>
+
+<blockquote>
+  <p>Note: Enabling NMT causes a 5% -10% performance overhead.</p>
+</blockquote>
+
+<h1 id="references">References</h1>
+<ul>
+  <li><a href="https://docs.oracle.com/en/java/javase/11/tools/java.html#GUID-3B1CE181-CD30-4178-9602-230B800D4FAE">java 11 Command Reference</a></li>
+</ul>
+
+
+<div class="pagination">
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Read: The Amazon Builders’ Library | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Read: The Amazon Builders’ Library" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="読んだ記事：The Amazon Builders’ Library re:Invent 2019にて公開された、ソフトウェアエンジニアリングのベストプラクティス集。 内容は主に分散Webサービスに関するもの。Amazon ECサイトやAWSのサービス構築で培った知見がベースになっているとのことで、分散システムの要点がよくまとまっていて参考になった。いくつか印象に残った記事についてまとめる。" />
+<meta property="og:description" content="読んだ記事：The Amazon Builders’ Library re:Invent 2019にて公開された、ソフトウェアエンジニアリングのベストプラクティス集。 内容は主に分散Webサービスに関するもの。Amazon ECサイトやAWSのサービス構築で培った知見がベースになっているとのことで、分散システムの要点がよくまとまっていて参考になった。いくつか印象に残った記事についてまとめる。" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-03-28T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Read: The Amazon Builders’ Library" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Keisuke Suzuki"},"dateModified":"2020-03-28T00:00:00+00:00","datePublished":"2020-03-28T00:00:00+00:00","description":"読んだ記事：The Amazon Builders’ Library re:Invent 2019にて公開された、ソフトウェアエンジニアリングのベストプラクティス集。 内容は主に分散Webサービスに関するもの。Amazon ECサイトやAWSのサービス構築で培った知見がベースになっているとのことで、分散システムの要点がよくまとまっていて参考になった。いくつか印象に残った記事についてまとめる。","headline":"Read: The Amazon Builders’ Library","mainEntityOfPage":{"@type":"WebPage","@id":"/2020/03/28/read_amazon_builders_library.html"},"url":"/2020/03/28/read_amazon_builders_library.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <div class="post">
+    <h1 class="post-title">Read: The Amazon Builders' Library</h1>
+    <div class="post-info">
+        <time datetime="2020-03-28 00:00:00 +0000">Written&nbsp;on:&nbsp;March 28, 2020</time>
+    </div>
+    <div class="post-line"></div>
+
+    <p>読んだ記事：<a href="https://aws.amazon.com/builders-library/">The Amazon Builders’ Library</a></p>
+
+<p>re:Invent 2019にて公開された、ソフトウェアエンジニアリングのベストプラクティス集。
+内容は主に分散Webサービスに関するもの。Amazon ECサイトやAWSのサービス構築で培った知見がベースになっているとのことで、分散システムの要点がよくまとまっていて参考になった。いくつか印象に残った記事についてまとめる。</p>
+
+<!--end_excerpt-->
+<h1 id="using-load-shedding-to-avoid-overload"><a href="https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/">Using Load shedding to avoid overload</a></h1>
+
+<p>Webサービスを題材に、load sheddingを用いたサーバー高負荷時のサービスのスループットを維持する戦略について解説している。
+以下要点</p>
+<ul>
+  <li>サービス応答時間は、サーバーのリソース使用率上昇に応じて線形以上に増大する
+    <ul>
+      <li>Universal Scalability Low</li>
+    </ul>
+  </li>
+  <li>クライアントのタイムアウトにより、応答時間が一定以上になるとエラー率が増大する。結果として、システム全体のスループットは低下する
+    <ul>
+      <li>記事内では、クライアントからのリクエスト数をthroughput (offered throughput) と呼び、成功したリクエスト数をgoodputと呼んでいる</li>
+      <li>goodputはthroughputが一定以上の点から急激に減少する</li>
+      <li>クライアントタイムアウトが発生した場合、サーバーがその処理に費やした時間は無駄になる。クライアント側は共倒れ状態になり、一切の処理がすすめられなくなる</li>
+      <li>さらにクライアントはリクエストをリトライするため、サーバーにはリクエストが滞留し、過負荷状態が継続してしまう</li>
+    </ul>
+  </li>
+  <li>load sheddingの考え方は、サーバーが過負荷状態に近づいてきたら、過剰なリクエストを拒否し、受付済リクエストに集中するというもの
+    <ul>
+      <li>offered throughputの増大に対しgoodputが低下しにくくなる</li>
+    </ul>
+  </li>
+  <li>性能テストによりgoodputが飽和する点、goodputが低下し始める点など性能特性を明らかにする
+    <ul>
+      <li>Amazonではこうした性能テストにかなりの時間を費やしているとのこと</li>
+    </ul>
+  </li>
+  <li>load sheddingとオートスケールの組み合わせについてもテストしておく
+    <ul>
+      <li>閾値の設定が悪いとload sheddingによってオートスケールが発火しなくなる可能性がある</li>
+    </ul>
+  </li>
+  <li>リクエストの優先度を判断する
+    <ul>
+      <li>重要でないクライアントのリクエストの優先度を下げる</li>
+      <li>リトライ上限 (回数、合計実行時間) が近いリクエストを優先する</li>
+      <li>複数リクエストがセットになっている場合、セットの途中のリクエストの優先度を上げる</li>
+    </ul>
+  </li>
+  <li>過負荷対策を多層化する
+    <ul>
+      <li>低レイヤで拒否する方がオーバーヘッドは小さくなるが一方で、優先度判定の情報量が少なかったり、取得できるメトリクスが少ないといったマイナスもある</li>
+    </ul>
+  </li>
+</ul>
+
+<p>load sheddingでは、最大コネクション数による制御と比較して、フレキシブルな制御が可能になるので、リクエストの処理内容によって応答時間が大きく異なるようなケースで有効性が高いように思う。
+また、クライアントタイムアウトが減るのでリソース使用効率が向上することが見込める。
+一方で、制御の複雑さは増すため、実装やテストのコストは高くなってしまう。
+サービス立ち上げの初期の段階では、最大コネクション数等比較的簡易な仕組みを利用しておいて、トラフィックやサーバー数の増大に従って導入していくのがいいのではないかと考える。</p>
+
+<h1 id="avoiding-insurmountable-queue-backlogs"><a href="https://aws.amazon.com/builders-library/avoiding-insurmountable-queue-backlogs/">Avoiding insurmountable queue backlogs</a></h1>
+
+<p>平常時FIFOなキューの捌き方をしているアプリケーションでも、クライアントからすると実はバックログがたまった際のリカバリはLIFOがよいというケースも考えられる。
+平常時とリカバリ時のスケジューリングを変えるというのも一考の余地がありそう。</p>
+
+<h1 id="workload-isolation-using-shuffle-sharding"><a href="https://aws.amazon.com/builders-library/workload-isolation-using-shuffle-sharding">Workload isolation using shuffle-sharding</a></h1>
+
+<p>Shuffle shardingというのは初めて聞いたが、シンプルな割に過負荷時の可用性向上に効果が大きそうに思う。
+どのレイヤで実装するものなのかが気になる。Route 53やELBあたりで実装できると嬉しそうだが。</p>
+
+<h1 id="avoiding-fallback-in-distributed-systems"><a href="https://aws.amazon.com/builders-library/avoiding-fallback-in-distributed-systems">Avoiding fallback in distributed systems</a></h1>
+
+<ul>
+  <li>フォールバックのロジックはほとんど実行されず、またテストが難しいので、いざ必要となったときに想定通りに動作しないことが多い
+    <ul>
+      <li>フォールバック中十分なリソースが確保できず、トラフィックを捌ききれないなど</li>
+    </ul>
+  </li>
+  <li>中途半端な状態で動作を続けることで、状況を悪化させる場合もある</li>
+</ul>
+
+<h1 id="implementing-health-checks"><a href="https://aws.amazon.com/builders-library/implementing-health-checks">Implementing health checks</a></h1>
+
+<p>これまでWebサーバのヘルスチェックを実装していて、検知の範囲や異常の対処を場当たり的に考えていたことが多かったので、整理のために役立った。
+ヘルスチェックを実装する上で一番の課題は、false positiveを防ぎ、誤判断による状況悪化を防ぐことで、考え始めるとなかなか設計がまとまらなかった。
+典型的なパターンを理解して、手札を増やしておくのがよいと感じた。
+以下要点
+ヘルスチェックの範囲について、おおまかに4つに分類している。</p>
+<ul>
+  <li>Liveness checks<br />
+ネットワークやプロセスの存在確認など最低限のチェック。アプリケーションレベルのチェックは含まない。<br />
+（例）
+    <ul>
+      <li>TCP接続待機確認</li>
+      <li>HTTP疎通確認（200を返すだけのエンドポイントなど）</li>
+    </ul>
+  </li>
+  <li>Local health checks<br />
+Liveness checksよりは多くをカバーするが、サーバー外のリソースはチェックしない<br />
+（例）
+    <ul>
+      <li>local diskの読み書き</li>
+      <li>重要なプロセスでアプリケーションレベルの動作確認
+        <ul>
+          <li>Server proxyのルーティング</li>
+          <li>Metricsの収集</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Dependency health checks<br />
+（例）
+    <ul>
+      <li>依存するサービスの応答確認
+        <ul>
+          <li>コネクション数上限</li>
+          <li>deadlockによる無応答</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Anormaly detection<br />
+クラスタ内のサーバー全体を見て異常を示すサーバーを確認する<br />
+（例）
+    <ul>
+      <li>Clock skew</li>
+      <li>旧バージョンのコード、設定</li>
+    </ul>
+  </li>
+</ul>
+
+<p>また、ヘルスチェックエラーの対処方法についてもAmazonで多用される手法、ベストプラクティスの解説がある</p>
+<ul>
+  <li>Fail open
+個別のサーバーのエラーではロードバランサーからのトラフィックの振り分けを停止するが、全てのサーバーでエラーとなった場合は全てのサーバーに振り分けを継続する。
+AWS NLB, ALB, Route 53などはこの挙動をサポートしているとのこと。</li>
+  <li>Health checks without a circuit breaker
+システム全体における異常の影響を考慮せずに、個々のサーバーでの個別の対処のみに終始していると、対処の方向性を誤り状況を悪化させる恐れがある。
+そういった状況を避けるため、サーバー外からの監視の仕組みが必要になる。<br />
+（例）
+    <ul>
+      <li>タスクの振り分け側（ロードバランサーやキューのポーリングスレッドなど）で、振り分け先のサーバーのlivenessとlocal health checkを実行する
+        <ul>
+          <li>サーバー内ローカルの異常がある場合のみサーバーを振り分け先から除外する</li>
+        </ul>
+      </li>
+      <li>外部モニタリングシステムからdependency health checkやanormaly detectionを実行する</li>
+    </ul>
+  </li>
+</ul>
+
+<p>今後も記事を追加する予定ということなので、更新を追っていきたいと思う。</p>
+
+</div>
+
+
+
+<div class="pagination">
+    
+    <a href="/2020/06/11/setup_hive3.html" class="left arrow">&#8592;</a>
+    
+    
+    <a href="/2020/02/10/book_the_managers_path.html" class="right arrow">&#8594;</a>
+    
+
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

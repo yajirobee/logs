@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Difficult software bugs I have experienced | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Difficult software bugs I have experienced" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Difficult software bugs I have experienced" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Keisuke Suzuki"},"headline":"Difficult software bugs I have experienced","url":"/memo/general/2021-06-23-difficult_bugs.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <p>Difficult and impressive bugs I’ve experienced.</p>
+
+<h1 id="2021">2021</h1>
+<h2 id="result-returned-wrong-value"><code class="language-plaintext highlighter-rouge">Result</code> returned wrong value</h2>
+<ul>
+  <li>Symptom: <code class="language-plaintext highlighter-rouge">Result</code> instance returned wrong value when it was used with coroutine.</li>
+  <li>Related components: Kotlin (jvm) &gt;= 1.5.0 &lt; 1.5.30</li>
+  <li>Root cause: <a href="https://youtrack.jetbrains.com/issue/KT-46924"><code class="language-plaintext highlighter-rouge">Result</code> was wrapped twice</a></li>
+</ul>
+
+<h2 id="crisis-of-xid-wraparound">Crisis of XID wraparound</h2>
+<ul>
+  <li>Symptom: XID was about to run out</li>
+  <li>Related components: PostgreSQL 11</li>
+  <li>Root cause: deleted too many tuples by backlog of GC batch</li>
+  <li>Detail: presented at <a href="https://techplay.jp/event/879660">TreasureData Tech Talk 2022</a></li>
+</ul>
+
+<h1 id="2020">2020</h1>
+<h2 id="rarely-failed-to-send-http-response-by-chunked-transfer-encoding">Rarely failed to send HTTP response by chunked transfer encoding</h2>
+<ul>
+  <li>Symptom: Rarely jersey server sent incomplete http response when <code class="language-plaintext highlighter-rouge">ChunkedOutput</code> was used.</li>
+  <li>Related components: jersey &lt; 2.32</li>
+  <li>Root cause: <a href="https://github.com/eclipse-ee4j/jersey/issues/4493">Race condition of <code class="language-plaintext highlighter-rouge">ChunkedOutput</code></a></li>
+</ul>
+
+<h1 id="2019">2019</h1>
+<h2 id="sudden-performance-degradation-of-postgresql">Sudden performance degradation of PostgreSQL</h2>
+<ul>
+  <li>Symptom: Suddenly DB response became very slow and didn’t respond at all in the end.</li>
+  <li>Related components: PostgreSQL 9.4, AWS RDS</li>
+  <li>Root cause: <a href="https://www.postgresql.org/message-id/20150329185619.GA29062@alap3.anarazel.de">Exclusive lock on table extention</a></li>
+  <li>Detail: <a href="https://www.slideshare.net/secret/IDrdvr67oKY7Qp">slide</a></li>
+</ul>
+<iframe src="https://www.slideshare.net/slideshow/embed_code/key/IDrdvr67oKY7Qp" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen=""> </iframe>
+
+
+<div class="pagination">
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>CMU15-721 Paper Reading Note | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="CMU15-721 Paper Reading Note" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="CMU15-721 Paper Reading Note" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Keisuke Suzuki"},"headline":"CMU15-721 Paper Reading Note","url":"/memo/reading_list/2022-03-28-CMU15-721.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <p><a href="https://15721.courses.cs.cmu.edu/spring2020/schedule.html">2020 CPU15-721 reading list</a></p>
+
+<h1 id="topic-25-databases-on-new-hardware---20220228">Topic 25: Databases on New Hardware - 2022/02/28</h1>
+<p>Paper : J. Arulraj, et al., Write-Behind Logging, in VLDB, 2016</p>
+
+<h2 id="commit-protocol">Commit protocol</h2>
+<p>Group commitはシステム内で高々1個しか走っていないことを前提としている(?)</p>
+
+<p>変更毎にlog recordを作成する必要は無く、group commit毎に1 record作成すれば良い</p>
+
+<h2 id="note">Note</h2>
+<p>2022現在、WBLの恩恵にあずかれそうなNVMは登場していないように思われる。
+Intel Optane Persistent Memory (DCPMM)はrandom access速くない。</p>
+
+<h1 id="topic-24-server-side-logic-execution---20220214">Topic 24: Server-side Logic Execution - 2022/02/14</h1>
+<p>Paper : K. Ramachandra, et al., Froid: Optimization of Imperative Programs in a Relational Database, in VLDB, 2017</p>
+
+<h1 id="topic-23-larger-than-memory-databases---20220207">Topic 23: Larger-than-Memory Databases - 2022/02/07</h1>
+<p>Paper : V. Leis, et al., LeanStore: In-Memory Data Management beyond Main Memory, in ICDE, 2018</p>
+
+<p>実験結果から、バッファプールからのRandom evictionとLeanEvictの差がそれほど大きくない（最大0.5%）。
+それならRandomでよいのでは？</p>
+
+<h1 id="topic-22-cost-models---20220131">Topic 22: Cost Models - 2022/01/31</h1>
+<p>Paper : V. Leis, et al., How Good are Query Optimizers, Really?, in VLDB, 2015</p>
+
+<p>Summary</p>
+<blockquote>
+  <p>relational database systems produce large estimation errors that quickly grow as the number of joins increases, and that these errors are usually the reason for bad plans. In contrast to cardinality estimation, the contribution of the cost model to the overall query performance is limited.</p>
+</blockquote>
+
+<h2 id="estimates-for-joins">Estimates for Joins</h2>
+<blockquote>
+  <p>we observed different cardinality estimates of the same simple 2-join query depending on the syntactic order of the relations in the from and/or the join predicates in the where clauses!</p>
+</blockquote>
+
+<p>Maybe because of calculation errors?</p>
+
+<h2 id="better-statistics-for-postgresql">Better Statistics for PostgreSQL</h2>
+<blockquote>
+  <p>the trend to underestimate cardinalities becomes even more pronounced. The reason is that the original, underestimated distinct counts resulted in higher estimates, which, accidentally, are closer to the truth. This is an example for the proverbial “two wrongs that make a right”, i.e., two errors that (partially) cancel each other out. Such behavior makes analyzing and fixing query optimizer problems very frustrating because fixing one query might break another.</p>
+</blockquote>
+
+<p>join cardinarityの推定誤差が大きいため、各カラムが正しいdomain cardinarityを持っていても、最終的なjoin cardinarityの推定誤差は安定しない。
+こうした挙動が、クエリオプティマイザの修正結果の予測を難しくし、分析を複雑化する要因となっている。</p>
+
+<h2 id="notes">Notes</h2>
+<ul>
+  <li>Joinのテーブル結合順序の組み合わせの総数はCatalan numberで表される
+https://en.wikipedia.org/wiki/Catalan_number</li>
+</ul>
+
+<h1 id="topic-21-optimizer-implementation-alternative-approaches---20220328">Topic 21: Optimizer Implementation (Alternative Approaches) - 2022/03/28</h1>
+<p>Paper : B. Ding, et al., Plan Stitch: Harnessing the Best of Many Plans, in VLDB, 2018</p>
+
+<h2 id="assumptions">Assumptions</h2>
+<ul>
+  <li>Azure SQL Databaseではクエリワークロード解析に基づく自動インデックス作成機能がある
+    <ul>
+      <li>利用可能なインデックスが変化するためクエリプランが頻繁に変わる</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Automated Indexing continuously monitors and analyzes query workloads, and periodically recommends index configurations. As indexes are incrementally implemented, different plans get executed</p>
+</blockquote>
+
+<h2 id="note-1">Note</h2>
+<ul>
+  <li>同一クエリでパラメタが違う場合のコスト推定をどうやっているのか<br />
+cardinalityが異なる場合、過去の実行結果ではコスト推定として不正確ではないか</li>
+</ul>
+
+<h1 id="topic-20-optimizer-implementation-top-down-vs-bottom-up---20220117">Topic 20: Optimizer Implementation (Top-Down vs. Bottom-Up) - 2022/01/17</h1>
+<p>Paper : Yongwen Xu, Efficiency in the Columbia Database Query Optimizer (pages 1-35), in Portland State University, 1998</p>
+
+<ul>
+  <li>Volcano: 最適化を始める前に全ての論理的等価な式を列挙する</li>
+  <li>Cascade: 最適化ルールの適用により必要に応じて探索するのみ</li>
+</ul>
+
+<h1 id="topic-19-optimizer-implementation-overview---20211220">Topic 19: Optimizer Implementation (Overview) - 2021/12/20</h1>
+<p>Paper : S. Chaudhuri, An Overview of Query Optimization in Relational Systems, in PODS, 1998</p>
+
+<ul>
+  <li>Interesting Order: 特定の列でソートされたテーブルを別のテーブルとして考える
+    <ul>
+      <li>複数カラムによるソートはSystem Rでは考慮していない</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="optimizer-generator">Optimizer Generator</h2>
+<ul>
+  <li>Starburst
+    <ul>
+      <li>論理プラン(QGM)の最適化後物理プランを生成する</li>
+      <li>今のDB2でも使われている</li>
+    </ul>
+  </li>
+  <li>Volcano/Cascade
+    <ul>
+      <li>論理 -&gt; 論理プラン、論理 -&gt; 物理プランの最適化を同時に実施する</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="cascade-optimizer">Cascade Optimizer</h2>
+<ul>
+  <li>extensible optimizer of Cockroach DB
+    <ul>
+      <li><a href="https://github.com/cockroachdb/cockroach/tree/master/pkg/sql/opt/norm/rules">opt形式で書かれたDSL</a>で書き換えルールを列挙する</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="topic-18-parallel-join-algorithms-sorting---20211213">Topic 18: Parallel Join Algorithms (Sorting) - 2021/12/13</h1>
+<p>Paper : C. Balkesen, et al., Multi-Core, Main-Memory Joins: Sort vs. Hash Revisited, in VLDB, 2013</p>
+
+<ul>
+  <li>In register sort -&gt; Sorting Network mentioned on 3.1</li>
+  <li>In cache sort / Out of cache sort -&gt; Bitonic Merge Network</li>
+</ul>
+
+<p>Multi-way mergingのway数を増加することで、メモリ帯域の負荷を軽減しコンピュート負荷を増大する方向にチューニングできる。</p>
+
+<h1 id="topic-17-parallel-join-algorithms-hashing---20211206">Topic 17: Parallel Join Algorithms (Hashing) - 2021/12/06</h1>
+<p>Paper : S. Schuh, et al., An Experimental Comparison of Thirteen Relational Equi-Joins in Main Memory, in SIGMOD, 2016</p>
+
+<h2 id="summary">Summary</h2>
+<blockquote>
+  <p>We immediately observe that even for this relatively simple query a major part of the runtime is spent in the non-join parts of the query. The time spent in the actual join is only about 10%–15% of the total runtime</p>
+</blockquote>
+
+<h2 id="notes-1">Notes</h2>
+
+<ul>
+  <li>Software Write Combining (SWWC)
+    <ul>
+      <li>書き出すデータをキャッシュに収まるサイズの連続領域にバッファリングしてから、メモリに書き出すことでキャッシュミスを削減する実装技法
+        <ul>
+          <li>書き込みアドレスが次々変わる場合、キャッシュミスにより性能が出ない -&gt; バッファリングによりwrite回数が増えるがキャッシュミス低減により高速化</li>
+        </ul>
+      </li>
+      <li><a href="https://en.wikipedia.org/wiki/Write_combining#:~:text=Write%20combining%20(WC)%20is%20a,single%20bits%20or%20small%20chunks.">reference</a></li>
+    </ul>
+  </li>
+  <li>Non-temporal streaming
+    <ul>
+      <li>キャッシュをバイパスしメモリに書き込む命令
+        <ul>
+          <li>
+            <blockquote>
+              <p>if the code overwrites all the data in the cache line, then reading the cache line from memory could be considered an unnecessary performance overhead</p>
+            </blockquote>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <blockquote>
+          <p>also referred to as “cache-bypassing” or “non-allocating” stores, and even “Non-Globally-Ordered stores” in some cases</p>
+        </blockquote>
+      </li>
+      <li><a href="https://sites.utexas.edu/jdm4372/2018/01/01/notes-on-non-temporal-aka-streaming-stores/">reference</a></li>
+      <li><a href="https://lwn.net/Articles/255364/">reference</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="topic-16-vectorization-vs-compilation---20211122">Topic 16: Vectorization vs. Compilation - 2021/11/22</h1>
+<p>Paper : T. Kersten, et al., Everything You Always Wanted to Know About Compiled and Vectorized Queries But Were Afraid to Ask, in VLDB, 2018</p>
+
+<ul>
+  <li>Vectorization (Tectorwise)
+    <ul>
+      <li>各オペレータで細かいステップを踏まないといけない</li>
+      <li>中間結果をマテリアライズする過程で命令数やキャッシュミスが増大</li>
+      <li>メモリストールが少ない
+        <ul>
+          <li>ベクトル化がキャッシュミスレイテンシを隠蔽</li>
+        </ul>
+      </li>
+      <li>プリミティブ内のループが単純でありCPUのout-of-orderエンジンが効きやすい</li>
+    </ul>
+  </li>
+  <li>Compilation (Typer)
+    <ul>
+      <li>ループが複雑なため分岐予測ミスのペナルティが大きくなりやすい</li>
+    </ul>
+  </li>
+  <li>SIMD
+    <ul>
+      <li>メモリネックだとほとんど効かない。キャッシュに乗っていて初めて効果あり</li>
+    </ul>
+  </li>
+  <li>Conclusion
+    <ul>
+      <li>計算インテンシブなクエリであればdata-centricクエリコンパイラ</li>
+      <li>結合や集約で大きなハッシュテーブルにアクセスするメモリバウンドなクエリであればベクトル化インタプリタ</li>
+      <li>SIMD、マルチスレッド、ハードウェアの影響は軽微</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="topic-15-vectorized-execution---20211129">Topic 15: Vectorized Execution - 2021/11/29</h1>
+<p>Paper : O. Polychroniou, et al., Rethinking SIMD Vectorization for In-Memory Databases, in SIGMOD, 2015</p>
+
+<ul>
+  <li>
+    <p>Hash Table Build<br />
+scatterを使うが、keyが衝突すると、scatterの仕様によりレジスタの右側の値が残り他の値が失われる<br />
+-&gt; 衝突検知が必要<br />
+-&gt; keys_outにuniqueな値を一度格納し、再度取り出す。その結果を元の値とマッチすることを確認することで衝突が検知できる。<br />
+ShufflingのConflict Serializationでも同様の仕組みで衝突を検知する。</p>
+  </li>
+  <li>
+    <p>Partitioning</p>
+    <ol>
+      <li>build histogram</li>
+      <li>decide partition boundaries based on the histogram by Prefix Sum</li>
+      <li>write keys to partitions
+        <ul>
+          <li>conflict serialization</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<p>SIMDは実世界のRDBMSでどの程度使用されているか? -&gt; vector wiseやDB2のカナムナストアで使用されている</p>
+
+<h1 id="topic-14-query-compilation---20211115">Topic 14: Query Compilation - 2021/11/15</h1>
+<p>Paper : T. Neumann, Efficiently Compiling Efficient Query Plans for Modern Hardware, in VLDB, 2011</p>
+
+<h2 id="reference">Reference</h2>
+<p><a href="https://www.slideshare.net/keisuke-suzuki/db-reading-group-may-16-2018">my note</a></p>
+
+<h1 id="topic-13-query-execution--processing---20211101-08">Topic 13: Query Execution &amp; Processing - 2021/11/01, 08</h1>
+<p>Paper : M. Kester, et al., Access Path Selection in Main-Memory Optimized Data Systems: Should I Scan or Should I Probe?, in SIGMOD, 2017</p>
+
+<h2 id="modeling-in-memory-shared-scan">Modeling In-Memory Shared Scan</h2>
+<ul>
+  <li>PEで2を掛けているのはレンジクエリで上限と下限の比較で2回演算が必要なため</li>
+</ul>
+
+<h1 id="topic-11-networking-protocols---20211018">Topic 11: Networking Protocols - 2021/10/18</h1>
+<p>Paper : M. Raasveldt, et al., Don’t Hold My Data Hostage: A Case for Client Protocol Redesign, in VLDB, 2017</p>
+
+<h2 id="result-set-serialization">Result Set Serialization</h2>
+<h3 id="postgres-result-set-wire-format">postgres result set wire format</h3>
+<ul>
+  <li>per-row metadataサイズが実際のデータサイズを超えてしまっていた
+    <ul>
+      <li>多くのmetadataが冗長になっており無駄が多い</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="hive-result-set-wrire-format">Hive result set wrire format</h3>
+<ul>
+  <li>null maskが値毎に1byte消費しており非効率</li>
+  <li>columnar formatにもかかわらず転送が遅いのは整数の可変長エンコーディングのオーバーヘッドが原因か</li>
+</ul>
+
+<h1 id="topic-10-recovery-protocols---20211011">Topic 10: Recovery Protocols - 2021/10/11</h1>
+<p>Paper : P. Antonopoulos, et al., Constant Time Recovery in Azure SQL Database, in VLDB, 2019</p>
+
+<h2 id="compensation-log-records-clr">Compensation log records (CLR)</h2>
+<p>Undo処理中のcrash発生時に処理済みのUndoをreplayするためのlog</p>
+
+<h2 id="recovery-protocol">Recovery protocol</h2>
+<p>2a Redo lock acquisitionはactive txのロックを獲得する -&gt; Redo後にtxを受け付けるため。</p>
+
+<p>Instant recovery: Redo対象のロックを獲得し、Redo開始と共にtxを受け付ける。
+本論文のSQL serverの例ではcheckpoint頻度が高いのでRedoはあまり多くない。</p>
+
+<p>Redo -&gt; parallel
+Undo -&gt; おそらくparallel?</p>
+
+<p>Oldest Dirty Page LSNはどの時点のLSNか -&gt; ?</p>
+
+<h2 id="checkpointing">Checkpointing</h2>
+<p>ARIESはDirty Page TableとTransaction Tableを書き出す。Dirty Page自体はcheckpointでは書き出さない。(fuzzy checkpoint)</p>
+
+<h2 id="ctr">CTR</h2>
+<p>Checkpointログの直後に前回のcheckpointからの間に生じたSLogを集約したログを書く。
+-&gt; Oldest Transaction Begin LSN -&gt; Min(..)間のlogを処理せず済む</p>
+
+<p>UndoはSLogのみ。Undoは対象のversionにmarkするだけで後でGCする</p>
+
+<p>GCはpage単位</p>
+
+<h3 id="logical-revert">Logical Revert</h3>
+<p>各versionはstateを持っている Active / Committed / Aborted</p>
+
+<p>Abort処理時は書いたversionをAbortedにするのみ。</p>
+
+<h3 id="redo-locking-optimization">Redo Locking Optimization</h3>
+<p>Recovery中にLockを取りたいケースがある</p>
+<ul>
+  <li>Read only secondaryのcrash recovery</li>
+  <li>Unresolved Distributed Transactions</li>
+</ul>
+
+<h3 id="questions">Questions</h3>
+<p>constantに近いrecovery timeを実現するために、頻繁にcheckpointをやっているがcheckpointが遅れることはないか?</p>
+
+<h1 id="topic-9-database-compression---20220314">Topic 9: Database Compression - 2022/03/14</h1>
+<p>Paper : D. Abadi, et al., Integrating Compression and Execution in Column-Oriented Database Systems, in SIGMOD, 2006</p>
+
+<h2 id="note-2">Note</h2>
+<ul>
+  <li>Read queryの性能を最適化、ストレージサイズ、write性能については考慮していない。</li>
+  <li>列指向ストアではIO効率が高くCPUボトルネックになりやすいため、圧縮率はそこまで重視しない（現在でも真かは?）</li>
+</ul>
+
+<h1 id="topic-8-storage-models-data-layout--system-catalogs---20210927">Topic 8: Storage Models, Data Layout, &amp; System Catalogs - 2021/09/27</h1>
+<p>Paper : M. Athanassoulis, et al., Optimal Column Layout for Hybrid Workloads, in VLDB, 2019</p>
+
+<p><a href="https://docs.google.com/presentation/d/1m34wY6Pq6xyutZX5s0gEQ4x9fgoiExY97U4sMXBQprs/edit?usp=sharing">slide</a></p>
+
+<h1 id="topic-7-oltp-indexes-trie-data-structures---20210913">Topic 7: OLTP Indexes (Trie Data Structures) - 2021/09/13</h1>
+<p>Paper : V. Alvarez, et al., A Comparison of Adaptive Radix Trees and Hash Tables, in ICDE, 2015</p>
+<h2 id="奇数木の特徴">奇数木の特徴</h2>
+<ul>
+  <li>キー分布、キー長に対する耐性が低い -&gt; 水平方向、垂直方向の圧縮</li>
+  <li>格納済みのキーの数や格納順に対応する耐性が高い</li>
+</ul>
+
+<h2 id="judyl">JudyL</h2>
+<p>Bitmap nodeがポインタをインターリーブしている理由は、子ノードへのポインタの追加を高速に行うため。</p>
+
+<h2 id="quadratic-probing">Quadratic Probing</h2>
+<p>Open Addressing scheme: ハッシュ値が衝突した時、規則に従ってハッシュテーブルの別の要素をプローブして最初に見つかった空き位置に格納する。</p>
+
+<h2 id="cuckoo-hash">Cuckoo Hash</h2>
+<p>ハッシュテーブルの枚数を増やすことで、負荷率（ハッシュテーブルの充填率）を上げられメモリ効率がよくなる。
+トレードオフとしてread速度が遅くなる。</p>
+
+<p>Bucketingによるメモリ効率の向上はないが、ハッシュの充填率をあげることができることを確認している。
+これにより、リハッシュの頻度を下げられる。</p>
+
+<h1 id="topic-6-oltp-indexes-btree-data-structures---20210906">Topic 6: OLTP Indexes (B+Tree Data Structures) - 2021/09/06</h1>
+<p>Paper : Z. Wang, et al., Building A Bw-Tree Takes More Than Just Buzz Words, in SIGMOD, 2018</p>
+<h2 id="bw-tree">Bw-Tree</h2>
+<ul>
+  <li>Node has 64 bit logical node ID
+    <ul>
+      <li>physical memory address is obtained by consulting the Mapping Table</li>
+    </ul>
+  </li>
+  <li>Nodes refer to other nodes by ID (logical links)</li>
+  <li>The Mapping Table allows to atomically change the physical location of a node 
+without acquiring locks by single atomic compare-and-swap</li>
+</ul>
+
+<h2 id="node-search-shortcut">Node search shortcut</h2>
+<p>Narrowing down search range by the key and the offset attribute of delta while traversing the chain.</p>
+
+<h2 id="optimistic-lock-coupling">Optimistic lock coupling</h2>
+<p>ロックとバージョンカウンタを使用する。</p>
+<ul>
+  <li>write operation: ロックを取得し、アンロック時にバージョンカウンタをインクリメントする</li>
+  <li>read operation: ロックは取得しない。オペレーション開始時にバージョンカウンタの値を確認し、終了時にバージョンカウンタが変わっていないことを確認する。バージョンカウンタが異なる場合はabort -&gt; restartする。</li>
+</ul>
+
+<p>reference: Viktor Leis, Florian Scheibner, Alfons Kemper, and Thomas Neumann. 2016. The ART of practical synchronization. In DaMoN.</p>
+
+<h1 id="topic-5-multi-version-concurrency-control-garbage-collection---20210830">Topic 5: Multi-Version Concurrency Control (Garbage Collection) - 2021/08/30</h1>
+<p>Paper : J. Böttcher, et al., Scalable Garbage Collection for In-Memory MVCC Systems, in VLDB, 2019</p>
+<h2 id="problem">Problem</h2>
+<p>MVCCシステムにおいて、ロングトランザクションによってGCできず、バージョンチェインが伸びることで
+生じる性能低下の問題。
+従来のハイウォーターマークのみを管理する手法では、バージョンチェインの途中のガーベジを回収できない。</p>
+
+<h2 id="gc-tracking-level">GC Tracking level</h2>
+<p>epoch based systemはOLTPのシステムでGCのオーバーヘッドを軽減するのに相性が良い。</p>
+
+<h1 id="topic-4-multi-version-concurrency-control-protocols---20210823">Topic 4: Multi-Version Concurrency Control (Protocols) - 2021/08/23</h1>
+<p>Paper : T. Neumann, et al., Fast Serializable Multi-Version Concurrency Control for Main-Memory Database Systems, in SIGMOD, 2015</p>
+
+<h2 id="version-access">Version access</h2>
+<p>startTimeを払い出すタイミングをtxの開始時ではなく、最初のread時に払い出すことで、
+新しいバージョンを読める可能性が上がり、readの性能が向上する可能性がある。</p>
+
+<h2 id="serializability-validation">Serializability Validation</h2>
+<ul>
+  <li>write - write conflict<br />
+書き込み時に検知。後続txがabortする。</li>
+  <li>read - write conflict<br />
+commit時のvalidationで検知。txのライフタイム（[startTime, commitTime]）の間にcommitされたtxのみを検査すれば良い。<br />
+Validation時にPredicate logからper relationのPredicate Treeを構築し、自分のreadしたpredicateと一致するパスの存在を調べる。</li>
+</ul>
+
+<h2 id="summary-1">Summary</h2>
+<p>Read intensiveなワークロードでは、自txのread predicateと他txのWrite setを比較することで、
+自分のRead setを再スキャンするよりvalidationのオーバーヘッドを計算量、スペース共に低減することができる。</p>
+
+<h2 id="misc">Misc</h2>
+<p>SIGMOD 2019の AOCC (adaptive optimistic concurrency control) という論文で、hyperのconflict checkの方式を部分的に採用してる。
+Read setが大きくなるような (OLAPもあるような) ワークロードでは有利だが、Read setが小さいOLTP的なワークロードだと
+Predicate setの並行制御がボトルネックになることがある。</p>
+
+<h1 id="topic-3-multi-version-concurrency-control-design-decisions---20210816">Topic 3: Multi-Version Concurrency Control (Design Decisions) - 2021/08/16</h1>
+<p>Paper : Y. Wu, et al., An Empirical Evaluation of In-Memory Multi-Version Concurrency Control, in VLDB, 2017</p>
+
+<h2 id="summary-2">Summary</h2>
+<p>従来はOLTPのスケーラビリティ向上のためにはConcurrency control protocolが最重要と考えられていたが、
+実はVersion Storageの設計がより性能に大きな影響を与えていると考えられる。</p>
+
+<h2 id="concurrency-control-protocol">Concurrency Control Protocol</h2>
+<h3 id="mvto">MVTO</h3>
+<ul>
+  <li>TPC-Cでは最も良いスループットに。不向きなワークロードは?</li>
+  <li>Well-knownなDBMS（論文中のTable 1）で、MVTOは使用されていない。<br />
+-&gt; 複数のisolation levelの提供が難しいのが理由の1つか。</li>
+</ul>
+
+<h3 id="mvocc">MVOCC</h3>
+<ul>
+  <li>New versionは、1VOCCのようにthread localに書くのではなく、共通領域に書く。</li>
+  <li>abortがcommit時なのでペナルティが大きい。</li>
+  <li>validationにおけるread setのスキャンのオーバーヘッドが大きい。</li>
+</ul>
+
+<h3 id="mv2pl--wait_die">MV2PL + WAIT_DIE</h3>
+<ul>
+  <li>Read txにロックを取られている場合、write txがabortするため、write txのabort率が高くなる。</li>
+</ul>
+
+<h3 id="serialization-certifier-si--ssn">Serialization Certifier (SI + SSN)</h3>
+<ul>
+  <li>abort率を低減できるが、centralized anti-dependency graphの管理がスケーラビリティのbottleneckになる。</li>
+</ul>
+
+<h2 id="garbage-collection">Garbage Collection</h2>
+<h3 id="epoch-based-memory-management">Epoch-based memory management</h3>
+<ul>
+  <li>Thread localにqueueを持ち、centralized threadが全threadをチェックして、全てepochが0ならGC可と判定する(?)</li>
+</ul>
+
+<h3 id="background-vacuuming">Background Vacuuming</h3>
+<p>定期的にDBをフルスキャンしてガーベジを回収する方法は、大規模DBではスケールしにくい。
+latch-freeデータ構造でガーベジを管理し、epochベースで回収する方法や、dirty blockのビットマップを用いて
+ガーベジの存在するブロックのみをスキャンする（postgresのvisibility mapなど）方法など、ガーベジの
+探索方法の工夫が必要。</p>
+
+<h3 id="cooperative-vacuuming">Cooperative Vacuuming</h3>
+<p>version chainの走査時に、ガーベジの検出を同時に行う。O2N append onlyストレージのみで使用できる。
+スキャン頻度が低いタプルがGCされないdusty corners問題が発生する。</p>
+
+<h1 id="topic-2-in-memory-databases---20210802">Topic 2: In-Memory Databases - 2021/08/02</h1>
+<p>Paper : X. Yu, et al., Staring into the Abyss: An Evaluation of Concurrency Control with One Thousand Cores, in VLDB, 2014</p>
+<h2 id="basic-to">Basic T/O</h2>
+<p>トランザクションtがタプルxに対して、read/writeを行う際に
+<code class="language-plaintext highlighter-rouge">x.MAX_READ_TS</code>/<code class="language-plaintext highlighter-rouge">x.MAX_WRITE_TS</code>とtのタイムスタンプを比較して、大きい場合のみread/writeができる。
+Repeatable Readのためread時にスレッドローカルにデータをコピーする。</p>
+
+<h2 id="timestamp-allocation">Timestamp Allocation</h2>
+<ul>
+  <li>Mutex</li>
+  <li><a href="https://en.wikipedia.org/wiki/Fetch-and-add">XADD</a> (この論文で使用)</li>
+  <li>XADD batch (Silo)</li>
+  <li>CPU clock + thread ID
+    <ul>
+      <li><a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-vol-2b-manual.pdf">invariant tsc</a> (p.545) on Intel CPU</li>
+      <li>http://oliveryang.net/2015/09/pitfalls-of-TSC-usage/</li>
+      <li>https://forums.guru3d.com/threads/a-bit-detailed-info-on-intel-time-stamp-counter-tsc.433977/</li>
+      <li>https://linuxtut.com/en/0ea82f8856fea48fd2d6/</li>
+    </ul>
+  </li>
+  <li>HW実装のTSアロケータ（この論文ではGraphiteで実装）</li>
+</ul>
+
+<h2 id="52-write-intensive-workload">5.2 write-intensive workload</h2>
+<p>fig.9b: Useful worklockが多いが、ロックグラフの生成に時間を消費しており、thrashingによって性能が落ちた。</p>
+
+<h1 id="topic-1-course-introduction-and-history-of-databases---20210726">Topic 1: Course Introduction and History of Databases - 2021/07/26</h1>
+<p>Paper : A. Pavlo, et al., What’s New with NewSQL?, in SIGMOD Record (vol. 45, iss. 2), 2016</p>
+
+<h2 id="背景">背景</h2>
+<p>2000年代、インターネットアプリケーションの台頭で、同時接続数の大幅な増加や常時オンラインの要件が必要とされるようになり、
+DBがボトルネックとなることが多くなりました。
+DBのスケールアップでは費用対効果が悪く、スケールアウトにより処理能力を向上する方法が模索されました。
+そうした中で現れたのがNoSQLのデータストアです。
+トラディショナルなDBMSのモデルでは、性能と可用性を犠牲に一貫性と正確性が重視されましたが、
+このトレードオフは多くのWebアプリケーションでは妥当ではないと考えられました。
+また、キーによる単純な検索クエリにはSQLはオーバーキルであるという見方もありました。
+NoSQLを使う利点は、スケーラビリティのことは気にせず、アプリケーションの開発に専念でき、
+高い生産性を実現できることにあると考えられていました。</p>
+
+<p>しかし結局のところ、多くのアプリケーションではトランザクションや一貫性の保証が重要であることがわかってきました。
+アプリケーションで一貫性を保証するコストは高く、またトランザクションによる抽象化が人の理解を容易にするため、
+生産性が高くなるという意見もあります。
+そこで、2010年代になると、NoSQL並みのスケーラビリティを確保しつつ、ACIDを保証するNewSQLが現れました。
+2000年代中盤から、VerticaやGreenplumといったOLAP向けDBMSで、スケールアウトに対応するものはありましたが、
+これらはOLAP特化のため、この論文ではNewSQLには含めないと述べられています。
+NewSQLは、トランザクショナルな読み書き必要とし、データ全体の一部をインデックス走査で読む短時間のクエリが、
+異なるインプットに対して繰り返し実行されるといったワークロードをもつアプリケーションに特化しています。</p>
+
+<h2 id="newsqlの分類">NewSQLの分類</h2>
+<p>この論文では、NewSQLを以下の3種類に分類にしています。
+（ScaleDB, Hekaton, CitusDB, VitesseなどのシングルノードDBMSのストレージエンジン拡張はNewSQLに含めない）</p>
+<ul>
+  <li>新しいアーキテクチャでスクラッチ開発されたもの
+    <ul>
+      <li>Examples: Clustrix, CockroachDB, Google Spanner, H-Store, HyPer, MemSQL, NuoDB, SAP HANA, VoltDB</li>
+    </ul>
+  </li>
+  <li>2000年代にGoogleなどによって開発されたミドルウェアによるシャーディングを再実装したもの
+    <ul>
+      <li>Examples: AgilData Scalable Cluster, MariaDB MaxScale, ScaleArc</li>
+    </ul>
+  </li>
+  <li>クラウドコンピューティングプロバイダによるDBaaS
+    <ul>
+      <li>Examples: Amazon Aurora, ClearDB</li>
+      <li>Auorora MySQLはmulti-masterをサポートするものの、コンフリクトのハンドリングなどで制限もあり、スケールアウトでどの程度性能向上するか不明</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="main-memory-storage">Main memory storage</h2>
+<p>メモリの大容量化、低価格化を背景に、NewSQLでもメモリベースアーキテクチャのDBが見られるようになってきました。
+メモリベースアーキテクチャのアイディア自体は、1980年代から見られましたが、NewSQLで目新しいのは、
+メモリフットプリントを抑えるため、2次記憶へのデータの部分書き出しをサポートするといった工夫がみられる点です。</p>
+
+<p>トラディショナルなDBMSでは、トランザクション処理等で大半の処理時間を専有しており、
+意味のあるデータ処理を実行している時間は10%以下だった、などといった研究も見られており、
+現代のハードウェアに合わせたアーキテクチャの見直しによって、DBMSの大幅な性能向上も期待されるところです。
+<a href="https://dl.acm.org/doi/10.1145/1376616.1376713">OLTP Through the Looking Glass, and What We Found There</a></p>
+
+<h2 id="sharding--partitioning">Sharding / Partitioning</h2>
+<p>ともにホモジニアスなクラスタ構成をとる、NuoDBとMemSQLのシャーディング戦略について解説しています。
+NuoDBでは、Transaction Engine（TE）が、Storage Manager（SM）によって分割されたデータブロック（atom）をキャッシュしており、
+またデータが同じTEによって処理されやすくなるようなロードバランシングを行っています。
+結果として、NuoDBでは事前のパーティショニングやテーブル間の関係なくして、他の分散DBMSと同様のパーティショニングを実現しています。</p>
+
+<p>また、MemSQLでは、クエリ実行のみの集約ノードと、データを格納するリーフノードという構成をとり、リーフノードにクエリをプッシュダウン
+することで、ノード間のデータ転送量を削減しています。</p>
+
+<p>これらのNewSQLでは再パーティショニングなしで、ノード追加が可能です。（NuoDBのTE、MemSQLの集約ノード）</p>
+
+<p>また、パーティションのライブマイグレーションといった、再パーティショニングの運用負荷を低減する仕組みもNoSQL / NewSQLではみられます。</p>
+
+<h2 id="concurrency-control">Concurrency control</h2>
+<p>ほとんどのNewSQLは、デッドロック検知の難しさから2PLを避ける傾向にあります。
+最近では代わりに、Timestamp Ordering（TO）をベースにしたものが多いです。
+NewSQLで広く用いられるプロトコルとして、ロングランニングなリードオンリークエリを、ライトをブロックせずに
+実行できるという利点から、decentralized multi-version concurrency controlが用いられています。</p>
+
+<p>Google Spannerのコンカレンシコントロール実装は一石を投じるもので、ベースは2PL + MVCCですが、ユニークな点として
+GPSや原子時計といったハードウェアにより、高精度の時刻同期を実現しています。
+Spannerの登場により、従来は分散DBMSに向かないと考えられていたTOが見直されました。
+CockroachDBは、hybrid clock protocolによって原子時計無しで、Spannerと同等のコンカレンシコントロールを実現しています。
+<a href="https://www.cockroachlabs.com/blog/living-without-atomic-clocks/">Hybrid clock protocol of CockroachDB</a></p>
+
+<h2 id="まとめと今後の展望">まとめと今後の展望</h2>
+<p>NewSQLで用いられている技術の多くは、過去に発見されたものですが、それらの技術は個々のシステムで単発で
+実装されたもので、1つのプラットフォームとして組み合わされたものではありませんでした。
+NewSQLの革新性は、ハードウェアの進歩や、高並列度のOLTP、大規模データのOLAPを必要とする
+アプリケーションが増加したことにより、膨大なエンジニアリングによってプラットフォームとして
+作りあげられたことにあります。</p>
+
+<p>NewSQLの台頭により、今後は分散DBMSがコモディティ化していくのではないかと考えられます。
+これからは、リアルタイムデータ分析やhybrid transaction-analytics processing（HTAP）といった、
+過去データと新しいデータの組み合わせから知見を得るためのシステムへと進化していくと著者達は予測しています。</p>
+
+<h2 id="memo">memo</h2>
+<ul>
+  <li><a href="http://cs.yale.edu/homes/thomson/publications/calvin-sigmod12.pdf">Calvin</a> flow control</li>
+  <li><a href="https://people.eecs.berkeley.edu/~alig/papers/ramp.pdf">RAMP</a></li>
+  <li>Secondary indexのデータの持ち方について
+OLTPとOLAPでスキャンの特性が異なるためレイアウトを分けたい。
+HTAPでOLAP側へのレプリケーションにおいて、再レイアウトのオーバーヘッドをどうするか｡</li>
+</ul>
+
+<h1 id="general-notes">General Notes</h1>
+<ul>
+  <li>CMU’s education purpose DBMS has nice tests <a href="https://github.com/cmu-db/bustub">BusTub</a></li>
+  <li><a href="https://github.com/donnemartin/system-design-primer">System design primer</a></li>
+</ul>
+
+
+
+<div class="pagination">
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

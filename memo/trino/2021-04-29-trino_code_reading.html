@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Trino Code Reading | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Trino Code Reading" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Trino Code Reading" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Keisuke Suzuki"},"headline":"Trino Code Reading","url":"/memo/trino/2021-04-29-trino_code_reading.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <p>Memo for Trino code reading</p>
+
+<p>Following memo is based on Trino 355 which is the latest version as of April 29, 2021.</p>
+
+<h1 id="connector-implementation">Connector Implementation</h1>
+<ul>
+  <li>io.trino.spi.Plugin<br />
+Entory point of a Plugin. Provides <code class="language-plaintext highlighter-rouge">io.trino.spi.connector.ConnectorFactory</code><br />
+configuration is provided here.
+    <ul>
+      <li>reference: <a href="https://trino.io/docs/current/develop/spi-overview.html">SPI overview</a></li>
+    </ul>
+  </li>
+  <li>io.trino.spi.connector.Connector / ConnectorFactory<br />
+<code class="language-plaintext highlighter-rouge">Collector</code> provides the instances of the following services:
+    <ul>
+      <li>io.trino.spi.connector.ConnectorMetadata</li>
+      <li>io.trino.spi.connector.ConnectorSplitManager</li>
+      <li>io.trino.spi.connector.ConnectorHandleResolver</li>
+      <li>io.trino.spi.connector.ConnectorRecordSetProvider</li>
+      <li>reference: <a href="https://trino.io/docs/current/develop/connectors.html">Connectors</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="service-provider-interfaces-spi">Service Provider interfaces (SPI)</h1>
+<p>Definition is from <a href="https://www.oreilly.com/library/view/presto-the-definitive/9781492044260/">Presto: The Definitive Guide</a> (p48, Figure 4-5).</p>
+
+<h3 id="coodinator">Coodinator</h3>
+<ul>
+  <li>Metadata SPI
+    <ul>
+      <li>Used by Parser / Analyzer</li>
+      <li>check table, column, types</li>
+    </ul>
+  </li>
+  <li>Data Statistics SPI
+    <ul>
+      <li>Used by Planner / Optimizer</li>
+      <li>cost-based query optimization</li>
+    </ul>
+  </li>
+  <li>Data Location SPI
+    <ul>
+      <li>Scheduler</li>
+      <li>generate logical splits of the table contents</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="worker">Worker</h3>
+<ul>
+  <li>Data Stream SPI</li>
+</ul>
+
+<h1 id="query-plan">Query plan</h1>
+<h2 id="terminology">Terminology</h2>
+<ul>
+  <li><em>Distributed query plan</em>: an extension of the simple query plan consisting of one or more stages</li>
+  <li><em>Stage</em>: runtime incarnation of a plan fragment. Having more than one stage results in the creation of a dependency tree of stages.</li>
+  <li><em>Tasks</em>: unit composes a stage. coordinator schedules tasks across the workers. It’s the runtime incarnation of a plan fragment when assigned to a worker.</li>
+  <li><em>Source task</em>: a task that scan data source and generate pages. It uses the data source SPI to fetch data from the underlying data source with the help of a connector.</li>
+  <li><em>Split</em>: unit of data that a task process. It is the unit of parallelism and work assignment. Coordinator creates the list of splits with the metadata from the connector.<br />
+Coordinator tracks all splits available for processing including splits generated as intermediate data.</li>
+  <li><em>Driver</em>: an instantiation of a pipeline of operators and performs the processing of the data in the split. A task instantiates a driver for each split.</li>
+  <li><em>Pipeline</em>: Sequence of Operators within a task</li>
+  <li><em>Operator</em>: processes input data to produces output data (pages) according to their semantics. e.g.
+    <ul>
+      <li>table scan</li>
+      <li>filters</li>
+      <li>joins</li>
+      <li>aggregations</li>
+      <li>projections</li>
+    </ul>
+  </li>
+  <li><em>Page</em>: collection of rows in columnar format</li>
+</ul>
+
+<p>Relationship is as follows:</p>
+<ul>
+  <li>(Distributed) query plan has one or more Stages and Stages have dependency</li>
+  <li>Stage has one or more Tasks</li>
+  <li>Coordinator creates the list of splits with the metadata from the connector</li>
+  <li>Using the list of splits, Coordinator schedules tasks on the workers</li>
+  <li>Task creates a Driver for each Split</li>
+</ul>
+
+<h1 id="table-statistics">Table Statistics</h1>
+<ul>
+  <li><a href="https://trino.io/docs/current/optimizer/statistics.html">Available Table statistics</a></li>
+  <li><a href="https://trino.io/docs/current/connector/hive.html#table-statistics">Table statistics for hive connector</a></li>
+</ul>
+
+<h1 id="server">Server</h1>
+<h2 id="bootstrap">Bootstrap</h2>
+<ul>
+  <li>io.trino.server.Server#doStart
+    <ul>
+      <li>add io.trino.server.ServerMainModule
+        <ul>
+          <li>for coordinator, install CoordinatorModule</li>
+          <li>for worker, install WorkerModule</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>io.trino.server.PluginManager#loadPlugins</li>
+</ul>
+
+<h2 id="query">Query</h2>
+<h3 id="coordinator">Coordinator</h3>
+<ul>
+  <li>receive REST API request POST /v1/statement</li>
+  <li>io.trino.dispatcher.QueuedStatementResource
+    <ul>
+      <li>create query ID</li>
+      <li>respond queued URI</li>
+    </ul>
+  </li>
+  <li>receive REST API request queued/{queryId}/{slug}/{token}
+    <ul>
+      <li>Query#waitForDispatched</li>
+      <li>io.trino.dispatcher.DispatchManager#createQuery
+        <ul>
+          <li>decode session</li>
+          <li>select resource group</li>
+          <li>io.trino.dispatcher.LocalDispatchQueryFactory
+            <ul>
+              <li>io.trino.execution.SqlQueryExecution is asynchronously created by Future</li>
+              <li>io.trino.dispatcher.LocalDispatchQuery is created</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>io.trino.execution.resourcegroups.ResourceGroupManager(InternalResourceGroupManager)#submit</li>
+      <li>io.trino.execution.resourcegroups.InternalResourceGroup#run</li>
+      <li>io.trino.dispatcher.LocalDispatchQuery#startWaitingForResources
+        <ul>
+          <li>wait for query execution to finish construction</li>
+          <li>wait for minimum workers</li>
+          <li>startExecution -&gt; querySubmitter#accept (SqlQueryManager#createQuery)</li>
+        </ul>
+      </li>
+      <li>io.trino.execution.SqlQueryManager#createQuery</li>
+      <li>io.trino.execution.QueryExecution#start
+        <ul>
+          <li>for query (select / insert /delete): io.trino.execution.SqlQueryExecution</li>
+          <li>for DDL: io.trino.execution.DataDefinitionExecution</li>
+          <li>statemachine: transition to planning</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="planning">Planning</h4>
+<h5 id="query-processing">Query processing</h5>
+<ul>
+  <li>io.trino.execution.SqlQueryExecution#planQuery
+    <ul>
+      <li>io.trino.sql.planner.LogicalPlanner#plan</li>
+      <li>io.trino.sql.planner.InputExtractor#extractInputs
+        <ul>
+          <li>visit plan nodes</li>
+        </ul>
+      </li>
+      <li>io.trino.sql.planner.PlanFragmenter#createSubPlans</li>
+    </ul>
+  </li>
+  <li>io.trino.execution.SqlQueryExecution#planDistribution
+    <ul>
+      <li>io.trino.sql.planner.DistributedExecutionPlanner#plan -&gt; StageExecutionPlan
+        <ul>
+          <li>get splits for this fragment, this is lazy so split assignments aren’t actually calculated here<br />
+io.trino.sql.planner.DistributedExecutionPlanner.Visitor#visitScanAndFilter
+            <ul>
+              <li>io.trino.split.SplitManager#getSplits
+                <ul>
+                  <li>call ConnectorSplitManager#getSplits</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>create child stages</li>
+          <li>extract TableInfo</li>
+        </ul>
+      </li>
+      <li>set queryScheduler<br />
+io.trino.execution.scheduler.SqlQueryScheduler#createSqlQueryScheduler</li>
+    </ul>
+  </li>
+</ul>
+
+<h5 id="ddl">DDL</h5>
+<ul>
+  <li>io.trino.execution.DataDefinitionExecution#start</li>
+  <li>io.trino.execution.DataDefinitionTask#execute</li>
+</ul>
+
+<p>e.g. CREATE TABLE</p>
+<ul>
+  <li>list table elements</li>
+  <li>get table properties
+    <ul>
+      <li>io.trino.metadata.TablePropertyManager#getProperties<br />
+accept properties provided by io.trino.spi.connector.Connector#getTableProperties</li>
+    </ul>
+  </li>
+  <li>create table
+    <ul>
+      <li>io.trino.metadata.MetadataManager#createTable</li>
+      <li>io.trino.spi.connector.ConnectorMetadata#createTable</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="execution">Execution</h4>
+<p>Describing query processing, not DDL</p>
+<ul>
+  <li>SqlQueryScheduler#start</li>
+</ul>
+
+<h1 id="connector">Connector</h1>
+<h2 id="hive-connector">Hive Connector</h2>
+<ul>
+  <li>IO queue is in io.trino.plugin.hive.HiveSplitSource
+    <ul>
+      <li>per query IO queue</li>
+    </ul>
+  </li>
+  <li>File format is detected on io.trino.plugin.hive.HivePageSourceProvider#createHivePageSource</li>
+</ul>
+
+
+<div class="pagination">
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Setup Hadoop 3 and Hive 3 | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Setup Hadoop 3 and Hive 3" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I’ve been working for a while in the company that provides data analytics platform and enjoying interesting storage layer problems. I may roughly understand the whole picture of our Presto / Hive based MPP architecture. However, I recently feels that I need deeper understanding of their internal behavior to tackle complicated performance problems This work is to create a sandbox environment to study the latest Hive and Hadoop." />
+<meta property="og:description" content="I’ve been working for a while in the company that provides data analytics platform and enjoying interesting storage layer problems. I may roughly understand the whole picture of our Presto / Hive based MPP architecture. However, I recently feels that I need deeper understanding of their internal behavior to tackle complicated performance problems This work is to create a sandbox environment to study the latest Hive and Hadoop." />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-11T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Setup Hadoop 3 and Hive 3" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Keisuke Suzuki"},"dateModified":"2020-06-11T00:00:00+00:00","datePublished":"2020-06-11T00:00:00+00:00","description":"I’ve been working for a while in the company that provides data analytics platform and enjoying interesting storage layer problems. I may roughly understand the whole picture of our Presto / Hive based MPP architecture. However, I recently feels that I need deeper understanding of their internal behavior to tackle complicated performance problems This work is to create a sandbox environment to study the latest Hive and Hadoop.","headline":"Setup Hadoop 3 and Hive 3","mainEntityOfPage":{"@type":"WebPage","@id":"/2020/06/11/setup_hive3.html"},"url":"/2020/06/11/setup_hive3.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <div class="post">
+    <h1 class="post-title">Setup Hadoop 3 and Hive 3</h1>
+    <div class="post-info">
+        <time datetime="2020-06-11 00:00:00 +0000">Written&nbsp;on:&nbsp;June 11, 2020</time>
+    </div>
+    <div class="post-line"></div>
+
+    <p>I’ve been working for a while in the company that provides data analytics platform and enjoying interesting 
+storage layer problems. I may roughly understand the whole picture of our Presto / Hive based MPP architecture. 
+However, I recently feels that I need deeper understanding of their internal behavior to tackle 
+complicated performance problems</p>
+
+<p>This work is to create a sandbox environment to study the latest Hive and Hadoop.
+<!--end_excerpt--></p>
+
+<h1 id="goal">Goal</h1>
+<p>Executing queries by hive on top of HDFS and MapReduce / Tez. 
+I also think to use this environment to run Presto in the next step.</p>
+
+<p>Note: I setup my enviroment just as a sandbox so security, reliability and availability are not considered well.</p>
+
+<h1 id="environment-and-software-versions">Environment and Software Versions</h1>
+<h2 id="hardware">Hardware</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ lscpu
+Architecture:                    x86_64
+CPU op-mode(s):                  32-bit, 64-bit
+Byte Order:                      Little Endian
+Address sizes:                   39 bits physical, 48 bits virtual
+CPU(s):                          6
+On-line CPU(s) list:             0-5
+Thread(s) per core:              1
+Core(s) per socket:              6
+Socket(s):                       1
+NUMA node(s):                    1
+Vendor ID:                       GenuineIntel
+CPU family:                      6
+Model:                           158
+Model name:                      Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz
+Stepping:                        10
+CPU MHz:                         2394.513
+CPU max MHz:                     4100.0000
+CPU min MHz:                     800.0000
+BogoMIPS:                        6000.00
+Virtualization:                  VT-x
+L1d cache:                       192 KiB
+L1i cache:                       192 KiB
+L2 cache:                        1.5 MiB
+L3 cache:                        9 MiB
+NUMA node0 CPU(s):               0-5
+</code></pre></div></div>
+
+<p>All processes run on single server.</p>
+
+<h2 id="software">Software</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ uname -srvmo
+Linux 5.4.0-29-generic #33-Ubuntu SMP Wed Apr 29 14:32:27 UTC 2020 x86_64 GNU/Linux
+
+$ java -version
+openjdk version "1.8.0_252"
+OpenJDK Runtime Environment (build 1.8.0_252-8u252-b09-1ubuntu1-b09)
+OpenJDK 64-Bit Server VM (build 25.252-b09, mixed mode)
+
+$ ./bin/hadoop version
+Hadoop 3.2.1
+Source code repository https://gitbox.apache.org/repos/asf/hadoop.git -r b3cbbb467e22ea829b3808f4b7b01d07e0bf3842
+Compiled by rohithsharmaks on 2019-09-10T15:56Z
+Compiled with protoc 2.5.0
+From source with checksum 776eaf9eee9c0ffc370bcbc1888737
+</code></pre></div></div>
+
+<p>Hadoop run by <a href="https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operation">pseudo-distributed mode</a> .</p>
+
+<ul>
+  <li>Hive 3.1.2
+    <ul>
+      <li>replaced guava jar bundled on hive with the one of Hadoop as a workaround of <a href="https://issues.apache.org/jira/browse/HIVE-22126">guava version incompatibility problem</a></li>
+    </ul>
+  </li>
+  <li>PostgreSQL 12.3 (for metastore)
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ docker run --name pg-12 -e POSTGRES_PASSWORD= -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.3
+</code></pre></div>    </div>
+  </li>
+  <li>Tez 0.9.2</li>
+</ul>
+
+<h1 id="setup-hdfs--yarn">Setup HDFS &amp; YARN</h1>
+<p>Follow steps of <a href="https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/SingleCluster.html#Pseudo-Distributed_Operatio">pseudo-distributed mode</a></p>
+
+<ul>
+  <li>Install dependencies
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># apt-get install ssh pdsh
+</code></pre></div>    </div>
+  </li>
+  <li>Check ssh to the localhost without password</li>
+  <li>Get hadoop distribution</li>
+  <li>Edit configurations
+    <ul>
+      <li>etc/hadoop/core-site.xml</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>fs.defaultFS<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>hdfs://localhost:9000<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+<ul>
+  <li>etc/hadoop/hdfs-site.xml</li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>dfs.replication<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>1<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+<ul>
+  <li>Format HDFS
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ $HADOOP_HOME/bin/hdfs namenode -format
+$ $HADOOP_HOME/sbin/start-dfs.sh
+$ $HADOOP_HOME/sbin/start-yarn.sh
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>Note: HDFS data dir (dfs.datanode.data.dir) is <code class="language-plaintext highlighter-rouge">/tmp/hadoop-${user.name}/dfs/data</code> so it disappears by reboot.</p>
+
+<p>Now HDFS NameNode and YARN ResourceManager Web UI are available</p>
+<ul>
+  <li>NameNode UI: dfs.namenode.http-address (default: namenode_host:9870)</li>
+  <li>ResourceManager UI: yarn.resourcemanager.webapp.address (default: resourcemanager_host:8088)</li>
+</ul>
+
+<h1 id="setup-hive">Setup Hive</h1>
+<p>Follow <a href="https://cwiki.apache.org/confluence/display/Hive/GettingStarted">GettingStarted page</a>.</p>
+
+<ul>
+  <li>Get Hive distribution and extract</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">HADOOP_HOME</code> and <code class="language-plaintext highlighter-rouge">HIVE_HOME</code></li>
+  <li>Create directories to store Hive tables
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ $HADOOP_HOME/bin/hadoop fs -mkdir /tmp
+$ $HADOOP_HOME/bin/hadoop fs -mkdir -p /user/hive/warehouse  # hive.metastore.warehouse.dir
+$ $HADOOP_HOME/bin/hadoop fs -chmod g+w /tmp
+$ $HADOOP_HOME/bin/hadoop fs -chmod g+w /user/hive/warehouse
+</code></pre></div>    </div>
+  </li>
+  <li>Edit configure to use PostgreSQL for metastore
+    <ul>
+      <li>hive-site.xml (see <a href="https://cwiki.apache.org/confluence/display/Hive/AdminManual+Configuration">here</a> for configuration defail)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>javax.jdo.option.ConnectionDriverName<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>org.postgresql.Driver<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;description&gt;</span>Driver class name for a JDBC metastore<span class="nt">&lt;/description&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>javax.jdo.option.ConnectionURL<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>jdbc:postgresql://${HOST}:${PORT}/hive_metastore<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;description&gt;</span>
+            JDBC connect string for a JDBC metastore.
+            To use SSL to encrypt/authenticate the connection, provide database-specific SSL flag in the connection URL.
+            For example, jdbc:postgresql://myhost/db?ssl=true for postgres database.
+        <span class="nt">&lt;/description&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>javax.jdo.option.ConnectionUserName<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>postgres<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;description&gt;</span>Username to use against metastore database<span class="nt">&lt;/description&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>javax.jdo.option.ConnectionPassword<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;&lt;/value&gt;</span>
+        <span class="nt">&lt;description&gt;</span>password to use against metastore database<span class="nt">&lt;/description&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>hive.server2.enable.doAs<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>false<span class="nt">&lt;/value&gt;</span>
+        <span class="nt">&lt;description&gt;</span>
+            Setting this property to true will have HiveServer2 execute
+            Hive operations as the user making the calls to it.
+        <span class="nt">&lt;/description&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+<ul>
+  <li>Initialize metastore schema
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ $HIVE_HOME/bin/schematool -dbType postgres -initSchema
+</code></pre></div>    </div>
+  </li>
+  <li>Boot hiveserver2
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ $HIVE_HOME/bin/hiveserver2
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>HiveServer2 Web UI is available at hive.server2.webui.host:hive.server2.webui.port (default: localhost:10002).</p>
+
+<h1 id="connect-to-hiveserver">Connect to Hiveserver</h1>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ $HIVE_HOME/bin/beeline -u jdbc:hive2://localhost:10000
+</code></pre></div></div>
+
+<p>Note: Bootstrap of hiveserver may take some time.
+Now it’s ready to execute queries.</p>
+
+<h1 id="install-tez">Install Tez</h1>
+<p>Follow <a href="https://tez.apache.org/install.html">Install instruction</a>.</p>
+
+<ul>
+  <li>Get tez binary tarball and extract
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ tar zxvf apache-tez-0.9.2-bin.tar.gz
+$ cd apache-tez-0.9.2-bin
+</code></pre></div>    </div>
+    <p>Given <code class="language-plaintext highlighter-rouge">TEZ_HOME</code> is the directory tez binary tarball was extracted after here.</p>
+  </li>
+</ul>
+
+<h2 id="server-side">Server side</h2>
+<ul>
+  <li>Copy full tarball on HDFS
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ $HADOOP_HOME/bin/hadoop fs -mkdir -p /apps/tez-0.9.2
+$ $HADOOP_HOME/bin/hadoop fs -copyFromLocal share/tez.tar.gz /apps/tez-0.9.2
+</code></pre></div>    </div>
+    <p>Note: <code class="language-plaintext highlighter-rouge">apache-tez-0.9.2-bin.tar.gz</code> is not the one to upload but <code class="language-plaintext highlighter-rouge">${TEZ_HOME}/share/tez.tar.gz</code> is the one.
+see <a href="https://cwiki.apache.org/confluence/display/TEZ/Tez+Release+FAQ">here</a> for the detail.</p>
+  </li>
+  <li>Workaround of <a href="https://issues.apache.org/jira/browse/HDFS-12920">HDFS-12920</a><br />
+To avoid the issue, following configuration was required on <code class="language-plaintext highlighter-rouge">${HADOOP_HOME}/conf/hdfs-site.xml</code>.
+    <div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>dfs.namenode.decommission.interval<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>30<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+  <span class="nt">&lt;property&gt;</span>
+      <span class="nt">&lt;name&gt;</span>dfs.client.datanode-restart.timeout<span class="nt">&lt;/name&gt;</span>
+      <span class="nt">&lt;value&gt;</span>30<span class="nt">&lt;/value&gt;</span>
+  <span class="nt">&lt;/property&gt;</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="client-side">Client side</h2>
+<p>To try tez applications, following configurations are required on a client.</p>
+
+<ul>
+  <li>Create tez-site.xml on <code class="language-plaintext highlighter-rouge">${TEZ_HOME}/conf</code></li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;configuration&gt;</span>
+    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>tez.lib.uris<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>${fs.defaultFS}/apps/tez-0.9.2/tez.tar.gz<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;/configuration&gt;</span>
+</code></pre></div></div>
+<p>Note: <code class="language-plaintext highlighter-rouge">tez-default-template.xml</code> is a template of configuration file.</p>
+<ul>
+  <li>Set hadop classpath
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export HADOOP_CLASSPATH=${TEZ_HOME}/conf:${TEZ_HOME}/*:${TEZ_HOME}/lib/*
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="hive-on-tez">Hive on Tez</h2>
+<p>Set Hive configuration as follows and start hiveserver2</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">${HIVE_HOME}/conf/hive-env.sh</code></li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export HADOOP_CLASSPATH=${TEZ_HOME}/conf:${TEZ_HOME}/*:${TEZ_HOME}/lib/*:${HADOOP_CLASSPATH}
+</code></pre></div></div>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">${HIVE_HOME}/conf/hive-site.xml</code></li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;property&gt;</span>
+        <span class="nt">&lt;name&gt;</span>hive.execution.engine<span class="nt">&lt;/name&gt;</span>
+        <span class="nt">&lt;value&gt;</span>tez<span class="nt">&lt;/value&gt;</span>
+    <span class="nt">&lt;/property&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Start hiveserver2</li>
+</ul>
+
+<p>That’s it. Now Hive is set up on Tez. I will set up Presto on <a href="/2020/06/18/setup_presto.html">the next post</a>.</p>
+
+</div>
+
+
+
+<div class="pagination">
+    
+    <a href="/2020/06/18/setup_presto.html" class="left arrow">&#8592;</a>
+    
+    
+    <a href="/2020/03/28/read_amazon_builders_library.html" class="right arrow">&#8594;</a>
+    
+
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

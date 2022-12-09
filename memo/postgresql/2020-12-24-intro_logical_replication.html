@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Introduction of Logical Replication | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Introduction of Logical Replication" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Introduction of Logical Replication" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Keisuke Suzuki"},"headline":"Introduction of Logical Replication","url":"/memo/postgresql/2020-12-24-intro_logical_replication.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <p>An Introduction of Logical Replication setup and maintenance.</p>
+
+<p>As of 2020/12/23, I’m based on PostgreSQL 13.</p>
+
+<h1 id="setup">Setup</h1>
+<p>A basic setup is creating a publication on a primary DB and creating a subscription on a replica DB. Some preparations are required before creating publications and subscriptions.</p>
+
+<h2 id="db-parameters">DB parameters</h2>
+<ul>
+  <li><a href="https://www.postgresql.org/docs/13/logical-replication-config.html">Configuration Document</a></li>
+  <li>Logical replication related <a href="https://www.postgresql.org/docs/13/runtime-config-replication.html">PostgreSQL paramters</a></li>
+</ul>
+
+<h3 id="publisher-primary-db">Publisher (Primary) DB</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">wal_level</code> = ‘logical’
+    <ul>
+      <li>Note: This parameter is set by <code class="language-plaintext highlighter-rouge">rds.logical_replication</code> = 1 on RDS PostgreSQL</li>
+      <li>Restart required to apply</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">max_replication_slots</code> &gt;= # of subscriptions + some reserve for the table synchronization
+    <ul>
+      <li>Restart required to apply</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">max_wal_senders</code> &gt;= max_replication_slots + others (e.g. # of physical replicas)
+    <ul>
+      <li>Restart required to apply</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">wal_sender_timeout</code> should be increased in case WAL replay takes time on the replica and timeout happens on the primary</li>
+  <li><code class="language-plaintext highlighter-rouge">statement_timeout</code> should be increased or disabled so that the initial data copy doesn’t timeout
+    <ul>
+      <li>You can also set per role configuration if you don’t want to change the global configuration. e.g.
+        <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ALTER</span> <span class="k">ROLE</span> <span class="p">...</span> <span class="k">SET</span> <span class="n">statement_timeout</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">Note</span><span class="p">:</span> <span class="n">These</span> <span class="k">parameters</span> <span class="k">are</span> <span class="k">set</span> <span class="k">by</span> <span class="n">rds</span><span class="p">.</span><span class="n">logical_replication</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">on</span> <span class="n">RDS</span> <span class="n">PostgreSQL</span>
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="subscriber-replica-db">Subscriber (Replica) DB</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">max_replication_slots</code> &gt;= # of subscriptions
+    <ul>
+      <li>Restart required to apply</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">max_logical_replication_workers</code> &gt;= # of subscriptions + some reserve for the table synchronization
+    <ul>
+      <li>Restart required to apply</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">max_worker_processes</code> &gt; max_logical_replication_workers + others (e.g. max_parallel_workers)
+    <ul>
+      <li>Restart required to apply</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">max_sync_workers_per_subscription</code> should be increased if you want to execute table sync in parallel</li>
+</ul>
+
+<h2 id="db-role">DB role</h2>
+<p><a href="https://www.postgresql.org/docs/13/logical-replication-security.html">PostgreSQL doc for role configuration of logical replication</a></p>
+
+<h3 id="publisher-db">Publisher DB</h3>
+<h4 id="to-create-a-publication">To create a publication</h4>
+<ul>
+  <li>The user must have the CREATE privilege in the database</li>
+  <li>To create a publication that publishes all tables, i.e. <code class="language-plaintext highlighter-rouge">CREATE PUBLICATION ... FOR ALL TABLES</code>, the user must be a superuser. (<a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts.General.FeatureSupport.LogicalReplication">On RDS, <code class="language-plaintext highlighter-rouge">rds_superuser</code> instead</a>)</li>
+  <li>To add a table to a publication, user must owns the table</li>
+</ul>
+
+<h4 id="to-connect-from-a-subscriber">To connect from a subscriber</h4>
+<ul>
+  <li>must have the SELECT privilege on a published table</li>
+</ul>
+
+<p>I recommended to create a dedicated user to connect a publisher from a subscriber.
+If you plan to do DB maintenance by use logical replication, e.g. replicating DB by logical replication and switching to a replica, you may want to block traffic to a primary DB before switching to the replica. In such case, you can realize that by disabling DB users except the one used for logical replication.</p>
+
+<h3 id="subscriber-db">Subscriber DB</h3>
+<p>To create a subscription, the user must be a superuser. (On RDS, <code class="language-plaintext highlighter-rouge">rds_superuser</code> instead)</p>
+
+<h2 id="db-schema">DB Schema</h2>
+<ul>
+  <li>The published tables must exist on the subscriber</li>
+  <li>Columns of a table are also matched by name</li>
+  <li>The order of columns in the subscriber table does not need to match that of the publisher</li>
+  <li>The data types of the columns do not need to match, as long as the text representation of the data can be converted to the target type</li>
+  <li>The target table can have additional columns not provided by the published table</li>
+  <li>DDL is not replicated by logical replication
+    <ul>
+      <li>So DDL should also be executed on the subscriber. Generally, better to execute on the subscriber first.</li>
+    </ul>
+  </li>
+  <li>When you add a table to publication, you need to execute <code class="language-plaintext highlighter-rouge">ALTER SUBSCRIPTION ... REFRESH PUBLICATION;</code> on the subscriber to replicate the new table. Otherwise, replication doesn’t happen for the new table.
+    <ul>
+      <li><a href="https://www.2ndquadrant.com/en/blog/logical-replication-postgresql-10/">reference</a></li>
+    </ul>
+  </li>
+  <li>Sequence data is not replicated<br />
+Sequences should be synchronized manually when a subscriber DB becomes a new master DB.
+    <ul>
+      <li><a href="https://www.postgresql.org/docs/13/logical-replication-restrictions.html">reference</a></li>
+    </ul>
+  </li>
+  <li>Replication is only possible from base tables to base tables
+    <ul>
+      <li>Partition root tables can’t be replicated, so it can’t be used for table repartitioning.</li>
+    </ul>
+  </li>
+  <li>Replica identity must be set if the published table doesn’t have a primary key.
+    <ul>
+      <li><a href="https://www.postgresql.org/docs/13/sql-altertable.html#SQL-CREATETABLE-REPLICA-IDENTITY">reference</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="setup-example-on-rds">Setup Example on RDS</h2>
+<h3 id="publisher-db-1">Publisher DB</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CREATE ROLE replication_test LOGIN IN ROLE rds_superuser PASSWORD 'secret'; 
+
+-- connect by replication_test
+CREATE PUBLICATION pub_test FOR ALL TABLES;
+</code></pre></div></div>
+
+<h3 id="subscriber-db-1">Subscriber DB</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-- connect by a user granted rds_superuser
+CREATE SUBSCRIPTION sub
+CONNECTION 'host=primarydb port=5432 user=replication_test dbname=test_db password=secret'
+PUBLICATION pub_test;
+</code></pre></div></div>
+
+<p>Note: A role should have privileges to update replication destination tables.</p>
+
+<h1 id="maintaining-logical-replication">Maintaining logical replication</h1>
+<h2 id="ddl">DDL</h2>
+<p>When you execute DDL, in most cases you need to execute it on the replica as well as the primary.</p>
+
+<p>When you create a table and add it to a publication or you use <code class="language-plaintext highlighter-rouge">CREATE PUBLICATION ... FOR ALL TABLES</code>, you need to execute <code class="language-plaintext highlighter-rouge">ALTER SUBSCRIPTION … REFRESH PUBLICATION</code> on the replica to start replication on the new table.</p>
+
+<h2 id="monitoring">Monitoring</h2>
+<h3 id="publisher-db-2">Publisher DB</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pg_publication</code> : list of publications</li>
+  <li><code class="language-plaintext highlighter-rouge">pg_replication_slots</code> : list of replication slots
+    <ul>
+      <li>a logical replication slot is created when a subscription is created unless create_slot = false is specified.</li>
+      <li>Temporary replication slots are created up to max_sync_workers_per_subscription when table sync workers are running.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">pg_stat_replication</code> : statistics of replications
+    <ul>
+      <li>table sync worker connections also appear</li>
+      <li>Replication lag, i.e. remaining amount of data for the replica to catch up with the primary, can be measured as LSN gap. e.g.
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select pg_current_wal_lsn() - replay_lsn lsn_lag from pg_stat_replication;
+</code></pre></div>        </div>
+        <ul>
+          <li>If the lag keeps increasing, amount of updates on the primary is too much and the replica can’t catch up. You may need to multiplexing replication connections described on the next section.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>When asynchronous replication is used, <code class="language-plaintext highlighter-rouge">replay_lag</code> shows time elapsed between flushing WAL on the primary and receiving notification that the standby server has written, flushed and applied it. (<a href="https://www.postgresql.org/docs/13/monitoring-stats.html#PG-STAT-REPLICATION-VIEW">reference</a>)
+    <ul>
+      <li>When a large transaction is committed, <code class="language-plaintext highlighter-rouge">replay_lag</code> may increase.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">pg_stat_activity</code></li>
+</ul>
+
+<h3 id="subscriber-db-2">Subscriber DB</h3>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">pg_subscription</code> : list of subscriptions</li>
+  <li><code class="language-plaintext highlighter-rouge">pg_stat_subscription</code> : statistics of subscriptions</li>
+</ul>
+
+<h2 id="multiplexing-replication-connections">Multiplexing replication connections</h2>
+<p>Replicating all tables by a publication, i.e. <code class="language-plaintext highlighter-rouge">CREATE PUBLICATION … FOR ALL TABLES</code> , is a good start point for the first trial. However, if the primary DB has many updates that the replication worker can’t handle by single process, you need to split publications with corresponding subscriptions to parallelize replay of updates.<br />
+Note that on logical replication, WALs are sent to the replica when a transaction is committed. It means if there are transactions that has many updates, they will cause large WALs to replay on the replica and could be a cause of replication delay increase.</p>
+
+<p>If you have 2 tables that have many updates, they should be assigned different publications. e.g. given <code class="language-plaintext highlighter-rouge">tbl_1</code> and <code class="language-plaintext highlighter-rouge">tbl_2</code> have many updates, you should create 2 publications like <code class="language-plaintext highlighter-rouge">CREATE PUBLICATION pub_1 FOR tbl_1</code> and <code class="language-plaintext highlighter-rouge">CREATE PUBLICATION pub_2 FOR tbl_2</code>.</p>
+
+<p>If a table has significant updates, partitioning the table and assigning different publications for partition tables can be an option.</p>
+
+<h1 id="trouble-shooting">Trouble shooting</h1>
+<h2 id="a-subscription-cannot-be-dropped-when-a-publication-is-not-reachable">A subscription cannot be dropped when a publication is not reachable</h2>
+<p>disable subscription and disassociate publication, then you can drop a subscription</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test_db=&gt; drop subscription sub_test ;
+ERROR:  could not drop the replication slot "sub_test" on publisher
+DETAIL:  The error was: ERROR:  replication slot "sub_test" does not exist
+
+test_db=&gt; alter subscription sub_test disable;
+ALTER SUBSCRIPTION
+test_db=&gt; alter subscription sub_test set (slot_name = NONE);
+ALTER SUBSCRIPTION
+test_db=&gt; drop subscription sub_test ;
+DROP SUBSCRIPTION
+</code></pre></div></div>
+
+<h2 id="table-sync-worker-failed-in-the-initial-data-copy-due-to-statement-timeout">Table sync worker failed in the initial data copy due to statement timeout</h2>
+<p>Error example</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2021-01-18 09:07:20 UTC::@:[18426]:ERROR:  could not receive data from WAL stream: ERROR:  canceling statement due to statement timeout
+2021-01-18 09:07:20 UTC::@:[18426]:CONTEXT:  COPY test, line 2182054
+2021-01-18 09:07:20 UTC::@:[7831]:LOG:  background worker "logical replication worker" (PID 18426) exited with exit code 1
+</code></pre></div></div>
+<p>A: increase or disable (set 0) statement_timeout. 
+COPY statement is used for the initial data copy and it takes long time for a large table.</p>
+
+<h2 id="wal-sender-process-terminated-due-to-replication-timeout">WAL sender process terminated due to replication timeout</h2>
+<p>Error example</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2021-01-25 02:17:23 UTC:54.243.203.218(31507):replication_test@testdb:[45580]:LOG:  terminating walsender process due to replication timeout
+2021-01-25 02:17:23 UTC:54.243.203.218(31507):replication_test@testdb:[45580]:CONTEXT:  slot "sub_test", output plugin "pgoutput", in the change callback, associated LSN 57406/F6EB8570
+</code></pre></div></div>
+
+<p>A: increase wal_sender_timeout. <a href="https://www.postgresql-archive.org/terminating-walsender-process-due-to-replication-timeout-td6086232.html">similar issue</a></p>
+
+<h1 id="observations">Observations</h1>
+<h2 id="replication-apply-worker-is-likely-to-be-a-bottleneck">Replication apply worker is likely to be a bottleneck.</h2>
+<p>It’s better to split publications and subscriptions to parallelize replication apply for tables that have heavy traffic.</p>
+
+<h2 id="logical-replication-slots-must-be-dropped-before-in-place-major-version-upgrade-of-a-rds-instance">Logical replication slots must be dropped before in-place major version upgrade of a RDS instance</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>------------------------------------------------------------------
+Upgrade could not be run on Tue Jan 19 03:06:06 2021
+------------------------------------------------------------------
+The instance could not be upgraded from 11.1.R1 to 12.4.R1 because of following reasons. Please take appropriate action on databases that have usages incompatible with requested major engine version upgrade and try again.
+- Following usages in database 'testdb' need to be corrected before upgrade:
+-- The instance could not be upgraded because one or more databases have logical replication slots. Please drop all logical replication slots and try again.
+
+</code></pre></div></div>
+
+<h1 id="references">References</h1>
+<ul>
+  <li><a href="https://www.postgresql.org/docs/13/logical-replication.html">introduction of logical replication</a></li>
+  <li><a href="https://www.postgresql.org/docs/13/sql-createpublication.html">create publication</a></li>
+  <li><a href="https://www.postgresql.org/docs/13/runtime-config-replication.html">replication related parameters</a></li>
+  <li><a href="https://aws.amazon.com/blogs/database/using-logical-replication-to-replicate-managed-amazon-rds-for-postgresql-and-amazon-aurora-to-self-managed-postgresql/">introduction of logical replication on RDS for PostgreSQL</a></li>
+</ul>
+
+
+<div class="pagination">
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Declarative partitioning performance | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Declarative partitioning performance" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Declarative partitioning performance" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","author":{"@type":"Person","name":"Keisuke Suzuki"},"headline":"Declarative partitioning performance","url":"/memo/postgresql/2021-01-25-declarative_partitioning_performance.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <p>check the basic performance of declarative partitioning.</p>
+
+<h1 id="setup">Setup</h1>
+<h2 id="table">Table</h2>
+<h3 id="no-partitioning">No partitioning</h3>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">create</span> <span class="k">table</span> <span class="n">notpartitioned</span> <span class="p">(</span><span class="n">id</span> <span class="nb">int</span> <span class="k">primary</span> <span class="k">key</span><span class="p">);</span>
+<span class="k">insert</span> <span class="k">into</span> <span class="n">notpartitioned</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">generate_series</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1048575</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="64-partition-tables">64 partition tables</h3>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">create</span> <span class="k">table</span> <span class="n">partitioned_64</span> <span class="p">(</span><span class="n">id</span> <span class="nb">int</span> <span class="k">primary</span> <span class="k">key</span><span class="p">)</span> <span class="k">partition</span> <span class="k">by</span> <span class="k">range</span> <span class="p">(</span><span class="n">id</span><span class="p">);</span>
+
+<span class="k">do</span> <span class="err">$$</span>
+  <span class="k">declare</span>
+    <span class="n">n_part</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span><span class="p">;</span>
+    <span class="n">head</span> <span class="nb">int</span><span class="p">;</span>
+    <span class="n">tail</span> <span class="nb">int</span><span class="p">;</span>
+  <span class="k">begin</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">..</span><span class="n">n_part</span> <span class="n">loop</span>
+      <span class="n">head</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">14</span><span class="p">);</span>
+      <span class="n">tail</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">14</span><span class="p">);</span>
+      <span class="k">execute</span> <span class="n">format</span><span class="p">(</span><span class="s1">'
+        create table partitioned_%s_%s 
+        partition of partitioned_%s 
+        for values from (%s) to (%s)'</span><span class="p">,</span>
+        <span class="n">n_part</span><span class="p">,</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="n">n_part</span><span class="p">,</span>
+        <span class="n">head</span><span class="p">,</span>
+        <span class="n">tail</span>
+      <span class="p">);</span>
+    <span class="k">end</span> <span class="n">loop</span><span class="p">;</span>
+  <span class="k">end</span>
+<span class="err">$$</span><span class="p">;</span>
+
+<span class="k">insert</span> <span class="k">into</span> <span class="n">partitioned_64</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">generate_series</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1048575</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h3 id="2048-partition-tables">2048 partition tables</h3>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">create</span> <span class="k">table</span> <span class="n">partitioned_2048</span> <span class="p">(</span><span class="n">id</span> <span class="nb">int</span> <span class="k">primary</span> <span class="k">key</span><span class="p">)</span> <span class="k">partition</span> <span class="k">by</span> <span class="k">range</span> <span class="p">(</span><span class="n">id</span><span class="p">);</span>
+
+<span class="k">do</span> <span class="err">$$</span>
+  <span class="k">declare</span>
+    <span class="n">n_part</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">;</span>
+    <span class="n">head</span> <span class="nb">int</span><span class="p">;</span>
+    <span class="n">tail</span> <span class="nb">int</span><span class="p">;</span>
+  <span class="k">begin</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">..</span><span class="n">n_part</span> <span class="n">loop</span>
+      <span class="n">head</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">9</span><span class="p">);</span>
+      <span class="n">tail</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">9</span><span class="p">);</span>
+      <span class="k">execute</span> <span class="n">format</span><span class="p">(</span><span class="s1">'
+        create table partitioned_%s_%s 
+        partition of partitioned_%s 
+        for values from (%s) to (%s)'</span><span class="p">,</span>
+        <span class="n">n_part</span><span class="p">,</span>
+        <span class="n">i</span><span class="p">,</span>
+        <span class="n">n_part</span><span class="p">,</span>
+        <span class="n">head</span><span class="p">,</span>
+        <span class="n">tail</span>
+      <span class="p">);</span>
+    <span class="k">end</span> <span class="n">loop</span><span class="p">;</span>
+  <span class="k">end</span>
+<span class="err">$$</span><span class="p">;</span>
+
+<span class="k">insert</span> <span class="k">into</span> <span class="n">partitioned_2048</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">generate_series</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1048575</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h2 id="queries">Queries</h2>
+<h3 id="select">SELECT</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain analyze select * from notpartitioned where id = 1;
+explain analyze select * from partitioned_64 where id = 1;
+explain analyze select * from partitioned_2048 where id = 1;
+</code></pre></div></div>
+
+<h3 id="delete">DELETE</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>explain analyze delete from notpartitioned where id = 1;
+explain analyze delete from partitioned_64 where id = 1;
+explain analyze delete from partitioned_2048 where id = 1;
+</code></pre></div></div>
+
+<h2 id="result">Result</h2>
+<h3 id="postgresql-11">PostgreSQL 11</h3>
+<p>used postgresql 11.10</p>
+
+<h4 id="select-1">SELECT</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# explain analyze select * from notpartitioned where id = 1;
+                                                               QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan using notpartitioned_pkey on notpartitioned  (cost=0.42..8.44 rows=1 width=4) (actual time=0.425..0.462 rows=1 loops=1)
+   Index Cond: (id = 1)
+   Heap Fetches: 1
+ Planning Time: 0.147 ms
+ Execution Time: 0.702 ms
+(5 rows)
+
+test=# explain analyze select * from partitioned_64 where id = 1;
+                                                                    QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------------------------------
+ Append  (cost=0.29..8.31 rows=1 width=4) (actual time=0.367..0.406 rows=1 loops=1)
+   -&gt;  Index Only Scan using partitioned_64_1_pkey on partitioned_64_1  (cost=0.29..8.30 rows=1 width=4) (actual time=0.354..0.367 rows=1 loops=1)
+         Index Cond: (id = 1)
+         Heap Fetches: 1
+ Planning Time: 43.714 ms
+ Execution Time: 0.457 ms
+(6 rows)
+
+test=# explain analyze select * from partitioned_2048 where id = 1;
+                                                                      QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+ Append  (cost=0.27..8.30 rows=1 width=4) (actual time=0.142..0.184 rows=1 loops=1)
+   -&gt;  Index Only Scan using partitioned_2048_1_pkey on partitioned_2048_1  (cost=0.27..8.29 rows=1 width=4) (actual time=0.126..0.141 rows=1 loops=1)
+         Index Cond: (id = 1)
+         Heap Fetches: 1
+ Planning Time: 103.703 ms
+ Execution Time: 0.463 ms
+(6 rows)
+</code></pre></div></div>
+
+<h4 id="delete-1">DELETE</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# explain analyze delete from notpartitioned where id = 1;
+                                                                QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on notpartitioned  (cost=0.42..8.44 rows=1 width=6) (actual time=0.087..0.120 rows=0 loops=1)
+   -&gt;  Index Scan using notpartitioned_pkey on notpartitioned  (cost=0.42..8.44 rows=1 width=6) (actual time=0.042..0.065 rows=1 loops=1)
+         Index Cond: (id = 1)
+ Planning Time: 0.192 ms
+ Execution Time: 0.177 ms
+(5 rows)
+
+test=# explain analyze delete from partitioned_64 where id = 1;
+                                                                  QUERY PLAN
+----------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on partitioned_64  (cost=0.29..8.30 rows=1 width=6) (actual time=0.060..0.084 rows=0 loops=1)
+   Delete on partitioned_64_1
+   -&gt;  Index Scan using partitioned_64_1_pkey on partitioned_64_1  (cost=0.29..8.30 rows=1 width=6) (actual time=0.015..0.033 rows=1 loops=1)
+         Index Cond: (id = 1)
+ Planning Time: 10.130 ms
+ Execution Time: 0.211 ms
+(6 rows)
+
+test=# explain analyze delete from partitioned_2048 where id = 1;
+                                                                    QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on partitioned_2048  (cost=0.27..8.29 rows=1 width=6) (actual time=10.121..10.203 rows=0 loops=1)
+   Delete on partitioned_2048_1
+   -&gt;  Index Scan using partitioned_2048_1_pkey on partitioned_2048_1  (cost=0.27..8.29 rows=1 width=6) (actual time=3.629..3.707 rows=1 loops=1)
+         Index Cond: (id = 1)
+ Planning Time: 2160.383 ms
+ Execution Time: 18.220 ms
+(6 rows)
+</code></pre></div></div>
+
+<h3 id="postgresql-12">PostgreSQL 12</h3>
+<p>used postgresql 12.5</p>
+
+<h4 id="select-2">SELECT</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# explain analyze select * from notpartitioned where id = 1;
+                                                               QUERY PLAN
+-----------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan using notpartitioned_pkey on notpartitioned  (cost=0.42..8.44 rows=1 width=4) (actual time=0.041..0.120 rows=1 loops=1)
+   Index Cond: (id = 1)
+   Heap Fetches: 1
+ Planning Time: 0.117 ms
+ Execution Time: 0.249 ms
+(5 rows)
+
+test=# explain analyze select * from partitioned_64 where id = 1;
+                                                                 QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan using partitioned_64_1_pkey on partitioned_64_1  (cost=0.29..8.30 rows=1 width=4) (actual time=0.047..0.085 rows=1 loops=1)
+   Index Cond: (id = 1)
+   Heap Fetches: 1
+ Planning Time: 0.166 ms
+ Execution Time: 0.212 ms
+(5 rows)
+
+test=# explain analyze select * from partitioned_2048 where id = 1;
+                                                                   QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------------------------
+ Index Only Scan using partitioned_2048_1_pkey on partitioned_2048_1  (cost=0.27..8.29 rows=1 width=4) (actual time=0.047..0.085 rows=1 loops=1)
+   Index Cond: (id = 1)
+   Heap Fetches: 1
+ Planning Time: 0.146 ms
+ Execution Time: 0.195 ms
+(5 rows)
+</code></pre></div></div>
+
+<h4 id="delete-2">DELETE</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>test=# explain analyze delete from notpartitioned where id = 1;
+                                                                QUERY PLAN
+------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on notpartitioned  (cost=0.42..8.44 rows=1 width=6) (actual time=0.397..0.438 rows=0 loops=1)
+   -&gt;  Index Scan using notpartitioned_pkey on notpartitioned  (cost=0.42..8.44 rows=1 width=6) (actual time=0.033..0.062 rows=1 loops=1)
+         Index Cond: (id = 1)
+ Planning Time: 0.252 ms
+ Execution Time: 0.533 ms
+(5 rows)
+
+test=# explain analyze delete from partitioned_64 where id = 1;
+                                                                  QUERY PLAN
+----------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on partitioned_64  (cost=0.29..8.30 rows=1 width=6) (actual time=0.092..0.113 rows=0 loops=1)
+   Delete on partitioned_64_1
+   -&gt;  Index Scan using partitioned_64_1_pkey on partitioned_64_1  (cost=0.29..8.30 rows=1 width=6) (actual time=0.025..0.040 rows=1 loops=1)
+         Index Cond: (id = 1)
+ Planning Time: 0.414 ms
+ Execution Time: 0.757 ms
+(6 rows)
+
+test=# explain analyze delete from partitioned_2048 where id = 1;
+                                                                    QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Delete on partitioned_2048  (cost=0.27..8.29 rows=1 width=6) (actual time=0.092..0.115 rows=0 loops=1)
+   Delete on partitioned_2048_1
+   -&gt;  Index Scan using partitioned_2048_1_pkey on partitioned_2048_1  (cost=0.27..8.29 rows=1 width=6) (actual time=0.030..0.046 rows=1 loops=1)
+         Index Cond: (id = 1)
+ Planning Time: 0.187 ms
+ Execution Time: 0.292 ms
+(6 rows)
+</code></pre></div></div>
+
+
+<div class="pagination">
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>

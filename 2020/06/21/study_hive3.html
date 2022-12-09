@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Study Hive 3 | Keisuke Suzuki</title>
+<meta name="generator" content="Jekyll v4.3.1" />
+<meta property="og:title" content="Study Hive 3" />
+<meta name="author" content="Keisuke Suzuki" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Continues from the previous post. This is randam study memo to understand internal behavior of Hive." />
+<meta property="og:description" content="Continues from the previous post. This is randam study memo to understand internal behavior of Hive." />
+<meta property="og:site_name" content="Keisuke Suzuki" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-06-21T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Study Hive 3" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Keisuke Suzuki"},"dateModified":"2020-06-21T00:00:00+00:00","datePublished":"2020-06-21T00:00:00+00:00","description":"Continues from the previous post. This is randam study memo to understand internal behavior of Hive.","headline":"Study Hive 3","mainEntityOfPage":{"@type":"WebPage","@id":"/2020/06/21/study_hive3.html"},"url":"/2020/06/21/study_hive3.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Keisuke Suzuki" />
+
+  <!-- Google Analytics-->
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HJ9S37DLSS"></script>
+<script>
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+
+ gtag('config', 'G-HJ9S37DLSS');
+</script>
+
+  
+</head>
+
+
+  <body>
+
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Keisuke Suzuki</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags">Tags</a></li>
+      <li><a href="/memo/">Memo</a></li>
+      <li><a href="/about">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+    <main>
+      <div class="post">
+    <h1 class="post-title">Study Hive 3</h1>
+    <div class="post-info">
+        <time datetime="2020-06-21 00:00:00 +0000">Written&nbsp;on:&nbsp;June 21, 2020</time>
+    </div>
+    <div class="post-line"></div>
+
+    <p>Continues from <a href="/2020/06/11/setup_hive3.html">the previous post</a>. This is randam study memo to understand internal behavior of Hive.
+<!--end_excerpt--></p>
+
+<h1 id="play-with-queries">Play with Queries</h1>
+<h2 id="simple-insert-by-mr">Simple insert By MR</h2>
+<ul>
+  <li>Create table by Beeline
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; CREATE TABLE test (id int, value int);
+...
+INFO  : Starting task [Stage-0:DDL] in serial mode
+INFO  : Completed executing command(queryId=...); Time taken: 0.056 seconds
+...
+</code></pre></div>    </div>
+  </li>
+  <li>Insert
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; INSERT INTO insert into test values (1, 1), (2, 2), (3, 3);
+...
+INFO  : Total jobs = 3
+INFO  : Launching Job 1 out of 3
+INFO  : Starting task [Stage-1:MAPRED] in serial mode
+INFO  : Number of reduce tasks determined at compile time: 1
+INFO  : In order to change the average load for a reducer (in bytes):
+INFO  :   set hive.exec.reducers.bytes.per.reducer=&lt;number&gt;
+INFO  : In order to limit the maximum number of reducers:
+INFO  :   set hive.exec.reducers.max=&lt;number&gt;
+INFO  : In order to set a constant number of reducers:
+INFO  :   set mapreduce.job.reduces=&lt;number&gt;
+INFO  : number of splits:1
+INFO  : Submitting tokens for job: job_1591875950345_0001
+INFO  : Executing with tokens: []
+...
+INFO  : Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+INFO  : 2020-06-11 23:00:23,692 Stage-1 map = 0%,  reduce = 0%
+INFO  : 2020-06-11 23:00:27,818 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.02 sec
+INFO  : 2020-06-11 23:00:32,923 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.19 sec
+INFO  : MapReduce Total cumulative CPU time: 3 seconds 190 msec
+INFO  : Ended Job = job_1591875950345_0002
+INFO  : Starting task [Stage-7:CONDITIONAL] in serial mode
+INFO  : Stage-4 is selected by condition resolver.
+INFO  : Stage-3 is filtered out by condition resolver.
+INFO  : Stage-5 is filtered out by condition resolver.
+INFO  : Starting task [Stage-4:MOVE] in serial mode
+INFO  : Moving data to directory hdfs://localhost:9000/user/hive/warehouse/test/.hive-staging_hive_2020-06-11_23-00-19_051_1627075465863944744-2/-ext-10000 from hdfs://localhost:9000/user/hive/warehouse/test/.hive-staging_hive_2020-06-11_23-00-19_051_1627075465863944744-2/-ext-10002
+INFO  : Starting task [Stage-0:MOVE] in serial mode
+INFO  : Loading data to table default.test from hdfs://localhost:9000/user/hive/warehouse/test/.hive-staging_hive_2020-06-11_23-00-19_051_1627075465863944744-2/-ext-10000
+INFO  : Starting task [Stage-2:STATS] in serial mode
+INFO  : MapReduce Jobs Launched:
+INFO  : Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 3.19 sec   HDFS Read: 14302 HDFS Write: 263 SUCCESS
+INFO  : Total MapReduce CPU Time Spent: 3 seconds 190 msec
+INFO  : Completed executing command(queryId=...); Time taken: 14.843 seconds
+</code></pre></div>    </div>
+  </li>
+  <li>Check file structure and format on FS
+    <ul>
+      <li>Default file format (‘hive.default.fileformat’) is textfile that columns are separated by ascii 001</li>
+      <li>partition files are stored under ${hive.metastore.warehouse.dir}/${table_name}/
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ ./bin/hadoop fs -ls /user/hive/warehouse/test
+Found 1 items
+-rw-r--r--   1 ... supergroup         12 2020-06-11 23:00 /user/hive/warehouse/test/000000_0
+$ ./bin/hadoop fs -get /user/hive/warehouse/test/000000_0 .
+$ od -Ax -tx1z -v 000000_0
+000000 31 01 31 0a 32 01 32 0a 33 01 33 0a              &gt;1.1.2.2.3.3.&lt;
+00000c
+$ od -t c 000000_0
+0000000   1 001   1  \n   2 001   2  \n   3 001   3  \n
+0000014
+</code></pre></div>        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="insert-by-tez-and-orc-format">Insert by Tez and ORC format</h2>
+<p>I enabled explain output (hive.log.explain.output = true) this time.</p>
+
+<ul>
+  <li>Create table by Beeline</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; create table test_orc (id int, value int) stored as orc;
+...
+INFO  : EXPLAIN output for queryid ... : STAGE DEPENDENCIES:
+  Stage-0 is a root stage [DDL]
+
+STAGE PLANS:
+  Stage: Stage-0
+      Create Table Operator:
+        Create Table
+          columns: id int, value int
+          input format: org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+          output format: org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+          serde name: org.apache.hadoop.hive.ql.io.orc.OrcSerde
+          name: default.test_orc
+
+
+INFO  : Completed compiling command(queryId=...); Time taken: 0.031 seconds
+...
+No rows affected (0.112 seconds)
+</code></pre></div></div>
+<ul>
+  <li>Insert</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0: jdbc:hive2://localhost:10000&gt; insert into test_orc values (1, 1), (2, 2), (3, 3);
+...
+INFO  : Returning Hive schema: Schema(fieldSchemas:[FieldSchema(name:col1, type:int, comment:null), FieldSchema(name:col2, type:int, comment:null)], properties:null)
+INFO  : EXPLAIN output for queryid ... : STAGE DEPENDENCIES:
+  Stage-1 is a root stage [MAPRED]
+  Stage-2 depends on stages: Stage-1 [DEPENDENCY_COLLECTION]
+  Stage-0 depends on stages: Stage-2 [MOVE]
+  Stage-3 depends on stages: Stage-0 [STATS]
+
+STAGE PLANS:
+  Stage: Stage-1
+    Tez
+      DagId: ...
+      Edges:
+        Reducer 2 &lt;- Map 1 (CUSTOM_SIMPLE_EDGE)
+      DagName: ...
+      Vertices:
+        Map 1
+            Map Operator Tree:
+                TableScan
+                  alias: _dummy_table
+                  Row Limit Per Split: 1
+                  Statistics: Num rows: 1 Data size: 10 Basic stats: COMPLETE Column stats: COMPLETE
+                  GatherStats: false
+                  Select Operator
+                    expressions: array(const struct(1,1),const struct(2,2),const struct(3,3)) (type: array&lt;struct&lt;col1:int,col2:int&gt;&gt;)
+                    outputColumnNames: _col0
+                    Statistics: Num rows: 1 Data size: 64 Basic stats: COMPLETE Column stats: COMPLETE
+                    UDTF Operator
+                      Statistics: Num rows: 1 Data size: 64 Basic stats: COMPLETE Column stats: COMPLETE
+                      function name: inline
+                      Select Operator
+                        expressions: col1 (type: int), col2 (type: int)
+                        outputColumnNames: _col0, _col1
+                        Statistics: Num rows: 1 Data size: 8 Basic stats: COMPLETE Column stats: COMPLETE
+                        File Output Operator
+                          compressed: false
+                          GlobalTableId: 1
+                          directory: hdfs://localhost:9000/user/hive/warehouse/test_orc/.hive-staging_hive_2020-06-16_22-39-50_981_8937473827142056315-1/-ext-10000
+                          NumFilesPerFileSink: 1
+                          Statistics: Num rows: 1 Data size: 8 Basic stats: COMPLETE Column stats: COMPLETE
+                          Stats Publishing Key Prefix: hdfs://localhost:9000/user/hive/warehouse/test_orc/.hive-staging_hive_2020-06-16_22-39-50_981_8937473827142056315-1/-ext-10000/
+                          table:
+                              input format: org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+                              output format: org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+                              properties:
+                                COLUMN_STATS_ACCURATE {"BASIC_STATS":"true","COLUMN_STATS":{"id":"true","value":"true"}}
+                                bucket_count -1
+                                bucketing_version 2
+                                column.name.delimiter ,
+                                columns id,value
+                                columns.comments
+                                columns.types int:int
+                                file.inputformat org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+                                file.outputformat org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+                                location hdfs://localhost:9000/user/hive/warehouse/test_orc
+                                name default.test_orc
+                                numFiles 0
+                                numRows 0
+                                rawDataSize 0
+                                serialization.ddl struct test_orc { i32 id, i32 value}
+                                serialization.format 1
+                                serialization.lib org.apache.hadoop.hive.ql.io.orc.OrcSerde
+                                totalSize 0
+                                transient_lastDdlTime 1592309097
+                              serde: org.apache.hadoop.hive.ql.io.orc.OrcSerde
+                              name: default.test_orc
+                          TotalFiles: 1
+                          GatherStats: true
+                          MultiFileSpray: false
+                        Select Operator
+                          expressions: _col0 (type: int), _col1 (type: int)
+                          outputColumnNames: id, value
+                          Statistics: Num rows: 1 Data size: 8 Basic stats: COMPLETE Column stats: COMPLETE
+                          Group By Operator
+                            aggregations: compute_stats(id, 'hll'), compute_stats(value, 'hll')
+                            mode: hash
+                            outputColumnNames: _col0, _col1
+                            Statistics: Num rows: 1 Data size: 848 Basic stats: COMPLETE Column stats: COMPLETE
+                            Reduce Output Operator
+                              null sort order:
+                              sort order:
+                              Statistics: Num rows: 1 Data size: 848 Basic stats: COMPLETE Column stats: COMPLETE
+                              tag: -1
+                              value expressions: _col0 (type: struct&lt;columntype:string,min:bigint,max:bigint,countnulls:bigint,bitvector:binary&gt;), _col1 (type: struct&lt;columntype:string,min:bigint,max:bigint,countnulls:bigint,bitvector:binary&gt;)
+                              auto parallelism: false
+            Path -&gt; Alias:
+              hdfs://localhost:9000/tmp/hive/...
+            Path -&gt; Partition:
+              hdfs://localhost:9000/tmp/hive/...
+                Partition
+                  base file name: dummy_path
+                  input format: org.apache.hadoop.hive.ql.io.NullRowsInputFormat
+                  output format: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+                  properties:
+                    bucket_count -1
+                    bucketing_version 2
+                    column.name.delimiter ,
+                    columns
+                    columns.comments
+                    columns.types
+                    file.inputformat org.apache.hadoop.hive.ql.io.NullRowsInputFormat
+                    file.outputformat org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+                    location hdfs://localhost:9000/tmp/hive/...
+                    name _dummy_database._dummy_table
+                    serialization.ddl struct _dummy_table { }
+                    serialization.format 1
+                    serialization.lib org.apache.hadoop.hive.serde2.NullStructSerDe
+                  serde: org.apache.hadoop.hive.serde2.NullStructSerDe
+
+                    input format: org.apache.hadoop.hive.ql.io.NullRowsInputFormat
+                    output format: org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+                    properties:
+                      bucket_count -1
+                      bucketing_version 2
+                      column.name.delimiter ,
+                      columns
+                      columns.comments
+                      columns.types
+                      file.inputformat org.apache.hadoop.hive.ql.io.NullRowsInputFormat
+                      file.outputformat org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat
+                      location hdfs://localhost:9000/tmp/hive/...
+                      name _dummy_database._dummy_table
+                      serialization.ddl struct _dummy_table { }
+                      serialization.format 1
+                      serialization.lib org.apache.hadoop.hive.serde2.NullStructSerDe
+                    serde: org.apache.hadoop.hive.serde2.NullStructSerDe
+                    name: _dummy_database._dummy_table
+                  name: _dummy_database._dummy_table
+            Truncated Path -&gt; Alias:
+              hdfs://localhost:9000/tmp/hive/...
+        Reducer 2
+            Needs Tagging: false
+            Reduce Operator Tree:
+              Group By Operator
+                aggregations: compute_stats(VALUE._col0), compute_stats(VALUE._col1)
+                mode: mergepartial
+                outputColumnNames: _col0, _col1
+                Statistics: Num rows: 1 Data size: 880 Basic stats: COMPLETE Column stats: COMPLETE
+                File Output Operator
+                  compressed: false
+                  GlobalTableId: 0
+                  directory: hdfs://localhost:9000/tmp/hive/...
+                  NumFilesPerFileSink: 1
+                  Statistics: Num rows: 1 Data size: 880 Basic stats: COMPLETE Column stats: COMPLETE
+                  Stats Publishing Key Prefix: hdfs://localhost:9000/tmp/hive/...
+                  table:
+                      input format: org.apache.hadoop.mapred.SequenceFileInputFormat
+                      output format: org.apache.hadoop.hive.ql.io.HiveSequenceFileOutputFormat
+                      properties:
+                        columns _col0,_col1
+                        columns.types struct&lt;columntype:string,min:bigint,max:bigint,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary&gt;:struct&lt;columntype:string,min:bigint,max:bigint,countnulls:bigint,numdistinctvalues:bigint,ndvbitvector:binary&gt;
+                        escape.delim \
+                        hive.serialization.extend.additional.nesting.levels true
+                        serialization.escape.crlf true
+                        serialization.format 1
+                        serialization.lib org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe
+                      serde: org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe
+                  TotalFiles: 1
+                  GatherStats: false
+                  MultiFileSpray: false
+
+  Stage: Stage-2
+    Dependency Collection
+
+  Stage: Stage-0
+    Move Operator
+      tables:
+          replace: false
+          source: hdfs://localhost:9000/user/hive/warehouse/test_orc/.hive-staging_hive_2020-06-16_22-39-50_981_8937473827142056315-1/-ext-10000
+          table:
+              input format: org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+              output format: org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+              properties:
+                COLUMN_STATS_ACCURATE {"BASIC_STATS":"true","COLUMN_STATS":{"id":"true","value":"true"}}
+                bucket_count -1
+                bucketing_version 2
+                column.name.delimiter ,
+                columns id,value
+                columns.comments
+                columns.types int:int
+                file.inputformat org.apache.hadoop.hive.ql.io.orc.OrcInputFormat
+                file.outputformat org.apache.hadoop.hive.ql.io.orc.OrcOutputFormat
+                location hdfs://localhost:9000/user/hive/warehouse/test_orc
+                name default.test_orc
+                numFiles 0
+                numRows 0
+                rawDataSize 0
+                serialization.ddl struct test_orc { i32 id, i32 value}
+                serialization.format 1
+                serialization.lib org.apache.hadoop.hive.ql.io.orc.OrcSerde
+                totalSize 0
+                transient_lastDdlTime 1592309097
+              serde: org.apache.hadoop.hive.ql.io.orc.OrcSerde
+              name: default.test_orc
+
+  Stage: Stage-3
+    Stats Work
+      Basic Stats Work:
+          Stats Aggregation Key Prefix: hdfs://localhost:9000/user/hive/warehouse/test_orc/.hive-staging_hive_2020-06-16_22-39-50_981_8937473827142056315-1/-ext-10000/
+      Column Stats Desc:
+          Columns: id, value
+          Column Types: int, int
+          Table: default.test_orc
+          Is Table Level Stats: true
+
+INFO  : Completed compiling command(queryId=...); Time taken: 0.565 seconds
+...
+INFO  : Total jobs = 1
+INFO  : Launching Job 1 out of 1
+...
+No rows affected (8.489 seconds)
+</code></pre></div></div>
+<ul>
+  <li>Check file structure and format on FS</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ hdfs dfs -ls '/user/hive/warehouse/test_orc'
+Found 1 items
+-rw-r--r--   1 ... supergroup        246 2020-06-16 22:39 /user/hive/warehouse/test_orc/000000_0
+</code></pre></div></div>
+
+<ul>
+  <li>Metastore</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hive_metastore=# select "TBL_ID", "DB_ID", "RETENTION", "SD_ID", "TBL_NAME", "TBL_TYPE", "IS_REWRITE_ENABLED" from "TBLS";
+ TBL_ID | DB_ID | RETENTION | SD_ID | TBL_NAME |   TBL_TYPE    | IS_REWRITE_ENABLED
+--------|-------|-----------|-------|----------|---------------|--------------------
+      6 |     1 |         0 |     6 | test     | MANAGED_TABLE | f
+     11 |     1 |         0 |    11 | test_orc | MANAGED_TABLE | f
+(2 rows)
+
+hive_metastore=# select * from "TABLE_PARAMS";
+ TBL_ID |       PARAM_KEY       |                            PARAM_VALUE
+--------|-----------------------|--------------------------------------------------------------------
+      6 | COLUMN_STATS_ACCURATE | {"BASIC_STATS":"true","COLUMN_STATS":{"id":"true","value":"true"}}
+      6 | bucketing_version     | 2
+      6 | transient_lastDdlTime | 1592307774
+      6 | totalSize             | 12
+      6 | numRows               | 34
+      6 | rawDataSize           | 102
+      6 | numFiles              | 1
+     11 | COLUMN_STATS_ACCURATE | {"BASIC_STATS":"true","COLUMN_STATS":{"id":"true","value":"true"}}
+     11 | bucketing_version     | 2
+     11 | transient_lastDdlTime | 1592314799
+     11 | totalSize             | 246
+     11 | numRows               | 3
+     11 | rawDataSize           | 24
+     11 | numFiles              | 1
+(14 rows)
+
+hive_metastore=# select * from "TAB_COL_STATS";
+ CS_ID | CAT_NAME | DB_NAME | TABLE_NAME | COLUMN_NAME | COLUMN_TYPE | TBL_ID | LONG_LOW_VALUE | LONG_HIGH_VALUE | DOUBLE_LOW_VALUE | DOUBLE_HIGH_VALUE | BIG_DECIMAL_LOW_VALUE | BIG_DECIMAL_HIGH_VALUE | NUM_NULLS | NUM_DISTINCTS |                BIT_VECTOR                | AVG_COL_LEN | MAX_COL_LEN | NUM_TRUES | NUM_FALSES | LAST_ANALYZED
+-------|----------|---------|------------|-------------|-------------|--------|----------------|-----------------|------------------|-------------------|-----------------------|------------------------|-----------|---------------|------------------------------------------|-------------|-------------|-----------|------------|---------------
+     6 | hive     | default | test       | id          | int         |      6 |              1 |               3 |                  |                   |                       |                        |         0 |             3 | \x484c4ca00303c1f3be48c1bbac62c2d2f48e03 |             |             |           |            |    1592307774
+     7 | hive     | default | test       | value       | int         |      6 |              1 |               4 |                  |                   |                       |                        |         0 |             3 | \x484c4ca00303c1f3be48c1bbac62c2d2f48e03 |             |             |           |            |    1592307774
+    11 | hive     | default | test_orc   | id          | int         |     11 |              1 |               3 |                  |                   |                       |                        |         0 |             3 | \x484c4ca00303c1f3be48c1bbac62c2d2f48e03 |             |             |           |            |    1592314799
+    12 | hive     | default | test_orc   | value       | int         |     11 |              1 |               3 |                  |                   |                       |                        |         0 |             3 | \x484c4ca00303c1f3be48c1bbac62c2d2f48e03 |             |             |           |            |    1592314799
+(4 rows)
+</code></pre></div></div>
+
+</div>
+
+
+
+<div class="pagination">
+    
+    <a href="/2021/05/05/book_a_philosophy_of_software_design.html" class="left arrow">&#8592;</a>
+    
+    
+    <a href="/2020/06/18/setup_presto.html" class="right arrow">&#8594;</a>
+    
+
+    <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+
+    <footer>
+  <span>
+    &copy; <time datetime="2022-12-09 15:29:17 +0000">2022</time> Keisuke Suzuki. Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>
