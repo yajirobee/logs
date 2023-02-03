@@ -61,3 +61,7 @@ AWSではHeavy Hitters / Top Talkers / Counting Bloom filtersなどが利用さ�
 これはそれらのサービスが作られた時期が、429のステータスコードが[RFC 6585](https://www.rfc-editor.org/rfc/rfc6585)により、公式に定義された2012年よりも前だったからとのことです。
 
 (TBW)
+
+# その他今回読んだ記事（個人用備忘録）
+## Minimizing correlated failures in distributed systems
+blast radius controlやホットスポット緩和について
