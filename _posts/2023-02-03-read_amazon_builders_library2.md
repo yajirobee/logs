@@ -66,6 +66,6 @@ AWSではHeavy Hitters / Top Talkers / Counting Bloom filtersなどが利用さ�
 ## Minimizing correlated failures in distributed systems
 blast radius controlやホットスポット緩和について。
 
-# Reliability, constant work, and a good cup of coffee
+## Reliability, constant work, and a good cup of coffee
 サーバー数の増大に伴ってヘルスチェックやコンフィグ更新等の負荷が増大するのを緩和する方法について。
 Route 53では、多数サーバーから送信されるヘルスチェック結果を集約し、数秒毎にDNSサーバーにばらまくサービスを設けることで負荷を軽減している。
