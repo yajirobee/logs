@@ -55,5 +55,11 @@ WantedBy=local-fs-pre.target
 //{file_server_ip}/{access_path} {mount_point}  cifs    _netdev,username=...,password=...,uid=...,gid=...    0       0
 ```
 
+## Specify charset of path names
+```
+iocharset=utf8
+```
+
 # References
 - [NTFS-3G intro for archilinux](https://wiki.archlinux.org/index.php/NTFS-3G)
+- [man mount.cifs(8)](https://www.samba.org/~ab/output/htmldocs/manpages-3/mount.cifs.8.html)
