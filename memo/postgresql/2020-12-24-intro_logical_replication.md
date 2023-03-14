@@ -168,6 +168,20 @@ Error example
 
 A: increase wal_sender_timeout. [similar issue](https://www.postgresql-archive.org/terminating-walsender-process-due-to-replication-timeout-td6086232.html)
 
+## Table cannot be dropped on the subscriber when it has not synchronized yet
+A table of subscriber cannot be dropped even if the table of publisher was already deleted when table synchronization hasn't completed yet.
+Publication refresh (`ALTER SUBSCRIPTION ... REFRESH PUBLICATION`) is required to delete the table of subscriber in this case after the table was deleted on the publisher.
+```
+test_db=> drop table test;
+ERROR:  could not drop relation mapping for subscription "sub_test"
+DETAIL:  Table synchronization for relation "test" is in progress and is in state "i".
+HINT:  Use ALTER SUBSCRIPTION ... ENABLE to enable subscription if not already enabled or use DROP SUBSCRIPTION ... to drop the subscription.
+test_db=> ALTER SUBSCRIPTION sub_test REFRESH PUBLICATION;
+ALTER SUBSCRIPTION
+test_db=> drop table test;
+DROP TABLE
+```
+
 # Observations
 ## Replication apply worker is likely to be a bottleneck.
 It’s better to split publications and subscriptions to parallelize replication apply for tables that have heavy traffic.
