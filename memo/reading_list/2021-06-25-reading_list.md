@@ -10,6 +10,11 @@ title: Reading list
 ## Data lineage
 - [Data lineage system in a data warehouse](https://cloud.google.com/solutions/architecture-concept-data-lineage-systems-in-a-data-warehouse)
 
+## Text search engines
+- [Tantivy](https://github.com/quickwit-oss/tantivy)
+  - [benchmark](https://tantivy-search.github.io/bench/)
+- [Lucene](https://lucene.apache.org/)
+
 ## Personal Data Market
 - [DBSJ lecture](https://www.youtube.com/watch?v=5OJsopZj66s&list=PL_VdUcCLzEklgChG2t07jMoZJ5Uonso52)
 
