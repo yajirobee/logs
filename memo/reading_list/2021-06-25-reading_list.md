@@ -4,6 +4,10 @@ title: Reading list
 ---
 
 # Databases
+## DB engines
+- [DuckDB](https://duckdb.org/)
+  - [BIG DATA IS DEAD](https://motherduck.com/blog/big-data-is-dead/)
+
 ## Distributed Transaction
 - [An In-Depth Analysis of Distributed Transaction Solutions](https://www.alibabacloud.com/blog/an-in-depth-analysis-of-distributed-transaction-solutions_597232)
 
