@@ -28,6 +28,10 @@ title: Reading list
 - [MITRE ATT&CK](https://attack.mitre.org/)
 - [OWASP Cheat sheet series](https://cheatsheetseries.owasp.org/index.html)
 
+# Visualization
+- [Google Charts](https://developers.google.com/chart)
+  - [Gantt Charts](https://developers.google.com/chart/interactive/docs/gallery/ganttchart)
+
 # Software Architecture
 - [AWS well architected framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
 
