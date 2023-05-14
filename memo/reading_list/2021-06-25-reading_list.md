@@ -48,5 +48,11 @@ title: Reading list
 ## Wordpress
 - [Developing wordpress themes](https://developer.wordpress.org/themes/)
 
+## Modern frameworks
+- [React](https://react.dev/learn)
+- [Vite](https://vitejs.dev/guide/)
+- [React-admin](https://marmelab.com/react-admin/Tutorial.html)
+- [Kotlin/JS + React](https://kotlinlang.org/docs/js-react.html)
+
 # General Engineering
 - [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
