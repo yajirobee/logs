@@ -3,7 +3,7 @@ layout: memo
 title: Jersey pitfalls
 ---
 
-# Multiple resource classes must not have the same @Path
+# 404 when a path of request matches with multiple resource classes
 Resource classes should have unique pathes as much as possible to get around the issue of request matching.
 If it's difficult to cleanly separate resource classes, sub resource should be used.
 
