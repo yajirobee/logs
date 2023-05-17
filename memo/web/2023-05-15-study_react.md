@@ -3,10 +3,14 @@ layout: memo
 title: Study React
 ---
 
-# Use nodejs & npm via docker
+# Development environment
+## Use nodejs & npm via docker
 ```
 $ docker run -it --rm -v $(pwd):/app -w /app -e "PORT=3000" -p 8080:3000 -u node node:18-buster /bin/bash
 ```
 
-# Use Vite
+## Use VScode dev containers
+[Developing inside a Container](https://code.visualstudio.com/docs/devcontainers/containers#_quick-start-open-an-existing-folder-in-a-container)
+
+## Use Vite
 [Vite](https://vitejs.dev/guide/) is a build tool for frontend development.

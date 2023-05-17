@@ -54,6 +54,7 @@ title: Reading list
 
 ## Modern frameworks
 - [React](https://react.dev/learn)
+  - [JSX](https://www.typescriptlang.org/docs/handbook/jsx.html)
 - [Vite](https://vitejs.dev/guide/)
 - [React-admin](https://marmelab.com/react-admin/Tutorial.html)
 - [Kotlin/JS + React](https://kotlinlang.org/docs/js-react.html)
