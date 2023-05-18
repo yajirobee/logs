@@ -42,5 +42,8 @@ _java_thread_list=0x00007f7d40428050, length=252, elements={
 
 > Note: Enabling NMT causes a 5% -10% performance overhead.
 
+## Profiling
+[async-profiler](https://github.com/async-profiler/async-profiler)
+
 # References
 - [java 11 Command Reference](https://docs.oracle.com/en/java/javase/11/tools/java.html#GUID-3B1CE181-CD30-4178-9602-230B800D4FAE)
