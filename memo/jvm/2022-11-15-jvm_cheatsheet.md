@@ -46,6 +46,17 @@ _java_thread_list=0x00007f7d40428050, length=252, elements={
 [async-profiler](https://github.com/async-profiler/async-profiler)
 
 # Gradle
+## CLI options
+- execute only test case of nested subclass
+```sh
+$ ./gradlew test --tests "some.package.class\$subclass"
+```
+
+- specify args
+```sh
+$ ./gradlew run --args="-h"
+```
+
 ## Using Plugins
 [Plugins DSL](https://docs.gradle.org/current/userguide/plugins.html#sec:plugins_block) is newer and convenient way to
 declare plugin dependencies. It looks up [Gradle plugin portal](https://plugins.gradle.org/) for core and community plugins.
