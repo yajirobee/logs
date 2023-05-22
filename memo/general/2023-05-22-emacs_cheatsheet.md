@@ -42,7 +42,6 @@ $ bloop projects
 ```
 
 - Reference
-  - [Metals](https://scalameta.org/metals/docs/editors/emacs/)
   - [Bloop with Gradle](https://scalacenter.github.io/bloop/docs/build-tools/gradle)
 
 #### Log location
