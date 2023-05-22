@@ -17,26 +17,30 @@ remove packages under `elpa/` directory and restart emacs.
 ## LSP
 ### [Metals](https://scalameta.org/metals/docs/editors/emacs/)
 #### Bloop with gradle
-Add [gradle-bloop](https://github.com/scalacenter/gradle-bloop) plugin. e.g.
-
-- settings.gradle.kts
+- Add [gradle-bloop](https://github.com/scalacenter/gradle-bloop) plugin. e.g. on `build.gradle.kts`
 ```
 buildscript {
     repositories {
         mavenCentral()
     }
 
-    dependencies { classpath("ch.epfl.scala:gradle-bloop_2.12:1.5.6") }
+    dependencies { classpath("ch.epfl.scala:gradle-bloop_2.12:1.6.0") }
 }
+
+apply(plugin = "bloop")
 ```
-- build.gradle.kts
+- Export build (done by metals)
+```sh
+$ ./gradlew bloopInstall
 ```
-plugins {
-    bloop
-}
+- Verify installation and export
+```sh
+$ bloop projects
 ```
 
-https://scalacenter.github.io/bloop/docs/build-tools/gradle
+- Reference
+  - [Metals](https://scalameta.org/metals/docs/editors/emacs/)
+  - [Bloop with Gradle](https://scalacenter.github.io/bloop/docs/build-tools/gradle)
 
 #### Log location
 - `${project_home}/.metals/metals.log`
