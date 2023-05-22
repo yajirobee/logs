@@ -7,6 +7,11 @@ title: Emacs cheatsheet
 ## Reinstall packages
 remove packages under `elpa/` directory and restart emacs.
 
+## LSP
+### Metals
+#### Location of metals binary
+`.cache/lsp/metals/`
+
 # Links
 - [web page](https://www.gnu.org/software/emacs/)
 - [Emacs News](https://emba.gnu.org/emacs/emacs/-/blob/master/etc/NEWS)
