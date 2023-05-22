@@ -3,14 +3,21 @@ layout: memo
 title: Emacs cheatsheet
 ---
 
+# General
+## Evaluate a piece of elisp code
+> - You can type the form in the *scratch* buffer, and then type LFD (or C-j) after it. The result of evaluating the form will be inserted in the buffer.
+> - Typing M-: or M-x eval-expression allows you to type a Lisp form in the minibuffer which will be evaluated once you press RET.
+
+- [Emacs manual](https://www.gnu.org/software/emacs/manual/html_node/efaq/Evaluating-Emacs-Lisp-code.html)
+
 # Spacemacs
 ## Reinstall packages
 remove packages under `elpa/` directory and restart emacs.
 
 ## LSP
-### Metals
-#### Location of metals binary
-`.cache/lsp/metals/`
+### [Metals](https://scalameta.org/metals/docs/editors/emacs/)
+#### Reinstall metals
+Delete `.cache/lsp/metals/` and install server again.
 
 # Links
 - [web page](https://www.gnu.org/software/emacs/)
