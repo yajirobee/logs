@@ -18,7 +18,8 @@ remove packages under `elpa/` directory and restart emacs.
 ### [Metals](https://scalameta.org/metals/docs/editors/emacs/)
 #### Bloop with gradle
 - Add [gradle-bloop](https://github.com/scalacenter/gradle-bloop) plugin. e.g. on `build.gradle.kts`
-```
+
+```kotlin
 buildscript {
     repositories {
         mavenCentral()
@@ -29,10 +30,12 @@ buildscript {
 
 apply(plugin = "bloop")
 ```
+
 - Export build (done by metals)
 ```sh
 $ ./gradlew bloopInstall
 ```
+
 - Verify installation and export
 ```sh
 $ bloop projects
