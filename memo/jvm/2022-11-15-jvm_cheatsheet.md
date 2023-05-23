@@ -45,5 +45,43 @@ _java_thread_list=0x00007f7d40428050, length=252, elements={
 ## Profiling
 [async-profiler](https://github.com/async-profiler/async-profiler)
 
+# Gradle
+## CLI options
+- execute only test case of nested subclass
+```sh
+$ ./gradlew test --tests "some.package.class\$subclass"
+```
+
+- specify args
+```sh
+$ ./gradlew run --args="-h"
+```
+
+## Using Plugins
+[Plugins DSL](https://docs.gradle.org/current/userguide/plugins.html#sec:plugins_block) is newer and convenient way to
+declare plugin dependencies. It looks up [Gradle plugin portal](https://plugins.gradle.org/) for core and community plugins.
+If plugins DSL cannot be used due to the restrictions, you need to use [Legacy Plugin Application](https://docs.gradle.org/current/userguide/plugins.html#sec:old_plugin_application).
+
+## [Initialization Scripts](https://docs.gradle.org/current/userguide/init_scripts.html)
+[Applying plugin by id doesn't work](https://github.com/gradle/gradle/issues/1322). It should be added by type. e.g.
+
+```kotlin
+import bloop.integrations.gradle.BloopPlugin
+
+initscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies { classpath("ch.epfl.scala:gradle-bloop_2.12:1.6.0") }
+}
+
+allprojects {
+    apply<BloopPlugin>()
+}
+```
+
+## [Default Imports](https://docs.gradle.org/current/userguide/writing_build_scripts.html#script-default-imports)
+
 # References
 - [java 11 Command Reference](https://docs.oracle.com/en/java/javase/11/tools/java.html#GUID-3B1CE181-CD30-4178-9602-230B800D4FAE)
