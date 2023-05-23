@@ -3,3 +3,4 @@ Gemfile.lock
 *.gem
 .jekyll-metadata
 .jekyll-cache
+.rbenv-gemsets
