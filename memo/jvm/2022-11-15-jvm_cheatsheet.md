@@ -17,6 +17,9 @@ openjdk version "11.0.16.1" 2022-08-12
 
 - [Reference](https://bugs.openjdk.org/browse/JDK-8186248)
 
+## Container Awareness
+[openjdk container awareness](https://developers.redhat.com/articles/2022/04/19/java-17-whats-new-openjdks-container-awareness#)
+
 ## Set the TTL for DNS Name Lookups
 Use `networkaddress.cache.ttl` / `networkaddress.cache.negative.ttl`
 
