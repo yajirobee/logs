@@ -57,6 +57,13 @@ $ ./gradlew test --tests "some.package.class\$subclass"
 $ ./gradlew run --args="-h"
 ```
 
+## Modify JVM options
+Use [Gradle Properties](https://docs.gradle.org/current/userguide/build_environment.html). e.g.
+
+```
+org.gradle.jvmargs=-Xmx1024m -XX:MaxMetaspaceSize=256m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
+```
+
 ## Using Plugins
 [Plugins DSL](https://docs.gradle.org/current/userguide/plugins.html#sec:plugins_block) is newer and convenient way to
 declare plugin dependencies. It looks up [Gradle plugin portal](https://plugins.gradle.org/) for core and community plugins.
