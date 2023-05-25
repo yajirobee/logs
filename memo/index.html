@@ -43,7 +43,7 @@ title: Memo
         <div class="tags-post-line" />
       </div>
       <span class="tags-post-meta">
-        {{ crumbs | last | split: "-" | slice: 0, 3 | join: "/" }}
+        {{ html_page.mtime | date: "%Y-%m-%d" }}
       </span>
     </a>
 
