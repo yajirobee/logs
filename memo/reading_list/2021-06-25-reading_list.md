@@ -59,5 +59,10 @@ title: Reading list
 - [React-admin](https://marmelab.com/react-admin/Tutorial.html)
 - [Kotlin/JS + React](https://kotlinlang.org/docs/js-react.html)
 
+# AI
+- [Hugging Face](https://huggingface.co/)
+- [Chat PDF](https://www.chatpdf.com/)
+- [Pulumi AI](https://www.pulumi.com/ai/)
+
 # General Engineering
 - [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
