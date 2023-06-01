@@ -1,7 +1,7 @@
 ---
 layout: blog
 title: "Study PostgreSQL MultiXacts"
-tags: Database
+tags: PostgreSQL
 ---
 
 I faced a MultiXact (Multiple transactions) ID exhaustion issue recently. 
