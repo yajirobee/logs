@@ -7,6 +7,7 @@ Playing with DuckDB
 
 # Installation
 - [DuckDB Installation](https://duckdb.org/docs/installation/)
+
 ## Build
 Prerequisite: install [cmake](https://cmake.org/)
 
