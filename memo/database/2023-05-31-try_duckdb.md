@@ -25,8 +25,6 @@ CALL dbgen(sf=1);
 
 ```sql
 pragma show_tables;
-```
-
 |   name   |
 |----------|
 | customer |
@@ -37,33 +35,31 @@ pragma show_tables;
 | partsupp |
 | region   |
 | supplier |
+```
 
 ```sql
 pragma database_size;
-```
-- in memory
+-- in memory
 | database_name | database_size | block_size | total_blocks | used_blocks | free_blocks | wal_size | memory_usage | memory_limit |
 |---------------|---------------|------------|--------------|-------------|-------------|----------|--------------|--------------|
 | memory        | 0 bytes       | 0          | 0            | 0           | 0           | 0 bytes  | 1.4GB        | 13.3GB       |
-- file
+-- file
 | database_name | database_size | block_size | total_blocks | used_blocks | free_blocks | wal_size | memory_usage | memory_limit |
 |---------------|---------------|------------|--------------|-------------|-------------|----------|--------------|--------------|
 | tpch_sf1      | 260.3MB       | 262144     | 993          | 993         | 0           | 0 bytes  | 259.2MB      | 13.3GB       |
+```
 
 ```sql
 describe region;
-```
-
 | column_name | column_type | null | key | default | extra |
 |-------------|-------------|------|-----|---------|-------|
 | r_regionkey | INTEGER     | NO   |     |         |       |
 | r_name      | VARCHAR     | NO   |     |         |       |
 | r_comment   | VARCHAR     | NO   |     |         |       |
+```
 
 ```sql
 summarize lineitem;
-```
-
 |   column_name   |  column_type  |     min     |         max         | approx_unique |         avg         |         std         |   q25   |   q50   |   q75   |  count  | null_percentage |
 |-----------------|---------------|-------------|---------------------|---------------|---------------------|---------------------|---------|---------|---------|---------|-----------------|
 | l_orderkey      | INTEGER       | 1           | 6000000             | 1508227       | 3000279.604204982   | 1732187.8734803302  | 1526218 | 3009234 | 4504205 | 6001215 | 0.0%            |
@@ -82,6 +78,7 @@ summarize lineitem;
 | l_shipinstruct  | VARCHAR       | COLLECT COD | TAKE BACK RETURN    | 4             |                     |                     |         |         |         | 6001215 | 0.0%            |
 | l_shipmode      | VARCHAR       | AIR         | TRUCK               | 7             |                     |                     |         |         |         | 6001215 | 0.0%            |
 | l_comment       | VARCHAR       |  Tiresias   | zzle? furiously iro | 3558599       |                     |                     |         |         |         | 6001215 | 0.0%            |
+```
 
 # Postgres Scanner extension
 ```sql
