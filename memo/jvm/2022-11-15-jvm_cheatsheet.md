@@ -73,8 +73,9 @@ declare plugin dependencies. It looks up [Gradle plugin portal](https://plugins.
 If plugins DSL cannot be used due to the restrictions, you need to use [Legacy Plugin Application](https://docs.gradle.org/current/userguide/plugins.html#sec:old_plugin_application).
 
 ## [Initialization Scripts](https://docs.gradle.org/current/userguide/init_scripts.html)
-[Applying plugin by id doesn't work](https://github.com/gradle/gradle/issues/1322). It should be added by type. e.g.
+- [Applying plugin by id doesn't work](https://github.com/gradle/gradle/issues/1322)
 
+It should be added by type. e.g.
 ```kotlin
 import bloop.integrations.gradle.BloopPlugin
 
@@ -90,6 +91,10 @@ allprojects {
     apply<BloopPlugin>()
 }
 ```
+
+- [Cannot import project in IntelliJ by unresolved reference error](https://github.com/gradle/gradle/issues/15946)
+
+Use `.init.gradle.kts` extension for init scripts
 
 ## [Default Imports](https://docs.gradle.org/current/userguide/writing_build_scripts.html#script-default-imports)
 
