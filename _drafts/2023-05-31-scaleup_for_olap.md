@@ -7,7 +7,7 @@ tags: Database
 I came across a blog post [BIG DATA IS DEAD](https://motherduck.com/blog/big-data-is-dead/)
 that describes how big data processing is rare in the real world.
 It was written by a guy from [MotherDuck](https://motherduck.com/) which does business with [DuckDB](https://duckdb.org/).
-I suppose his opinion is a bit biased due to his position, but I agreed with most of the arguments.
+I suppose his opinion is biased due to his position, but I agreed with most of the arguments.
 Ten years ago, scale out based architecture was reasonable for data analysis platform,
 but today, scale up seems better choice than scale out for most of use cases.
 <!--end_excerpt-->
