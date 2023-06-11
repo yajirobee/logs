@@ -8,8 +8,8 @@ title: Programming fonts
 
 2023/06現在、以下のフォントが有力と思う。
 
+- [PlemolJP](https://github.com/yuru7/PlemolJP) -> 現在一番好み
 - [UDEV Gothic JPDOC](https://github.com/yuru7/udev-gothic)
-- [PlemolJP](https://github.com/yuru7/PlemolJP)
 - [Myrica M](https://github.com/tomokuni/Myrica/blob/master/product/Myrica.md)
 
 # References
