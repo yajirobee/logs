@@ -12,7 +12,7 @@ Playing with DuckDB
 Prerequisite: install [cmake](https://cmake.org/)
 
 ```sh
-make -j8
+CMAKE_BUILD_PARALLEL_LEVEL=6 make
 ```
 
 # TPC-H extension
