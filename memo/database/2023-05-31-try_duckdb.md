@@ -17,10 +17,10 @@ CMAKE_BUILD_PARALLEL_LEVEL=6 make
 
 # TPC-H extension
 ```sql
-INSTALL 'tpch';
-LOAD 'tpch';
+install 'tpch';
+load 'tpch';
 
-CALL dbgen(sf=1);
+call dbgen(sf=1);
 ```
 
 ```sql
@@ -82,8 +82,8 @@ summarize lineitem;
 
 # Postgres Scanner extension
 ```sql
-INSTALL postgres;
-LOAD postgres;
+install postgres;
+load postgres;
 ```
 
 - [Postgres Import](https://duckdb.org/docs/guides/import/query_postgres)
