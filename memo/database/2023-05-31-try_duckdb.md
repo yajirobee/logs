@@ -89,7 +89,7 @@ load postgres;
 ```sql
 -- attach all tables
 call postgres_attach('postgresql://postgres@localhost/pgbench');
-
+-- query single table
 select count(*) from postgres_scan('postgresql://postgres@localhost/pgbench', 'public', 'pgbench_accounts');
 ```
 
