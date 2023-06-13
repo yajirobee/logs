@@ -86,6 +86,13 @@ install postgres;
 load postgres;
 ```
 
+```sql
+-- attach all tables
+call postgres_attach('postgresql://postgres@localhost/pgbench');
+
+select count(*) from postgres_scan('postgresql://postgres@localhost/pgbench', 'public', 'pgbench_accounts');
+```
+
 - [Postgres Import](https://duckdb.org/docs/guides/import/query_postgres)
 - [Postgres Scanner](https://duckdb.org/docs/extensions/postgres_scanner)
 
@@ -96,7 +103,7 @@ Parquet extension is built-in.
 
 ### [Export](https://duckdb.org/docs/guides/import/parquet_export)
 ```sql
-copy lineitem to 'lineitem.parquet' (format parquet);
+copy lineitem to 'lineitem.parquet' (format 'parquet');
 ```
 
 ### [Query](https://duckdb.org/docs/guides/import/query_parquet)
