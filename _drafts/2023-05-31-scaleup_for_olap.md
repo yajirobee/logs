@@ -28,9 +28,8 @@ AWS released EC2 instance type `u-24tb1.112xlarge` (448 vCPUs, 24TB RAM, 100Gbps
 [^ec2_high_mem] [EC2 High Memory instances release](https://aws.amazon.com/about-aws/whats-new/2022/10/ec2-high-memory-instances-18tib-24tib-memory-available-on-demand-savings-plan-purchase-options/)
 
 # Scale up is cheaper and simpler than scale out
-Distributed query engines like Trino, Hive, etc enabled to process large data that don't fit on a single server by using multiple servers.
-It also allowed to scale out of query engine cluster when more capacity is required as data volume grows over time.
-On the other hand, distributed query processing significantly increased complexity of query engine implementation compared to single node query engine.
+Distributed query engines like Trino, Hive enabled to process large data that don't fit on a single server by using multiple servers. Also, the combination of distributed query and separation of compute and compute made it easy to scale out of query engine cluster when more capacity is required as data volume grows over time. These properties are useful when commodity server was not so powerful and sc
+On the other hand, distributed query processing greately increased complexity of query engine implementation compared to single node query engine.
 
 - simpler storage hierarchy
 - scan sharing

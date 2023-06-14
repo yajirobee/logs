@@ -28,6 +28,9 @@ title: Reading list
 ## Combinatorial optimization problems
 - [Google OR-Tools](https://github.com/google/or-tools)
 
+# Performance
+- [AWS Latency Monitoring](https://www.cloudping.co/grid)
+
 # Security
 - [Capability based security](https://en.wikipedia.org/wiki/Capability-based_security)
 - [XACML](https://en.wikipedia.org/wiki/XACML)
@@ -46,6 +49,7 @@ title: Reading list
 - [HTML spec](https://html.spec.whatwg.org/)
 - [Responsive design basic](https://web.dev/responsive-web-design-basics/)
 - [SEO starter guide by Google](https://developers.google.com/search/docs/beginner/seo-starter-guide)
+- [How Website Performance Affects Conversions](https://www.abralytics.com/blog/how-website-performance-affects-conversions)
 
 ## Style sheet
 - [SaSS basic](https://sass-lang.com/guide)

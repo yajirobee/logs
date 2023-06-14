@@ -55,3 +55,4 @@ Delete `.cache/lsp/metals/` and install server again.
 - [Emacs News](https://emba.gnu.org/emacs/emacs/-/blob/master/etc/NEWS)
 - [Awesome Emacs](https://github.com/emacs-tw/awesome-emacs)
 - [Emacs 29 new features](https://www.grugrut.net/posts/202211242303/)
+- [The Emacsmirror](https://emacsmirror.net/)
