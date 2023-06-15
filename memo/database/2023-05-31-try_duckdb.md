@@ -123,13 +123,25 @@ select l_linenumber, count(*) from read_parquet('lineitem.parquet') group by 1;
 D .mode
 current output mode: duckbox
 ```
+
 - increase number of rows displayed by duckbox (default = 40)
 ```
 .maxrows 100
 ```
+
 - SQL timer
 ```
 .timer on
+```
+
+- [Read SQL from file](https://duckdb.org/docs/api/cli.html#reading-sql-from-a-file)
+```
+.read query.sql
+```
+
+- [Enable profiling](https://duckdb.org/docs/sql/pragmas#enable_progress_bar-disable_progress_bar-enable_profiling-disable_profiling-profiling_output)
+```
+PRAGMA enable_profiling='json';
 ```
 
 # Links

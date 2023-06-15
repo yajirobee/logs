@@ -44,7 +44,8 @@ In distributed queries, a failure of a server causes failure of entire query if 
 
 ## Distributed debugging & profiling
 
-# TODO
+# DuckDB
+## TODO
 - check how to parallelize operators
 - check join algorithm of duckdb
 - scan parallelism
