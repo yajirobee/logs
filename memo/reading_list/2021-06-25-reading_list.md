@@ -28,6 +28,9 @@ title: Reading list
 ## Combinatorial optimization problems
 - [Google OR-Tools](https://github.com/google/or-tools)
 
+## Data Sketch Algorithms
+- [KLL Sketch](https://datasketches.apache.org/docs/KLL/KLLSketch.html)
+
 # Performance
 - [AWS Latency Monitoring](https://www.cloudping.co/grid)
 
