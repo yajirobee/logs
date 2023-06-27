@@ -25,3 +25,7 @@ docker run --name pg -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres:15.3
 ```sh
 docker exec -it pg bash
 ```
+# Flyway for PostgreSQL
+- [Flyway >=9.1.2 hanging forever on concurrent index creation](https://github.com/flyway/flyway/issues/3508)
+
+Use `-postgresql.transactional.lock=false` option

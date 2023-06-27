@@ -35,8 +35,8 @@ On the other hand, distributed query processing greately increased complexity of
 ## Data locality and load balancing accross servers
 Distibuted query has one more storage stack compared to single sever query processing, i.e. network IO across servers.
 Volume of network IO significantly impacts overall query execution time because network IO is slower than access for memory and locally attached flash storages. Executor of distributed query need to care data locality to reduce network IOs.
-At the same time, input data should be distributed to executor threads (or processes) so that all threads constantly work concurrently. Even if we have many executor threads, a query doesn't finish quickly if only single thread was busy and the others were idle. We need to see the balance of data locality and load balancing accross servers to process a query faster. It is the complexity brought by distributed query.
-Data locality and load balancing are general problem of query executor, but the complexty of the problem varies depending on storage hierarchy. Implementation can be much simplified with simpler storage hierarchy.
+At the same time, input data should be distributed to executor threads (or processes) so that all threads constantly work concurrently. Even if we have many executor threads, a query doesn't finish quickly if only single thread was busy and the others were idle. We need to see the balance of data locality and load balancing across servers to process a query faster. It is the complexity brought by distributed query.
+Data locality and load balancing are general problem of query executor, but the complexity of the problem varies depending on storage hierarchy. Implementation can be much simplified with simpler storage hierarchy.
 
 ## Tolerance for partial failure
 In distributed queries, a failure of a server causes failure of entire query if there is no fault tolerance mechanism.
