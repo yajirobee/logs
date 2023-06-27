@@ -5,7 +5,8 @@ tags: Database
 ---
 
 I came across a blog post [BIG DATA IS DEAD](https://motherduck.com/blog/big-data-is-dead/)
-that describes how big data processing is rare in the real world.
+that describes how big data processing is rare in the real world. Storing very large data became common for sure,
+but it's still uncommon to process all stored data in a single analytic query.
 It was written by a guy from [MotherDuck](https://motherduck.com/) which does business with [DuckDB](https://duckdb.org/).
 I suppose his opinion is biased due to his position, but I agreed with most of the arguments.
 
@@ -32,20 +33,27 @@ Distributed query engines like Trino, Hive enabled to process large data that do
 On the other hand, distributed query processing greately increased complexity of query engine implementation compared to single server query processing. Examples of complexities of distributed query engines are as follows:
 
 ## Data locality and load balancing accross servers
-- storage hierarchy is more complicated than single server query
-- distributed join / aggregation algorithm
-- difficult to share intermediate query process results
-- more parameters for optimizer, i.e. more logically equivalent plans to search
+Distibuted query has one more storage stack compared to single sever query processing, i.e. network IO across servers.
+Volume of network IO significantly impacts overall query execution time because network IO is slower than access for memory and locally attached flash storages. Executor of distributed query need to care data locality to reduce network IOs.
+At the same time, input data should be distributed to executor threads (or processes) so that all threads constantly work concurrently. Even if we have many executor threads, a query doesn't finish quickly if only single thread was busy and the others were idle. We need to see the balance of data locality and load balancing accross servers to process a query faster. It is the complexity brought by distributed query.
+Data locality and load balancing are general problem of query executor, but the complexty of the problem varies depending on storage hierarchy. Implementation can be much simplified with simpler storage hierarchy.
 
 ## Tolerance for partial failure
 In distributed queries, a failure of a server causes failure of entire query if there is no fault tolerance mechanism.
-- no overhead of inter node communication
-- no heartbeat for worker nodes
+If you used 10 servers to process an analytic query, the probability of seeing failure is higher than when you used 1 server. It means query fails in higher probability on distributed query.
+Some distributed query engines have a mechanism to detect and recover from partial failure, e.g. heartbeat of executor servers, reassign of parts of query processing. These also increase complexity of query engine implementation.
 
 ## Distributed debugging & profiling
+Debugging and profiling of distributed system is generally difficult problem. Distributed query is no exception.
 
-# DuckDB
-## TODO
+
+These complexity doesn't exist on single server query processing. If we don't use distributed query, the maintenance and operation of query engines will be simpler.
+
+# Requirements of single server analytical query engine
+
+## DuckDB
+
+# TODO
 - check how to parallelize operators
 - check join algorithm of duckdb
 - scan parallelism
