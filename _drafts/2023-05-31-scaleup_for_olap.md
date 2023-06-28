@@ -10,8 +10,7 @@ but it's still uncommon to process all stored data in a single analytic query.
 It was written by a guy from [MotherDuck](https://motherduck.com/) which does business with [DuckDB](https://duckdb.org/).
 I suppose his opinion is biased due to his position, but I agreed with most of the arguments.
 
-Ten years ago, scale out based architecture was reasonable for data analysis platform,
-but today, scale up seems a better choice than scale out to process a query that retrieve large data in most cases.
+Ten years ago, scale out based architecture was reasonable for data analysis platform, but today, scale up seems a better choice than scale out to process a query that retrieve large data in most cases.
 <!--end_excerpt-->
 
 # Do we still need multiple servers to process one analysis query?
@@ -27,13 +26,13 @@ AWS released EC2 instance type `u-24tb1.112xlarge` (448 vCPUs, 24TB RAM, 100Gbps
 [^ec2_history] [EC2 Instance History](https://aws.amazon.com/blogs/aws/ec2-instance-history/)
 [^ec2_high_mem] [EC2 High Memory instances release](https://aws.amazon.com/about-aws/whats-new/2022/10/ec2-high-memory-instances-18tib-24tib-memory-available-on-demand-savings-plan-purchase-options/)
 
-# Scale up is cheaper and simpler than scale out
-Distributed query engines like Trino, Hive enabled to process large data that don't fit on a single server by using multiple servers. Also, the combination of distributed query and separation of compute and compute allowed easy scale out of query engine cluster when more capacity is required as data volume grows over time. These properties are useful when commodity server was not so powerful and scale up was expensive.
+# Scale up is simpler and more performant than scale out
+Distributed query engines like Trino, Hive enabled to process large data that don't fit on a single server by using multiple servers. Also, the combination of distributed query and separation of compute and storage allowed easy scale out of query engine cluster when more capacity is required as data volume grows over time. These properties are useful when commodity server was not so powerful and scale up was expensive.
 
-On the other hand, distributed query processing greately increased complexity of query engine implementation compared to single server query processing. Examples of complexities of distributed query engines are as follows:
+On the other hand, distributed query greatly increased complexity of query engine implementation compared to query processed by single server (let me call it simply "single server query" below as an antonym of "distributed query"). Examples of complexities of distributed query engines are as follows:
 
-## Data locality and load balancing accross servers
-Distibuted query has one more storage stack compared to single sever query processing, i.e. network IO across servers.
+## Data locality and load balancing across servers
+Distibuted query has one more storage stack compared to single server query, i.e. network IO across servers.
 Volume of network IO significantly impacts overall query execution time because network IO is slower than access for memory and locally attached flash storages. Executor of distributed query need to care data locality to reduce network IOs.
 At the same time, input data should be distributed to executor threads (or processes) so that all threads constantly work concurrently. Even if we have many executor threads, a query doesn't finish quickly if only single thread was busy and the others were idle. We need to see the balance of data locality and load balancing across servers to process a query faster. It is the complexity brought by distributed query.
 Data locality and load balancing are general problem of query executor, but the complexity of the problem varies depending on storage hierarchy. Implementation can be much simplified with simpler storage hierarchy.
@@ -47,9 +46,9 @@ Some distributed query engines have a mechanism to detect and recover from parti
 Debugging and profiling of distributed system is generally difficult problem. Distributed query is no exception.
 
 
-These complexity doesn't exist on single server query processing. If we don't use distributed query, the maintenance and operation of query engines will be simpler.
+These complexity doesn't exist on single server query. If we don't use distributed query, the maintenance and operation of query engines will be simpler and we can expect better performance because expensive network IO isn't required.
 
-# Requirements of single server analytical query engine
+# Example of single server analytical query engines
 
 ## DuckDB
 
