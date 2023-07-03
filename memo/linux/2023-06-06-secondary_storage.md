@@ -36,6 +36,7 @@ update-grub
 7. Reboot
 
 - [EFI system partition](https://wiki.archlinux.org/title/EFI_system_partition)
+- [GRUB](https://wiki.archlinux.org/title/GRUB)
 - [move bootloder](https://askubuntu.com/questions/1250199/move-bootloader-or-remove-efi-partition-in-second-drive)
 
 # Check S.M.A.R.T
