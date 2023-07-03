@@ -15,6 +15,11 @@ title: Emacs cheatsheet
 remove packages under `elpa/` directory and restart emacs.
 
 ## LSP
+- remove blacklist
+```
+M-x lsp-workspace-blacklist-remove
+```
+
 ### [Metals](https://scalameta.org/metals/docs/editors/emacs/)
 #### Bloop with gradle
 - Add [gradle-bloop](https://github.com/scalacenter/gradle-bloop) plugin. e.g. on `build.gradle.kts`
