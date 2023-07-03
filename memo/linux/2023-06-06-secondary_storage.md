@@ -38,6 +38,7 @@ update-grub
 - [EFI system partition](https://wiki.archlinux.org/title/EFI_system_partition)
 - [GRUB](https://wiki.archlinux.org/title/GRUB)
 - [move bootloder](https://askubuntu.com/questions/1250199/move-bootloader-or-remove-efi-partition-in-second-drive)
+- [update-grubの仕組みを使ってUbuntuのGRUBをさらにカスタマイズする](https://gihyo.jp/admin/serial/01/ubuntu-recipe/0746)
 
 # Check S.M.A.R.T
 Use [smartmontools](https://www.smartmontools.org/)
