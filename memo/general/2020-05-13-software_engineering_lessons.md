@@ -5,6 +5,12 @@ title: Lessons of Software Engineering learned from my experience
 
 Lessons and best practices from my experience. This is a living document.
 
+# System Architecture
+- Optimize for maintenance, not creation
+- Software/System dependency is a way to leverage existing assets, but it also adds constraints.
+  - impossible to pin versions of dependencies for good, e.g. security bugs, hardware support
+  - version upgrade may break compatibilty
+
 # Protocol
 - Generally avoid custom serialization format
 - A receiver of a message should have a way to verify that the message was derivered correctly
