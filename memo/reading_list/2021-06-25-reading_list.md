@@ -33,6 +33,7 @@ title: Reading list
 
 # Performance
 - [AWS Latency Monitoring](https://www.cloudping.co/grid)
+- [Linux Host Tuning](https://fasterdata.es.net/host-tuning/linux/)
 
 # Security
 - [Capability based security](https://en.wikipedia.org/wiki/Capability-based_security)
