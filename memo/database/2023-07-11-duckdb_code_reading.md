@@ -19,7 +19,14 @@ Based on DuckDB [v0.8.1](https://github.com/duckdb/duckdb/tree/v0.8.1)
 ## Extension implementation
 - Implement `{extension_name}_init` and `{extension_name}_version`
   - [example: parquet extension](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/extension/parquet/parquet-extension.cpp#L809-L819)
-- Implement [Extension](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/include/duckdb/main/extension.hpp#L18-L24) class for initializationo
+- Implement [Extension](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/include/duckdb/main/extension.hpp#L18-L24) class and call `DuckDB::LoadExtension()`
+  - Load is skipped on the second time.
 
 ### Extension types
+- Function types are defined on [src/include/duckdb/function](https://github.com/duckdb/duckdb/tree/v0.8.1/src/include/duckdb/function)
 - Use `ExtensionUtil::RegisterFunction` to register function
+  - It creates an object of `CreateFunctionInfo`
+
+#### Table function
+- Create an instance of [TableFunction](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/include/duckdb/function/table_function.hpp#L210)
+- required fields are `function` and `bind`
