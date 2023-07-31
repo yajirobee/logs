@@ -69,6 +69,9 @@ title: Reading list
 - [React-admin](https://marmelab.com/react-admin/Tutorial.html)
 - [Kotlin/JS + React](https://kotlinlang.org/docs/js-react.html)
 
+# Development tools
+- [rr: Record and Replay Framework](https://rr-project.org/)
+
 # AI
 - [Hugging Face](https://huggingface.co/)
 - [Chat PDF](https://www.chatpdf.com/)
