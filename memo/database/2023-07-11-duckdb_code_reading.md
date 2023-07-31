@@ -30,3 +30,6 @@ Based on DuckDB [v0.8.1](https://github.com/duckdb/duckdb/tree/v0.8.1)
 #### Table function
 - Create an instance of [TableFunction](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/include/duckdb/function/table_function.hpp#L210)
 - required fields are `function` and `bind`
+  - `bind`: parse options and return `FunctionData` that stores parameters required to process scan
+  - `function`: fill `DataChunk` and return until scan completes
+    - `MultiFileReader::FinalizeChunk` can be used to fill a chunk.
