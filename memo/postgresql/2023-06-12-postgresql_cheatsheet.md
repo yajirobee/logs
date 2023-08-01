@@ -3,7 +3,8 @@ layout: memo
 title: PostgreSQL cheatsheet
 ---
 
-# Install by apt
+# Environment
+## Install by apt
 follow instruction of [postgres wiki](https://wiki.postgresql.org/wiki/Apt).
 
 ```sh
@@ -15,7 +16,7 @@ apt-cache show postgresql-15
 
 **Note: `arch` should be specifed on sources.list.**
 
-# Run on docker container
+## Run on docker container
 [PostgreSQL image](https://hub.docker.com/_/postgres)
 ```sh
 docker run --name pg -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres:15.3
@@ -25,7 +26,12 @@ docker run --name pg -e POSTGRES_PASSWORD=secret -p 5432:5432 -d postgres:15.3
 ```sh
 docker exec -it pg bash
 ```
-# Flyway for PostgreSQL
+## Flyway for PostgreSQL
 - [Flyway >=9.1.2 hanging forever on concurrent index creation](https://github.com/flyway/flyway/issues/3508)
 
 Use `-postgresql.transactional.lock=false` option
+
+# Administration
+## Get storage size of relations
+- [Disk Usage](https://wiki.postgresql.org/wiki/Disk_Usage)
+- [pg_total_relation_size](https://pgpedia.info/p/pg_total_relation_size.html)
