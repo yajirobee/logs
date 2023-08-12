@@ -41,12 +41,12 @@ duckdb -unsigned
 ```
 
 - [Extension build type](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/CMakeLists.txt#L817-L825)
->   # loadable extension binaries can be built two ways:
-  # 1. EXTENSION_STATIC_BUILD=1
-  #    DuckDB is statically linked into each extension binary. This increases portability because in several situations
-  #    DuckDB itself may have been loaded with RTLD_LOCAL. This is currently the main way we distribute the loadable
-  #    extension binaries
-  # 2. EXTENSION_STATIC_BUILD=0
-  #    The DuckDB symbols required by the loadable extensions are left unresolved. This will reduce the size of the binaries
-  #    and works well when running the DuckDB cli directly. For windows this uses delay loading. For MacOS and linux the
-  #    dynamic loader will look up the missing symbols when the extension is dlopen-ed.
+> loadable extension binaries can be built two ways:
+1. EXTENSION_STATIC_BUILD=1
+   DuckDB is statically linked into each extension binary. This increases portability because in several situations
+   DuckDB itself may have been loaded with RTLD_LOCAL. This is currently the main way we distribute the loadable
+   extension binaries
+2. EXTENSION_STATIC_BUILD=0
+   The DuckDB symbols required by the loadable extensions are left unresolved. This will reduce the size of the binaries
+   and works well when running the DuckDB cli directly. For windows this uses delay loading. For MacOS and linux the
+   dynamic loader will look up the missing symbols when the extension is dlopen-ed.
