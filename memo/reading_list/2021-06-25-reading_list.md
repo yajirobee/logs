@@ -33,6 +33,7 @@ title: Reading list
 
 # Performance
 - [AWS Latency Monitoring](https://www.cloudping.co/grid)
+- [Linux Host Tuning](https://fasterdata.es.net/host-tuning/linux/)
 
 # Security
 - [Capability based security](https://en.wikipedia.org/wiki/Capability-based_security)
@@ -67,6 +68,9 @@ title: Reading list
 - [Vite](https://vitejs.dev/guide/)
 - [React-admin](https://marmelab.com/react-admin/Tutorial.html)
 - [Kotlin/JS + React](https://kotlinlang.org/docs/js-react.html)
+
+# Development tools
+- [rr: Record and Replay Framework](https://rr-project.org/)
 
 # AI
 - [Hugging Face](https://huggingface.co/)
