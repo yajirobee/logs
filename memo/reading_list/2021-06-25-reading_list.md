@@ -47,6 +47,7 @@ title: Reading list
 
 # Software Architecture
 - [AWS well architected framework](https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html)
+- [The twelve factors](https://12factor.net/)
 
 # Web
 - [Learn web development by MDN](https://developer.mozilla.org/en-US/docs/Learn)
