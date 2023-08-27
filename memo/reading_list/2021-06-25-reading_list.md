@@ -73,6 +73,9 @@ title: Reading list
 # Development tools
 - [rr: Record and Replay Framework](https://rr-project.org/)
 
+# C++
+- [Sharpening Your Tools](https://cacm.acm.org/magazines/2023/8/274937-sharpening-your-tools/fulltext)
+
 # AI
 - [Hugging Face](https://huggingface.co/)
 - [Chat PDF](https://www.chatpdf.com/)
