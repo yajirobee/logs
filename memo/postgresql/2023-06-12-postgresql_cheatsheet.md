@@ -35,3 +35,19 @@ Use `-postgresql.transactional.lock=false` option
 ## Get storage size of relations
 - [Disk Usage](https://wiki.postgresql.org/wiki/Disk_Usage)
 - [pg_total_relation_size](https://pgpedia.info/p/pg_total_relation_size.html)
+
+# Query execution
+## Generic vs custom plans for prepared statement
+> By default (that is, when `plan_cache_mode` is set to auto), the server will automatically choose whether to use a generic or custom plan for a prepared statement that has parameters. The current rule for this is that the first five executions are done with custom plans and the average estimated cost of those plans is calculated. Then a generic plan is created and its estimated cost is compared to the average custom-plan cost.
+
+- [SQL Prepare](https://www.postgresql.org/docs/current/sql-prepare.html)
+- [GUC plan\_cache\_mode](https://www.postgresql.org/docs/current/runtime-config-query.html#GUC-PLAN-CACHE_MODE)
+
+### `PreparedStatement` of PostgreSQL JDBC
+> An internal counter keeps track of how many times the statement has been executed and when it reaches the prepareThreshold (default 5) the driver will switch to creating a named statement and using Prepare and Execute.
+
+- [pgjdbc server prepared statement handling](https://jdbc.postgresql.org/documentation/server-prepare/#server-prepared-statements)
+
+## Portal (cursor)
+- [Extented query protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY)
+- [Guide to PostgreSQL Cursors](https://levelup.gitconnected.com/guide-to-postgresql-cursors-e3524fef8f16)
