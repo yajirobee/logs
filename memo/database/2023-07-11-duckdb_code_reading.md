@@ -5,6 +5,16 @@ title: DuckDB Code Reading
 
 Based on DuckDB [v0.8.1](https://github.com/duckdb/duckdb/tree/v0.8.1)
 
+
+# Query Execution Flow
+- Parser
+- Planner
+  - Entry point:`Planner::CreatePlan`
+- Binder
+  - Entry point: `Binder::Bind`
+- Executor
+  - Entry point: `Executor::ExecuteTask`
+
 # Extension
 
 ## Install
@@ -31,8 +41,12 @@ Based on DuckDB [v0.8.1](https://github.com/duckdb/duckdb/tree/v0.8.1)
 - Create an instance of [TableFunction](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/include/duckdb/function/table_function.hpp#L210)
 - required fields are `function` and `bind`
   - `bind`: parse options and return `FunctionData` that stores parameters required to process scan
+    - called by `Binder::BindTableFUnctionInternal`
+    - fill `return_types` and `names`
     - call `MultiFileReader::BindReader`
   - `function`: fill `DataChunk` and return until scan completes
+    - called by `PhysicalTableScan::GetData`
+      - finish if `chunk.size() == 0`
     - call `MultiFileReader::FinalizeChunk`
 
 ## Tips
