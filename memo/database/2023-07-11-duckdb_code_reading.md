@@ -45,13 +45,21 @@ Based on DuckDB [v0.8.1](https://github.com/duckdb/duckdb/tree/v0.8.1)
   - `init_global`
     - caller: constructor of `TableScanGlobalSourceState` (<- `Executor::Initialize`)
     - override `MaxThreads` for multi threading
-    - call `MultiFileReader::FinalizeBind`
   - `init_local`
     - caller: constructor of `TableScanLocalSourceState` (<- `PipelineTask::ExecuteTask` <- `Executor::ExecuteTask`)
   - `function`: fill `DataChunk` and return until scan completes
     - caller: `PhysicalTableScan::GetData` (<- `PipelineTask::ExecuteTask` <- `Executor::ExecuteTask`)
       - finish if `chunk.size() == 0`
-    - call `MultiFileReader::FinalizeChunk`
+
+#### Reading multiple files
+[Overview](https://duckdb.org/docs/data/multiple_files/overview)
+
+- `MultiFileReader::ParseOptions` : parse options for multi file reader
+  - typically used in `TableFunction::bind`
+- `MultiFileReader::FinalizeBind`
+  - typically used in `TableFunction::init_global`
+- `MultiFileReader::FinalizeChunk`
+  - typically used in `TableFunction::function`
 
 ## Tips
 - Use unsigned extension from CLI
