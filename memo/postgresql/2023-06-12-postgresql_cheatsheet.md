@@ -51,3 +51,8 @@ Use `-postgresql.transactional.lock=false` option
 ## Portal (cursor)
 - [Extented query protocol](https://www.postgresql.org/docs/current/protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY)
 - [Guide to PostgreSQL Cursors](https://levelup.gitconnected.com/guide-to-postgresql-cursors-e3524fef8f16)
+
+## Buffer management for large relation scan
+For large relation scan, a small ring buffer is used.
+- [backend/storage/buffer/README](https://github.com/postgres/postgres/blob/e722846daf4a37797ee39bc8ca3e78a4ef437f51/src/backend/storage/buffer/README#L205-L216)
+- [Bulk buffer access strategies](https://github.com/postgres/postgres/blob/e722846daf4a37797ee39bc8ca3e78a4ef437f51/src/include/storage/bufmgr.h#L35-L38)
