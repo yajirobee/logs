@@ -121,6 +121,9 @@ export AWS_SESSION_TOKEN=$(curl -s http://169.254.169.254/latest/meta-data/iam/s
 ```
 
 ### [Export](https://duckdb.org/docs/guides/import/s3_export)
+```sql
+copy lineitem to 's3://${bucket}/lineitem.parquet';
+```
 
 ### [Query](https://duckdb.org/docs/guides/import/s3_import)
 ```sql
