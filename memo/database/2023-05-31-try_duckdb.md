@@ -147,6 +147,13 @@ current output mode: duckbox
 .timer on
 ```
 
+- Set number of threads
+```
+SET threads TO 1;
+```
+[Configuration](https://duckdb.org/docs/sql/configuration.html)
+
+
 - [Read SQL from file](https://duckdb.org/docs/api/cli.html#reading-sql-from-a-file)
 ```
 .read query.sql
