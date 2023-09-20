@@ -1,7 +1,7 @@
 ---
 layout: memo
 title: C++ cheatsheet
---
+---
 
 # Symbol name mangling
 -[Itanium C++ ABI Mangling](https://itanium-cxx-abi.github.io/cxx-abi/abi.html#mangling)
