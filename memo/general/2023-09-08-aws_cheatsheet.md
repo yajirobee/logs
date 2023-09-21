@@ -18,3 +18,12 @@ curl http://169.254.169.254/latest/meta-data/iam/security-credentials/${role-nam
 curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region'
 ```
 - [Instance identity documents](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html)
+
+## Data transfer bandwidth between S3
+> Traffic between Amazon EC2 and Amazon S3 can leverage up to 100 Gbps of bandwidth to VPC endpoints and public IPs in the same Region.
+
+From [What's the maximum transfer speed between Amazon EC2 and Amazon S3?](https://repost.aws/knowledge-center/s3-maximum-transfer-speed-ec2)
+
+### Links
+- [How can I improve the transfer speeds for copying data between my S3 bucket and EC2 instance?](https://repost.aws/knowledge-center/s3-transfer-data-bucket-instance)
+- [Network performance of EC2 instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose-instances.html#general-purpose-network-performance)
