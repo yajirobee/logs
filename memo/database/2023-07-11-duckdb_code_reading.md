@@ -3,7 +3,7 @@ layout: memo
 title: DuckDB Code Reading
 ---
 
-Based on DuckDB [v0.8.1](https://github.com/duckdb/duckdb/tree/v0.8.1)
+Based on DuckDB [v0.9.0](https://github.com/duckdb/duckdb/tree/v0.9.0)
 
 # Query Execution Flow
 - Parser
@@ -15,29 +15,37 @@ Based on DuckDB [v0.8.1](https://github.com/duckdb/duckdb/tree/v0.8.1)
   - Entry point: `Executor::ExecuteTask`
 
 # Extension
+Read extension [README.md](https://github.com/duckdb/duckdb/blob/v0.9.0/extension/README.md) first.
 
 ## Install
-- Extensions are downloaded from [extensions.duckdb.org](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/main/extension/extension_install.cpp#L186C36-L186C58) by default.
-- Extensions are installed on `${DBConfigOptions.extension_directory or $HOME}.duckdb/extensions/${version_dir}/${platform}` ([code](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/main/extension/extension_install.cpp#L38))
+- Extensions are downloaded from "extensions.duckdb.org" by default.
+  - Custom extension repository can be configured by `custom_extension_repository`.
+  - [Distribute your extension](https://github.com/duckdb/extension-template#distributing-your-extension)
+- Extensions are installed on `${DBConfigOptions.extension_directory or $HOME}.duckdb/extensions/${version_dir}/${platform}`
+
+related code: `src/main/extension/extension_install.cpp`
 
 ## Load
 - Load procedure
-  1. call `{extension_name}_version` to check extension version and compare with running DuckDB version ([code](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/main/extension/extension_load.cpp#L169-L194))
-  2. call `{extension_name}_init` ([code](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/main/extension/extension_load.cpp#L246-L256))
+  1. call `{extension_name}_version` to check extension version and compare with running DuckDB version
+  2. call `{extension_name}_init`
+
+related code: `src/main/extension/extension_load.cpp`
 
 ## Extension implementation
 - Implement `{extension_name}_init` and `{extension_name}_version`
-  - [example: parquet extension](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/extension/parquet/parquet-extension.cpp#L809-L819)
-- Implement [Extension](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/include/duckdb/main/extension.hpp#L18-L24) class and call `DuckDB::LoadExtension()`
+- Implement `Extension` class and call `DuckDB::LoadExtension()`
   - Load is skipped on the second time.
 
+related code: `src/include/duckdb/main/extension.hpp`
+
 ### Extension types
-- Function types are defined on [src/include/duckdb/function](https://github.com/duckdb/duckdb/tree/v0.8.1/src/include/duckdb/function)
+- Function types are defined on [src/include/duckdb/function](https://github.com/duckdb/duckdb/tree/v0.9.0/src/include/duckdb/function)
 - Use `ExtensionUtil::RegisterFunction` to register function
   - It creates an object of `CreateFunctionInfo`
 
 #### Table function
-- Create an instance of [TableFunction](https://github.com/duckdb/duckdb/blob/6536a772329002b05decbfc0a9d3f606e0ec7f55/src/include/duckdb/function/table_function.hpp#L210)
+- Create an instance of `TableFunction`
 - required fields are `function` and `bind`
   - `bind`: parse options and return `FunctionData` that stores parameters required to process scan
     - caller: `Binder::BindTableFunctionInternal`
@@ -50,6 +58,8 @@ Based on DuckDB [v0.8.1](https://github.com/duckdb/duckdb/tree/v0.8.1)
   - `function`: fill `DataChunk` and return until scan completes
     - caller: `PhysicalTableScan::GetData` (<- `PipelineTask::ExecuteTask` <- `Executor::ExecuteTask`)
       - finish if `chunk.size() == 0`
+
+related code: `src/include/duckdb/function/table_function.hpp`
 
 #### Reading multiple files
 [Overview](https://duckdb.org/docs/data/multiple_files/overview)
