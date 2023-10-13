@@ -15,7 +15,7 @@ Prerequisite: install [cmake](https://cmake.org/)
 CMAKE_BUILD_PARALLEL_LEVEL=6 make
 ```
 
-# TPC-H extension
+# [TPC-H extension](https://duckdb.org/docs/extensions/tpch)
 ```sql
 install 'tpch';
 load 'tpch';
@@ -120,6 +120,12 @@ export AWS_SECRET_ACCESS_KEY=$(curl -s http://169.254.169.254/latest/meta-data/i
 export AWS_SESSION_TOKEN=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/${role_name} | jq -r '.Token')
 ```
 
+[aws](https://duckdb.org/docs/extensions/aws) extension was introduced by DuckDB `0.9.0`.
+Credentials can be loaded as follows:
+```
+CALL load_aws_credentials();
+```
+
 ### [Export](https://duckdb.org/docs/guides/import/s3_export)
 ```sql
 copy lineitem to 's3://${bucket}/lineitem.parquet';
@@ -162,6 +168,22 @@ SET threads TO 1;
 - [Enable profiling](https://duckdb.org/docs/sql/pragmas#enable_progress_bar-disable_progress_bar-enable_profiling-disable_profiling-profiling_output)
 ```
 PRAGMA enable_profiling='json';
+```
+
+- OOM in in-memory mode
+Query aborts if it consumers memory more than the limit and temporary directory isn't specified. e.g.
+```
+Error: Out of Memory Error: failed to allocate data of size 2.0MB (13.1GB/13.1GB used)
+Database is launched in in-memory mode and no temporary directory is specified.
+Unused blocks cannot be offloaded to disk.
+
+Launch the database with a persistent storage back-end
+Or set PRAGMA temp_directory='/path/to/tmp.tmp'
+```
+
+set temporary directory to avoid OOM
+```
+D set temp_directory='duckdb_tmp';
 ```
 
 # Links

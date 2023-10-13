@@ -33,3 +33,9 @@ From [What's the maximum transfer speed between Amazon EC2 and Amazon S3?](https
 > Using the Range HTTP header in a GET Object request, you can fetch a byte-range from an object, transferring only the specified portion
 
 From [Use Byte-Range Fetches](https://docs.aws.amazon.com/whitepapers/latest/s3-optimizing-performance-best-practices/use-byte-range-fetches.html)
+
+## Concurrency on CLI
+Change [max\_concurrent\_requests](https://awscli.amazonaws.com/v2/documentation/api/latest/topic/s3-config.html#configuration-values).
+```sh
+aws configure set default.s3.max_concurrent_requests 20
+```
