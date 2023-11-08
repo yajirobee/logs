@@ -55,6 +55,10 @@ $ bloop projects
 #### Reinstall metals
 Delete `.cache/lsp/metals/` and install server again.
 
+# Emacs for Mac
+- [Emacs for OSX](https://emacsforosx.com/)
+- [Emacs Mac Port](https://github.com/railwaycat/homebrew-emacsmacport)
+
 # Links
 - [web page](https://www.gnu.org/software/emacs/)
 - [Emacs News](https://emba.gnu.org/emacs/emacs/-/blob/master/etc/NEWS)
