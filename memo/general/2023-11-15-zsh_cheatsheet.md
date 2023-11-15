@@ -1,3 +1,8 @@
+---
+layout: memo
+title: zsh cheatsheet
+---
+
 # format of process time reports with the time keyword
 The `time` keyword in zsh produces output in the format specified by the variable `TIMEFMT`.
 
