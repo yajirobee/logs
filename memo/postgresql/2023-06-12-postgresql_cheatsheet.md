@@ -82,3 +82,10 @@ test=# select pid, relation::regclass, mode, granted, query from pg_locks join p
  20944 | test     | ShareLock | t       | create index if not exists test_idx on test (key);
 (1 row)
 ```
+
+# Clients
+## JDBC
+### JDBC automatically executes begin a transaction if required
+BEGIN is called unless `QUERY_SUPPRESS_BEGIN` flag is set. ([code](https://github.com/pgjdbc/pgjdbc/blob/e12bc692d1eaa831457136da441f580bb29e4455/pgjdbc/src/main/java/org/postgresql/core/v3/QueryExecutorImpl.java#L615-L617)).
+
+For example, `QUERY_SUPPRESS_BEGIN` is set [when auto commit is true](https://github.com/pgjdbc/pgjdbc/blob/e12bc692d1eaa831457136da441f580bb29e4455/pgjdbc/src/main/java/org/postgresql/jdbc/PgStatement.java#L459-L461).
