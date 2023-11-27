@@ -56,3 +56,29 @@ Use `-postgresql.transactional.lock=false` option
 For large relation scan, a small ring buffer is used.
 - [backend/storage/buffer/README](https://github.com/postgres/postgres/blob/e722846daf4a37797ee39bc8ca3e78a4ef437f51/src/backend/storage/buffer/README#L205-L216)
 - [Bulk buffer access strategies](https://github.com/postgres/postgres/blob/e722846daf4a37797ee39bc8ca3e78a4ef437f51/src/include/storage/bufmgr.h#L35-L38)
+
+# DDL
+## Locks
+- `create index if not exist` takes `SHARE` lock even if the index already exists
+
+confirmed on PostgreSQL 14.9
+```
+test=# select pg_backend_pid();
+ pg_backend_pid
+----------------
+          20944
+(1 row)
+
+test=# begin;
+BEGIN
+test=*# create index if not exists test_idx on test (key);
+NOTICE:  relation "test_idx" already exists, skipping
+CREATE INDEX
+
+-- another connection
+test=# select pid, relation::regclass, mode, granted, query from pg_locks join pg_stat_activity using (pid) where locktype = 'relation' and pid <> pg_backend_pid() order by query_start;
+  pid  | relation |   mode    | granted |                       query
+-------+----------+-----------+---------+----------------------------------------------------
+ 20944 | test     | ShareLock | t       | create index if not exists test_idx on test (key);
+(1 row)
+```
