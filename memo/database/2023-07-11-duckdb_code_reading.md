@@ -14,6 +14,9 @@ Based on DuckDB [v0.9.0](https://github.com/duckdb/duckdb/tree/v0.9.0)
 - Executor
   - Entry point: `Executor::ExecuteTask`
 
+# Join
+- [Out of core hash join](https://github.com/duckdb/duckdb/pull/4189)
+
 # Extension
 Read extension [README.md](https://github.com/duckdb/duckdb/blob/v0.9.0/extension/README.md) first.
 

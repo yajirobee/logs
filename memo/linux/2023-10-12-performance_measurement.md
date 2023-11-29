@@ -18,11 +18,11 @@ sar -r --human 1
 # IO
 - Display extended statistics at 1 second intervals for device `dev`.
 ```sh
-iostat -x $dev 1
+iostat --human -x $dev 1
 ```
 
 # Network
 - Display network statistics at 1 second intervals for the network interface `eth0`.
 ```sh
-sar -n DEV --iface=eth0 1
+sar --human -n DEV --iface=eth0 1
 ```
