@@ -9,6 +9,8 @@ title: Reading list
   - [BIG DATA IS DEAD](https://motherduck.com/blog/big-data-is-dead/)
 - [ClickHouse](https://clickhouse.com/docs/en/intro)
   - [github](https://github.com/ClickHouse/ClickHouse)
+  - [ClickBench](https://benchmark.clickhouse.com/)
+    - [github](https://github.com/ClickHouse/ClickBench/)
 
 ## Distributed Transaction
 - [An In-Depth Analysis of Distributed Transaction Solutions](https://www.alibabacloud.com/blog/an-in-depth-analysis-of-distributed-transaction-solutions_597232)

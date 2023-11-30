@@ -136,7 +136,8 @@ copy lineitem to 's3://${bucket}/lineitem.parquet';
 select l_linenumber, count(*) from read_parquet('s3://${bucket}/lineitem.parquet') group by 1;
 ```
 
-# Note
+# Tips
+## CLI
 - default mode of CLI is "duckbox"
 ```
 D .mode
@@ -153,16 +154,17 @@ current output mode: duckbox
 .timer on
 ```
 
-- Set number of threads
-```
-SET threads TO 1;
-```
-[Configuration](https://duckdb.org/docs/sql/configuration.html)
-
-
 - [Read SQL from file](https://duckdb.org/docs/api/cli.html#reading-sql-from-a-file)
 ```
 .read query.sql
+```
+
+## Configuration
+[Document](https://duckdb.org/docs/sql/configuration.html)
+
+- Set number of threads
+```
+SET threads TO 1;
 ```
 
 - [Enable profiling](https://duckdb.org/docs/sql/pragmas#enable_progress_bar-disable_progress_bar-enable_profiling-disable_profiling-profiling_output)
@@ -170,7 +172,9 @@ SET threads TO 1;
 PRAGMA enable_profiling='json';
 ```
 
+### Tuning to avoid out of memory
 - OOM in in-memory mode
+
 Query aborts if it consumers memory more than the limit and temporary directory isn't specified. e.g.
 ```
 Error: Out of Memory Error: failed to allocate data of size 2.0MB (13.1GB/13.1GB used)
@@ -185,6 +189,20 @@ set temporary directory to avoid OOM
 ```
 D set temp_directory='duckdb_tmp';
 ```
+
+- Use jemalloc to avoid memory fragmentation  
+About [jemalloc extension](https://github.com/duckdb/duckdb/pull/4971)
+
+- Set `memory_limit` conservatively  
+Default value is 80% of RAM, but there is edge cases which may consumer memory more than the limit now.
+
+From [PR #6733](https://github.com/duckdb/duckdb/issues/6733#issuecomment-1486353433):
+> What happens is that query 21 has a pipeline with more than one join hashtable,
+which both need to spill to disk. The join hashtables try not to take up all available memory,
+but are not aware of each others memory usage, and therefore take up more memory than
+there is available, causing the OOM exception.
+
+`memory_limit` needs to be configured so that entire memory consumption doesn't exceed available memory.
 
 # Links
 - [Dot Commands](https://duckdb.org/docs/api/cli#special-commands-dot-commands)
