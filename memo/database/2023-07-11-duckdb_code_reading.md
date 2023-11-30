@@ -17,6 +17,11 @@ Based on DuckDB [v0.9.0](https://github.com/duckdb/duckdb/tree/v0.9.0)
 # Join
 - [Out of core hash join](https://github.com/duckdb/duckdb/pull/4189)
 
+# Bulk load
+- [Optimistic streaming write for data more than fits in memory in a single transaction](https://github.com/duckdb/duckdb/pull/4996)
+
+> If the transaction is rolled back or aborted, the blocks that were pre-emptively written to disk are marked as unused and reclaimed by the system for use in subsequent writes. This might still cause the database file to grow temporarily, however, and may create gaps in the database file if there are multiple transactions writing at the same time with a subset of those transactions aborting. That space is not lost - however. It will be re-used by the system when new data is ingested.
+
 # Extension
 Read extension [README.md](https://github.com/duckdb/duckdb/blob/v0.9.0/extension/README.md) first.
 
