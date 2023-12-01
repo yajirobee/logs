@@ -39,3 +39,7 @@ Change [max\_concurrent\_requests](https://awscli.amazonaws.com/v2/documentation
 ```sh
 aws configure set default.s3.max_concurrent_requests 20
 ```
+
+## Mounting S3 bucket as a local file system
+- [Mountpoint for Amazon S3](https://github.com/awslabs/mountpoint-s3)
+- [The inside story on Mountpoint for Amazon S3, a high-performance open source file client](https://aws.amazon.com/blogs/storage/the-inside-story-on-mountpoint-for-amazon-s3-a-high-performance-open-source-file-client/)
