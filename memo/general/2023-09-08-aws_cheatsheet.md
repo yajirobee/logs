@@ -28,6 +28,10 @@ From [What's the maximum transfer speed between Amazon EC2 and Amazon S3?](https
 - [How can I improve the transfer speeds for copying data between my S3 bucket and EC2 instance?](https://repost.aws/knowledge-center/s3-transfer-data-bucket-instance)
 - [Network performance of EC2 instance](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/general-purpose-instances.html#general-purpose-network-performance)
 
+# EBS
+## Provisioned IOPS SSD volumes
+Provisioned IOPS is calculated with IO size = 16KiB ([reference](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/provisioned-iops.html)).
+
 # S3
 ## Range get
 > Using the Range HTTP header in a GET Object request, you can fetch a byte-range from an object, transferring only the specified portion
