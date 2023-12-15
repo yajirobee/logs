@@ -3,7 +3,7 @@ layout: memo
 title: DuckDB Code Reading
 ---
 
-Based on DuckDB [v0.9.0](https://github.com/duckdb/duckdb/tree/v0.9.0)
+Based on DuckDB [v0.9.2](https://github.com/duckdb/duckdb/tree/v0.9.2)
 
 # Query Execution Flow
 - Parser

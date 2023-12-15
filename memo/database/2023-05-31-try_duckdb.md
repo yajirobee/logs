@@ -84,17 +84,12 @@ summarize lineitem;
 ```sql
 install postgres;
 load postgres;
-```
-
-```sql
--- attach all tables
-call postgres_attach('postgresql://postgres@localhost/pgbench');
--- query single table
-select count(*) from postgres_scan('postgresql://postgres@localhost/pgbench', 'public', 'pgbench_accounts');
+attach 'postgresql://postgres@localhost/pgbench' as pgbench (type postgres);
 ```
 
 - [Postgres Import](https://duckdb.org/docs/guides/import/query_postgres)
 - [Postgres Scanner](https://duckdb.org/docs/extensions/postgres_scanner)
+  - [github](https://github.com/duckdb/postgres_scanner)
 
 # Parquet extension
 Parquet extension is built-in.
@@ -135,6 +130,9 @@ copy lineitem to 's3://${bucket}/lineitem.parquet';
 ```sql
 select l_linenumber, count(*) from read_parquet('s3://${bucket}/lineitem.parquet') group by 1;
 ```
+
+## Links
+- [Performance considerations for Parquet](https://duckdb.org/docs/guides/performance/file-formats)
 
 # Tips
 ## CLI
