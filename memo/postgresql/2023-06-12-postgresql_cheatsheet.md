@@ -84,6 +84,13 @@ test=# select pid, relation::regclass, mode, granted, query from pg_locks join p
 ```
 
 # Clients
+## Set GUC parameters via libpq connection string
+e.g.
+```
+postgresql://user@localhost:5433/mydb?options=-c%20synchronous_commit%3Doff
+```
+- [libpq Connection Strings](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING)
+
 ## JDBC
 ### JDBC automatically executes begin a transaction if required
 BEGIN is called unless `QUERY_SUPPRESS_BEGIN` flag is set. ([code](https://github.com/pgjdbc/pgjdbc/blob/e12bc692d1eaa831457136da441f580bb29e4455/pgjdbc/src/main/java/org/postgresql/core/v3/QueryExecutorImpl.java#L615-L617)).
