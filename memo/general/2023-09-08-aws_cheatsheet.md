@@ -47,3 +47,10 @@ aws configure set default.s3.max_concurrent_requests 20
 ## Mounting S3 bucket as a local file system
 - [Mountpoint for Amazon S3](https://github.com/awslabs/mountpoint-s3)
 - [The inside story on Mountpoint for Amazon S3, a high-performance open source file client](https://aws.amazon.com/blogs/storage/the-inside-story-on-mountpoint-for-amazon-s3-a-high-performance-open-source-file-client/)
+
+# RDS
+## Aurora
+### DB cluster parameter group vs DB parameter group
+> The values in the DB parameter group can override default values from the cluster parameter group.
+
+from: [Amazon Aurora DB cluster and DB instance parameters](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithDBClusterParamGroups.html#Aurora.Managing.ParameterGroups)

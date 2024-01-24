@@ -54,6 +54,7 @@ AFAIK, there hasn't been so many choices for single server analytical RDBMS. Exa
 - OSS
   - [DuckDB](https://duckdb.org/)
     - [DuckDb - Database of databases](https://dbdb.io/db/duckdb)
+  - [ClickHouse](https://clickhouse.com/)
   - [MonetDB](https://www.monetdb.org/)
 - Commercial
   - [Actian Vector (VectorWise)](https://dbdb.io/db/vector)
