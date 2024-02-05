@@ -99,4 +99,6 @@ Use `.init.gradle.kts` extension for init scripts
 ## [Default Imports](https://docs.gradle.org/current/userguide/writing_build_scripts.html#script-default-imports)
 
 # References
-- [java 11 Command Reference](https://docs.oracle.com/en/java/javase/11/tools/java.html#GUID-3B1CE181-CD30-4178-9602-230B800D4FAE)
+- [Oracle Java Standart Edition Documentation](https://docs.oracle.com/en/java/javase/index.html)
+- [Java Lnaguage Changes](https://docs.oracle.com/en/java/javase/21/language/java-language-changes.html)
+- [java 11 Command Reference](https://docs.oracle.com/en/java/javase/11/tools/java.html)

@@ -26,6 +26,11 @@ title: Reading list
 ## Personal Data Market
 - [DBSJ lecture](https://www.youtube.com/watch?v=5OJsopZj66s&list=PL_VdUcCLzEklgChG2t07jMoZJ5Uonso52)
 
+## KVS
+- Redis cluster
+  - [Redis cluster specification](https://redis.io/docs/reference/cluster-spec/)
+  - [Redis Clustering Best Practices](https://redis.com/blog/redis-clustering-best-practices-with-keys/)
+
 # Algorithm
 ## Combinatorial optimization problems
 - [Google OR-Tools](https://github.com/google/or-tools)
@@ -71,9 +76,6 @@ title: Reading list
 - [Vite](https://vitejs.dev/guide/)
 - [React-admin](https://marmelab.com/react-admin/Tutorial.html)
 - [Kotlin/JS + React](https://kotlinlang.org/docs/js-react.html)
-
-# Development tools
-- [rr: Record and Replay Framework](https://rr-project.org/)
 
 # C++
 - [Sharpening Your Tools](https://cacm.acm.org/magazines/2023/8/274937-sharpening-your-tools/fulltext)
