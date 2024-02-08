@@ -12,7 +12,6 @@ jedisNodeConnection.watch(hashKey(key));
 Transaction transaction = jedisNodeConnection.multi();
 transaction.set(hashKey(key), String.valueOf(item));
 transaction.exec();
-jedisNodeConnection.unwatch();
 jedisNodeConnection.close();
 ```
 ([Reference](https://groups.google.com/g/jedis_redis/c/b-65UX8qvOE))
