@@ -1,0 +1,23 @@
+---
+layout: memo
+title: Redis cheatsheet
+---
+
+# Redis cluster
+
+## Transaction in a hash slot with Jedis
+```java
+Jedis jedisNodeConnection= jedisCluster.getConnectionFromSlot(JedisClusterCRC16.getSlot(hashKey(key)));
+jedisNodeConnection.watch(hashKey(key));
+Transaction transaction = jedisNodeConnection.multi();
+transaction.set(hashKey(key), String.valueOf(item));
+transaction.exec();
+jedisNodeConnection.unwatch();
+jedisNodeConnection.close();
+```
+([Reference](https://groups.google.com/g/jedis_redis/c/b-65UX8qvOE))
+
+## Links
+- [Redis cluster specification](https://redis.io/docs/reference/cluster-spec/)
+- [Redis Clustering Best Practices](https://redis.com/blog/redis-clustering-best-practices-with-keys/)
+

@@ -26,11 +26,6 @@ title: Reading list
 ## Personal Data Market
 - [DBSJ lecture](https://www.youtube.com/watch?v=5OJsopZj66s&list=PL_VdUcCLzEklgChG2t07jMoZJ5Uonso52)
 
-## KVS
-- Redis cluster
-  - [Redis cluster specification](https://redis.io/docs/reference/cluster-spec/)
-  - [Redis Clustering Best Practices](https://redis.com/blog/redis-clustering-best-practices-with-keys/)
-
 # Algorithm
 ## Combinatorial optimization problems
 - [Google OR-Tools](https://github.com/google/or-tools)
