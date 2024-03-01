@@ -57,6 +57,9 @@ For large relation scan, a small ring buffer is used.
 - [backend/storage/buffer/README](https://github.com/postgres/postgres/blob/e722846daf4a37797ee39bc8ca3e78a4ef437f51/src/backend/storage/buffer/README#L205-L216)
 - [Bulk buffer access strategies](https://github.com/postgres/postgres/blob/e722846daf4a37797ee39bc8ca3e78a4ef437f51/src/include/storage/bufmgr.h#L35-L38)
 
+### Synchronized scan across multiple queries
+- [synchronize_seqscans](https://postgresqlco.nf/doc/en/param/synchronize_seqscans/)
+
 # DDL
 ## Locks
 - `create index if not exist` takes `SHARE` lock even if the index already exists
@@ -96,3 +99,6 @@ postgresql://user@localhost:5433/mydb?options=-c%20synchronous_commit%3Doff
 BEGIN is called unless `QUERY_SUPPRESS_BEGIN` flag is set. ([code](https://github.com/pgjdbc/pgjdbc/blob/e12bc692d1eaa831457136da441f580bb29e4455/pgjdbc/src/main/java/org/postgresql/core/v3/QueryExecutorImpl.java#L615-L617)).
 
 For example, `QUERY_SUPPRESS_BEGIN` is set [when auto commit is true](https://github.com/pgjdbc/pgjdbc/blob/e12bc692d1eaa831457136da441f580bb29e4455/pgjdbc/src/main/java/org/postgresql/jdbc/PgStatement.java#L459-L461).
+
+# Links
+- [POSTGRESQLCO.NF](https://postgresqlco.nf/doc/en/param/)
