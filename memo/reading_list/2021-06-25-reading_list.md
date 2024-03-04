@@ -5,8 +5,6 @@ title: Reading list
 
 # Databases
 ## DB engines
-- [DuckDB](https://duckdb.org/)
-  - [BIG DATA IS DEAD](https://motherduck.com/blog/big-data-is-dead/)
 - [ClickHouse](https://clickhouse.com/docs/en/intro)
   - [github](https://github.com/ClickHouse/ClickHouse)
   - [ClickBench](https://benchmark.clickhouse.com/)
@@ -14,6 +12,10 @@ title: Reading list
 
 ## Distributed Transaction
 - [An In-Depth Analysis of Distributed Transaction Solutions](https://www.alibabacloud.com/blog/an-in-depth-analysis-of-distributed-transaction-solutions_597232)
+
+## Data Lake
+- [Project Nessie](https://projectnessie.org/)
+- [Subtrait](https://substrait.io/)
 
 ## Data lineage
 - [Data lineage system in a data warehouse](https://cloud.google.com/solutions/architecture-concept-data-lineage-systems-in-a-data-warehouse)
