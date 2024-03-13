@@ -97,6 +97,7 @@ I tried some min/max DB capacity settings as the document told that the scaling 
 
 ### Benchmark workload
 Since our application tends to have a bottleneck on write workload, I used write only workload on the benchmark.
+
 The benchmark application runs multiple threads and each thread repeats a query that upsert (mostly update) 20 tuples. The average tuple size was 57 bytes including [tuple header](https://www.postgresql.org/docs/15/storage-page-layout.html), i.e. 1140 bytes/query were written on average. All working data set basically fits into `shared_buffers` even on the smallest ACU I used, i.e. ACU = 1, `shared_buffers` = 384MiB.
 The workload was changed by varying number of threads from 1 to 32.
 
@@ -115,7 +116,8 @@ I monitored and confirmed that the client wasn't actually a bottleneck while run
   - Note that we usually use DataDog for monitoring and these CloudWatch metrics are available too. However, the granularity of metrics is 1 minutes on DataDog even though those metrics are calculated every second. On CloudWatch dashboard, you can see those metrics in 1 second resolution.
 - Monitor `shared_buffers` change on PostgreSQL session
   - We cannot directly check actual vCPUs and available memory size on DB when ACU was updated. I tried to observe change of available resources by `shared_buffers` because dynamically changes by scale up/down.
-  - It was monitored like
+  - It was monitored like as follows
+
 ```psql
 postgres=# \x
 Expanded display is on.
@@ -141,7 +143,7 @@ shared_buffers | 128 MB
 As the first experiment, I used relatively small DB capacity configuration (min = 1.0, max = 4.0) and ran the benchmark with single thread. I observed how Aurora Serverless v2 scaled while running the benchmark.
 
 - CrowdWatch metrics related to scaling
-![Image from Gyazo](assets/images/posts/2024-03-13/cw_min1_max4_conn1.jpg)
+![CloudWatch metrics](/assets/images/posts/2024-03-13/cw_min1_max4_conn1.jpg)
 
 - Scale up behavior
   - 05:28:22 - Benchmark started
@@ -176,7 +178,7 @@ Executed the benchmark with 4 threads that is the same as the max DB capacity co
 It was to check the behavior when CPU utilization of DB is around 100%.
 
 - CrowdWatch metrics related to scaling
-![CloudWatch metrics](assets/images/posts/2024-03-13/cw_min1_max4_conn4.png)
+![CloudWatch metrics](/assets/images/posts/2024-03-13/cw_min1_max4_conn4.png)
 
 - Scale up behavior
   - 00:14:51 - Benchmark started
@@ -202,7 +204,7 @@ It was to check the behavior when CPU utilization of DB is around 100%.
 Executed the benchmark so as to hit 100% CPU utilization.
 
 - CrowdWatch metrics related to scaling
-![CloudWatch metrics](assets/images/posts/2024-03-13/cw_min1_max4_conn6.png)
+![CloudWatch metrics](/assets/images/posts/2024-03-13/cw_min1_max4_conn6.png)
 
 - Scale up behavior
   - 05:52:12 - Benchmark started
@@ -257,14 +259,14 @@ Checked scaling behavior with larger max DB capacity and larger workload.
       - 73 seconds to scale up ACU from 4.0 to 8.0.
       - 138 seconds to scale up ACU from 8.0 to 10.5.
     - CPU utilization for current capacity was almost 100% during scale up.
-![CPU utilization for current capacity](assets/images/posts/2024-03-13/actual_cpu_min1_max32_conn16.png)
+![CPU utilization for current capacity](/assets/images/posts/2024-03-13/actual_cpu_min1_max32_conn16.png)
   - Scale down started about 5 minutes after the benchmark finished.
 
 #### DB min/max = 4.0/32.0, Bench threads = 16
 On this experiment, I checked the rate of scale up with larger minimum DB capacity.
 
 - CrowdWatch metrics related to scaling
-![CloudWatch metrics](assets/images/posts/2024-03-13/cw_min4_max32_conn16.jpg)
+![CloudWatch metrics](/assets/images/posts/2024-03-13/cw_min4_max32_conn16.jpg)
 
 - Scale up behavior
   - 07:59:16 - Benchmark started
@@ -297,7 +299,7 @@ On this experiment, I checked the rate of scale up with larger minimum DB capaci
 Increased min DB capacity more that the previous experiment.
 
 - CrowdWatch metrics related to scaling
-![CloudWatch metrics](assets/images/posts/2024-03-13/cw_min8_max32_conn16.png)
+![CloudWatch metrics](/assets/images/posts/2024-03-13/cw_min8_max32_conn16.png)
 
 - Scale up behavior
   - 06:20:15 - Benchmark started
@@ -326,7 +328,7 @@ Finally, I stressed DB more to see scale up to more ACUs.
 On this experiment, the benchmark client server performance saturated. I don't describe the detail of client performance as it's out of scope of this document, but note that the workload incurred to DB was not twice as when benchmark threads was 16.
 
 - CrowdWatch metrics related to scaling
-![CloudWatch metrics](assets/images/posts/2024-03-13/cw_min4_max32_conn32.png)
+![CloudWatch metrics](/assets/images/posts/2024-03-13/cw_min4_max32_conn32.png)
 
 - Scale up behavior
   - 07:55:17 - Benchmark started
@@ -404,6 +406,7 @@ On this experiment, the benchmark client server performance saturated. I don't d
 
 # Summary
 From performance perspective, I think Aurora Serverless v2 is ready for production applications. (If you actually think to use it for production, you must evaluate for your use case, of course.)
+
 It can almost seamlessly scale up DB capacity. I haven't noticed significant outage or delay during benchmarking.
 Scale up to add a few ACUs is fairly fast. It completed in a few seconds in my experiment. For further scale up, it required tens of seconds to minutes. It depends on the gap between the ACU before scale up started and the target ACU.
 If you need to scale up DB capacity to large ACU quickly, you should set the minimum ACU high enough to scale up fast.
@@ -412,5 +415,7 @@ As you may notice, we still need some capacity planning even with Aurora Serverl
 
 Aurora Serverless v2 looks very promising so far, but considering relatively high unit price, i.e. price per vCPU hour or price per memory hour, it isn't for all applications but only for applications which have highly variable workload.
 Pricing of Aurora Serverless v2 is good for applications that has high CPU demand at peak time. If your application has large data set to work on, it may be favourable for provisioned instance. Price per memory hour of Aurora Serverless v2 is not good.
+
 If you provisioned DB capacity for the peak workload and the peak workload doesn't last for a long period, you likely to have a chance to save DB cost by using Aurora Serverless v2 instead of provisioned instance. The break even point varies by various factors, so you should compare the cost of serverless and provisioned instance for your use case.
+
 Another promising use case is to create a new application that workload will gradually increase after launch. Aurora Serverless v2 makes you free from DB capacity estimation for future demand.
