@@ -77,10 +77,13 @@ title: Reading list
 # C++
 - [Sharpening Your Tools](https://cacm.acm.org/magazines/2023/8/274937-sharpening-your-tools/fulltext)
 
-# AI
+# ML/AI
 - [Hugging Face](https://huggingface.co/)
 - [Chat PDF](https://www.chatpdf.com/)
 - [Pulumi AI](https://www.pulumi.com/ai/)
+
+## LLM
+- [GPT in 500 lines of SQL](https://explainextended.com/2023/12/31/happy-new-year-15/)
 
 # General Engineering
 - [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
