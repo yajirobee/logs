@@ -205,3 +205,4 @@ there is available, causing the OOM exception.
 # Links
 - [Dot Commands](https://duckdb.org/docs/api/cli#special-commands-dot-commands)
 - [duckdb-tutorial](https://github.com/pdet/duckdb-tutorial)
+- [Friendly SQL](https://duckdb.org/docs/guides/sql_features/friendly_sql)
