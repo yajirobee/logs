@@ -39,6 +39,9 @@ title: Reading list
 - [AWS Latency Monitoring](https://www.cloudping.co/grid)
 - [Linux Host Tuning](https://fasterdata.es.net/host-tuning/linux/)
 
+## IO
+- [IO uring](https://kernel.dk/io_uring.pdf)
+
 # Security
 - [Capability based security](https://en.wikipedia.org/wiki/Capability-based_security)
 - [XACML](https://en.wikipedia.org/wiki/XACML)
@@ -46,6 +49,7 @@ title: Reading list
 - [OWASP Cheat sheet series](https://cheatsheetseries.owasp.org/index.html)
 
 # Visualization
+- [plotly](https://github.com/plotly/plotly.py)
 - [Google Charts](https://developers.google.com/chart)
   - [Gantt Charts](https://developers.google.com/chart/interactive/docs/gallery/ganttchart)
 
