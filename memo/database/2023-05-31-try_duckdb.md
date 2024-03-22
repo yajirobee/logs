@@ -161,13 +161,27 @@ current output mode: duckbox
 [Document](https://duckdb.org/docs/sql/configuration.html)
 
 - Set number of threads
-```
+```sql
 SET threads TO 1;
 ```
 
 - [Enable profiling](https://duckdb.org/docs/sql/pragmas#enable_progress_bar-disable_progress_bar-enable_profiling-disable_profiling-profiling_output)
-```
+```sql
 PRAGMA enable_profiling='json';
+```
+
+- Set timezone
+```sql
+set TimeZone = 'UTC';
+```
+
+e.g
+```
+D set TimeZone = 'UTC';
+D SELECT * FROM duckdb_settings() WHERE name = 'TimeZone';
+|   name   | value |      description      | input_type |
+|----------|-------|-----------------------|------------|
+| TimeZone | UTC   | The current time zone | VARCHAR    |
 ```
 
 ### Tuning to avoid out of memory
