@@ -91,3 +91,6 @@ title: Reading list
 
 # General Engineering
 - [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
+
+# General
+- [Tailscale](https://tailscale.com/use-cases/homelab)
