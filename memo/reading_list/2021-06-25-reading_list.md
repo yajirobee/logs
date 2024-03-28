@@ -36,7 +36,6 @@ title: Reading list
 - [KLL Sketch](https://datasketches.apache.org/docs/KLL/KLLSketch.html)
 
 # Performance
-- [AWS Latency Monitoring](https://www.cloudping.co/grid)
 - [Linux Host Tuning](https://fasterdata.es.net/host-tuning/linux/)
 
 ## IO

@@ -20,13 +20,20 @@ tags: Database
 
 
 ## Exploiting Cloud Object Storage for High-Performance Analytics, PVLDB 2023
+[paper](Exploiting Cloud Object Storage for High-Performance Analytics)
+- Requests in the range of 8-16MB are cost effective in terms of latency, thoughput and cost (EC2 and S3 API cost)
+- Bandwitdh of individual requests is similar to HDD
+- Request hedging
 
+## Velox: Meta's Unified Execution Engine, PVLDB 2022
+[paper](https://vldb.org/pvldb/vol15/p3372-pedreira.pdf)
+- Challenge is maintenance of variety of specialized engines
+- Execution model must be consistent, e.g. pull / push model, interpreter vs compilation
 
 # Papers browsed
 - What's the Difference? Incremental Processing with Change Queries in Snowflake, Proc. ACM Manag. Data 2023
 - MotherDuck: DuckDB in the cloud and in the client, CIDR 2024
 - Cackle: Analytical Workload Cost and Performance Stability With Elastic Pools, Proc. ACM Manag. Data 2023
-- Velox: Meta's Unified Execution Engine, PVLDB 2022
 - Shared Foundations: Modernizing Meta's Data Lakehouse, CIDR 2023
 - NOCAP: Near-Optimal Correlation-Aware Partitioning Joins, Proc. ACM Manag. Data 2023
 - Rethink Query Optimization in HTAP Databases, Proc. ACM Manag. Data 2023
