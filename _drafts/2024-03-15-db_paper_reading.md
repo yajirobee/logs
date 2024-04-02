@@ -28,7 +28,8 @@ tags: Database
 ## Velox: Meta's Unified Execution Engine, PVLDB 2022
 [paper](https://vldb.org/pvldb/vol15/p3372-pedreira.pdf)
 - Challenge is maintenance of variety of specialized engines
-- Execution model must be consistent, e.g. pull / push model, interpreter vs compilation
+- Execution model must be consistent, e.g. pull / push model, interpreted vs compiled
+- Does the performance improvement come from difference between Java and C++? or maturity of implementation?
 
 # Papers browsed
 - What's the Difference? Incremental Processing with Change Queries in Snowflake, Proc. ACM Manag. Data 2023
