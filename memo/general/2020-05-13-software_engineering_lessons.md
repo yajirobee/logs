@@ -32,5 +32,5 @@ Lessons and best practices from my experience. This is a living document.
   - > develop problems, and to do a really good job of articulating them, rather than trying to pitch solutions. There are often multiple ways to solve a problem, and picking the right one is letting someone own the solution. (from [Building and operating a pretty big storage system called S3](https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html))
 
 # Learning
-- Lead to "approach" goal orientation instead of "avoidance".
+- Lead to "approach" goal orientation rather than "avoidance".
   - > The "approach" goal orientation involves wanting to do well, and this engenders positive and effective learning behaviors: working hard, seeking help, and trying new challenging topics. In contrast, the “avoidance” goal orientation involves avoiding failure. This leads to negative and ineffective behaviors: disorganized study, not seeking help, anxiety over performance, and avoiding challenge. It is important that learners can make mistakes without severe penalties if they are to be directed towards "approach" rather than "avoidance." (from [10 Things Software Developers Should Learn about Learning](https://cacm.acm.org/research/10-things-software-developers-should-learn-about-learning/))
