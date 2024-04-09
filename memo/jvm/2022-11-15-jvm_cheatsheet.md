@@ -48,6 +48,17 @@ _java_thread_list=0x00007f7d40428050, length=252, elements={
 ## Profiling
 [async-profiler](https://github.com/async-profiler/async-profiler)
 
+# Memory management
+## GC
+- [G1GC Tuning](https://www.oracle.com/technical-resources/articles/java/g1gc.html)
+
+## Direct Buffer & Buffer Pool
+> Given a direct byte buffer, the Java virtual machine will make a best effort to perform native I/O operations directly upon it. That is, it will attempt to avoid copying the buffer's content to (or from) an intermediate buffer before (or after) each invocation of one of the underlying operating system's native I/O operations.
+
+From [Direct vs. non-direct buffers](https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html)
+
+- [Understanding Java Buffer Pool Memory Space](https://www.fusion-reactor.com/blog/understanding-java-buffer-pool-memory-space/)
+
 # Gradle
 ## CLI options
 - execute only test case of nested subclass
