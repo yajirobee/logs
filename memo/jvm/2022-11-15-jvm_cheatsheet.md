@@ -4,6 +4,11 @@ title: JVM cheatsheet
 ---
 
 # Settings
+## Prepend options by environment variables
+- `JDK_JAVA_OPTIONS` : used by `java` command
+- [JAVA_TOOL_OPTIONS](https://docs.oracle.com/en/java/javase/17/troubleshoot/environment-variables-and-system-properties.html) : used by other tools as well
+  - > this environment variable is examined at the time, that the JNI_CreateJavaVM function is called
+
 ## Select heap size by a percentage of available RAM
 Use `-XX:MaxRAMPercentage` / `-XX:MinRAMPercentage` / `-XX:InitialRAMPercentage`
 
