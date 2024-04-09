@@ -6,6 +6,13 @@ title: Kotlin cheatsheet
 # Coroutine
 - Default buffer size of buffered channel is [64](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.channels/-channel/-factory/-b-u-f-f-e-r-e-d.html).
 
+- Await for completion of [CompletableFuture](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/CompletableFuture.html) without blocking thread
+use [await()](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.future/await.html)
+
+## Links
+- [KEEP: suspending functions](https://github.com/Kotlin/KEEP/blob/master/proposals/coroutines.md#suspending-functions)
+- [Java agent to detect blocking calls from non-blocking threads.](https://github.com/reactor/BlockHound)
+
 # Use multiple resources
 ```kotlin
 class Resources : AutoCloseable {
