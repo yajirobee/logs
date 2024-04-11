@@ -3,7 +3,7 @@ layout: memo
 title: DuckDB Code Reading
 ---
 
-Based on DuckDB [v0.9.2](https://github.com/duckdb/duckdb/tree/v0.9.2)
+Based on DuckDB [v0.10.0](https://github.com/duckdb/duckdb/tree/v0.10.0)
 
 # Query Execution Flow
 - Parser
@@ -23,7 +23,7 @@ Based on DuckDB [v0.9.2](https://github.com/duckdb/duckdb/tree/v0.9.2)
 > If the transaction is rolled back or aborted, the blocks that were pre-emptively written to disk are marked as unused and reclaimed by the system for use in subsequent writes. This might still cause the database file to grow temporarily, however, and may create gaps in the database file if there are multiple transactions writing at the same time with a subset of those transactions aborting. That space is not lost - however. It will be re-used by the system when new data is ingested.
 
 # Extension
-Read extension [README.md](https://github.com/duckdb/duckdb/blob/v0.9.0/extension/README.md) first.
+Read extension [README.md](https://github.com/duckdb/duckdb/blob/v0.10.0/extension/README.md) first.
 
 ## Install
 - Extensions are downloaded from "extensions.duckdb.org" by default.
@@ -48,11 +48,13 @@ related code: `src/main/extension/extension_load.cpp`
 related code: `src/include/duckdb/main/extension.hpp`
 
 ### Extension types
-- Function types are defined on [src/include/duckdb/function](https://github.com/duckdb/duckdb/tree/v0.9.0/src/include/duckdb/function)
+- Function types are defined on `src/include/duckdb/function`
 - Use `ExtensionUtil::RegisterFunction` to register function
   - It creates an object of `CreateFunctionInfo`
 
 #### Table function
+related code: `src/include/duckdb/function/table_function.hpp`
+
 - Create an instance of `TableFunction`
 - required fields are `function` and `bind`
   - `bind`: parse options and return `FunctionData` that stores parameters required to process scan
@@ -67,8 +69,6 @@ related code: `src/include/duckdb/main/extension.hpp`
     - caller: `PhysicalTableScan::GetData` (<- `PipelineTask::ExecuteTask` <- `Executor::ExecuteTask`)
       - finish if `chunk.size() == 0`
 
-related code: `src/include/duckdb/function/table_function.hpp`
-
 #### Reading multiple files
 [Overview](https://duckdb.org/docs/data/multiple_files/overview)
 
@@ -78,6 +78,9 @@ related code: `src/include/duckdb/function/table_function.hpp`
   - typically used in `TableFunction::init_global`
 - `MultiFileReader::FinalizeChunk`
   - typically used in `TableFunction::function`
+
+#### Copy function
+related code: `src/include/duckdb/function/copy_function.hpp`
 
 ## Tips
 - Use unsigned extension from CLI
