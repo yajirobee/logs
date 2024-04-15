@@ -68,7 +68,7 @@ Also, mixing multiple encoding is possibly harmful for the following reason.
 > Selecting from multiple encoding algorithms at run time imposes noticeable performance overhead on decoding. Future format designs should be cautious about including encoding algorithms that only excel at specific situations in the decoding critical path.
 
 The authors argued that general purpose block compression, e.g. zstd, snappy, gzip, should not be applied by default
-because I/O bandwidth saving justify compression overhead.
+because I/O bandwidth saving doesn't justify compression overhead.
 It may not be good for performance, but I think storage size reduction is not negligible
 for systems that handles very large data (like peta to exabytes).
 Cost of storage can be a major challenge for such systems.
