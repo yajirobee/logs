@@ -13,7 +13,7 @@ I summarized highlights of some interesting papers.
 [paper](https://www.vldb.org/pvldb/vol17/p148-zeng.pdf)
 
 This is a comprehensive analysis on common columnar formats [Parquet](https://parquet.apache.org/docs/file-format/) and [ORC](https://orc.apache.org/specification/ORCv1/).
-The authers evaluated these formats for various types of real world data on different storage types.
+The authors evaluated these formats for various types of real world data on different storage types.
 Both Parquet and ORC were initially released in 2013. The landscape of hardware and compute environment,
 e.g. on-premise vs cloud, has changed since they were designed.
 It is an interesting question that how those formats can handle data analysis workload efficiently
@@ -21,7 +21,7 @@ on modern computing environments.
 
 ## Tuning knobs of Parquet and ORC
 Parquet and ORC have various parameters on creation.
-The perfomance to read and write data significantly changes by the parameters even the same format is used.
+The performance to read and write data significantly changes by the parameters even the same format is used.
 When we evaluate formats, the parameters must be clarified for fair comparison.
 Example of common parameters are as follows:
 
@@ -40,7 +40,7 @@ On the paper, the authors characterized data sets by the following column proper
 - Value range
 - Sortedness
 
-These propertires impact efficiency of encoding and scan methods.
+These properties impact efficiency of encoding and scan methods.
 The authors calculated the properties for some publicly available real world data sets.
 Some interesting observations are mentioned on the paper.
 
@@ -49,8 +49,8 @@ Some interesting observations are mentioned on the paper.
   - NDV tends to be low for integer and string, high for floating point
 - > Most columns in the real world exhibit a skewed value distribution, as shown in Figure 5c. Less than 5% of the columns can be classified as Uniform.
 
-## Performance differencies by storage types
-The authors manily ran experiments on local NVMe SSD and EBS which random read is fast (2-3 digits microseconds).
+## Performance differences by storage types
+The authors mainly ran experiments on local NVMe SSD and EBS which random read is fast (2-3 digits microseconds).
 They also mentioned difference of behaviors on cloud object storages like S3 (random read latency is 20-30 milliseconds).
 Both Parquet and ORC have metadata scattered locations on a file, e.g. header and footer of file, row groups, column chunks, pages, etc.
 It is not good for storage random read is slow. It is the reason Parquet and ORC are suboptimal for cloud object storages.
@@ -61,7 +61,7 @@ reduce storage size and improve scan performance.
 However, encoding also adds significant computational overhead.
 As storage devices get faster, computation overhead gets more noticeable.
 It means no single encoding algorithm can handle all types of data sets and storage.
-We need to find a sweet spot of the trade off between I/O cost saving and computational overhaed.
+We need to find a sweet spot of the trade off between I/O cost saving and computational overhead.
 
 Also, mixing multiple encoding is possibly harmful for the following reason.
 
@@ -78,7 +78,7 @@ This paper is a good read to understand factors of columnar file format that imp
 It suggests that the best performance cannot be archived by just applying popular data format with default configurations.
 Careful parameter tuning can bring significant performance improvement.
 
-The paper also showed some reasons that Parquet and ORC are not optimial format for cloud object storages.
+The paper also showed some reasons that Parquet and ORC are not optimal format for cloud object storages.
 The optimal format varies depending on the performance characteristics of storage.
 Their insights are helpful if you design a new columnar format.
 
@@ -91,7 +91,7 @@ First, the authors analyzed the performance characteristics of cloud storages of
 And then, they discussed the query engine design optimal to utilize cloud object storage bandwidth.
 
 ## Performance characteristics of cloud object storage and ideal I/O size
-The authors told that the performan of object storage is like array of HDDs.
+The authors told that the performance of object storage is like array of HDDs.
 > the bandwidth of individual requests is similar to accessing data on an HDD. To saturate network bandwidth, many simultaneous requests are required
 
 This observation matches with S3 internal architecture partially mentioned on [this post](https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html).
@@ -110,7 +110,7 @@ It is recommended to restart unresponsive requests. It seems long tail latency i
 > Hedging against slow responses. Missing or slow responses from storage servers are a challenge for users of cloud object stores. In our latency experiments, we see requests that have a considerable tail latency. Some requests get lost without any notice. To mitigate these issues, cloud vendors suggest restarting unresponsive requests, known as request hedging. For example, the typical 16 MiB request duration is below 600ms for AWS. However, less than 5% of objects are not downloaded after 600ms. Missing responses can also be found by checking the ﬁrst byte latency. Similarly to the duration, less than 5% have a ﬁrst byte latency above 200ms. Hedging these requests does not introduce signiﬁcant cost overhead
 
 ## Balance of retrieval and processing performance
-Although request concurrency is required to saturage network bandwidth, the load to make requests shouldn't be
+Although request concurrency is required to saturate network bandwidth, the load to make requests shouldn't be
 too much not to hinder query processing. When a bottleneck is throughput of processing data rather than downloading
 data from S3, more compute resources should be assigned for query processing.
 A challenge is the load to process data depends on input data and query. It means optimal resource allocation for
@@ -125,7 +125,7 @@ The approach of the paper is to adaptively adjust number of threads to download 
 > The main goal of the object scheduler is to strike a balance between processing and retrieval performance. It assigns diﬀerent jobs to the available worker threads to achieve this balance. If the retrieval performance is lower than the scan performance, it increases the amount of retrieval and preparation threads. On the other hand, reducing the number of retrieval threads results in higher processing throughput
 
 ## Summary
-The observations of cloud object storage performance evaluation are interesting.
+The observations from cloud object storage performance evaluation are interesting.
 It is worth reading if you run data intensive applications on cloud object storage.
 
 Also, the problem to balance the load between downloading and processing data isn't trivial.
@@ -158,8 +158,8 @@ On the other hand, however, there should also be some pitfalls due to the nature
 - Surprising behavior change of engines because of a trivial change of library
   - It's often the case that a small change results in significant behavior change in complex systems like data processing engines.
   - The velocity of library development will be slow if the development team were to be too conservative.
-- Dependencies broght by the library
-  - If an engine required only few functionalities of the library, it may be overkill to use it. It should be an option towrite from scratch to avoid dependency hell.
+- Dependencies brought by the library
+  - If an engine required only few functionalities of the library, it may be overkill to use it. It should be an option to write from scratch to avoid dependency hell.
 
 Anyway, I think it's good that there is an option to share common implementations.
 Ideally, each engine developer can decide whether they use a library or write from scratch depending on trade-off.
