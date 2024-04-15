@@ -22,7 +22,7 @@ Based on DuckDB [v0.10.0](https://github.com/duckdb/duckdb/tree/v0.10.0)
 
 > If the transaction is rolled back or aborted, the blocks that were pre-emptively written to disk are marked as unused and reclaimed by the system for use in subsequent writes. This might still cause the database file to grow temporarily, however, and may create gaps in the database file if there are multiple transactions writing at the same time with a subset of those transactions aborting. That space is not lost - however. It will be re-used by the system when new data is ingested.
 
-# Extension
+# Use Extension
 Read extension [README.md](https://github.com/duckdb/duckdb/blob/v0.10.0/extension/README.md) first.
 
 ## Install
@@ -40,19 +40,19 @@ related code: `src/main/extension/extension_install.cpp`
 
 related code: `src/main/extension/extension_load.cpp`
 
-## Extension implementation
+# Extension implementation
 - Implement `{extension_name}_init` and `{extension_name}_version`
 - Implement `Extension` class and call `DuckDB::LoadExtension()`
   - Load is skipped on the second time.
 
 related code: `src/include/duckdb/main/extension.hpp`
 
-### Extension types
+## Extension types
 - Function types are defined on `src/include/duckdb/function`
 - Use `ExtensionUtil::RegisterFunction` to register function
   - It creates an object of `CreateFunctionInfo`
 
-#### Table function
+### Table function
 related code: `src/include/duckdb/function/table_function.hpp`
 
 - Create an instance of `TableFunction`
@@ -69,7 +69,7 @@ related code: `src/include/duckdb/function/table_function.hpp`
     - caller: `PhysicalTableScan::GetData` (<- `PipelineTask::ExecuteTask` <- `Executor::ExecuteTask`)
       - finish if `chunk.size() == 0`
 
-#### Reading multiple files
+### Reading multiple files
 [Overview](https://duckdb.org/docs/data/multiple_files/overview)
 
 - `MultiFileReader::ParseOptions` : parse options for multi file reader
@@ -79,7 +79,7 @@ related code: `src/include/duckdb/function/table_function.hpp`
 - `MultiFileReader::FinalizeChunk`
   - typically used in `TableFunction::function`
 
-#### Copy function
+### Copy function
 related code: `src/include/duckdb/function/copy_function.hpp`
 
 ## Tips
