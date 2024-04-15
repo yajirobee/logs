@@ -18,6 +18,9 @@ Lessons and best practices from my experience. This is a living document.
 - Sometimes completeness of specification should be compromised to take easiness of implementation
   - [Worse is Better](https://www.dreamsongs.com/RiseOfWorseIsBetter.html)
   - > There is never enough time to do it right, but there is always enough time to do it over.
+- Implementation detail can eventually be an (implicit) interface
+  - [Hyrum's Law](https://www.hyrumslaw.com/)
+  - > For example, an interface may make no guarantees about performance, yet consumers often come to expect a certain level of performance from its implementation.
 
 # Metrics / Monitoring
 - Collect all metrics you come up with as long as performance, space, cost, privacy and security allow
