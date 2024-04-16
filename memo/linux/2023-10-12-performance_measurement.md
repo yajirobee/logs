@@ -26,3 +26,6 @@ iostat --human -x $dev 1
 ```sh
 sar --human -n DEV --iface=eth0 1
 ```
+
+# Links
+- [MemAvailable of /proc/meminfo](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=34e431b0ae398fc54ea69ff85ec700722c9da773)
