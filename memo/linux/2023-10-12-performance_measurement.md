@@ -30,3 +30,5 @@ sar --human -n DEV --iface=eth0 1
 # Links
 - [MemAvailable of /proc/meminfo](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=34e431b0ae398fc54ea69ff85ec700722c9da773)
   - [Linux ate my ram](https://www.linuxatemyram.com/)
+- [The PMCs of EC2](https://www.brendangregg.com/blog/2017-05-04/the-pmcs-of-ec2.html)
+- [Intel Performance Counter Monitor](https://github.com/intel/pcm)

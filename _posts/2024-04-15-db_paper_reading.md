@@ -63,7 +63,7 @@ As storage devices get faster, computation overhead gets more noticeable.
 It means no single encoding algorithm can handle all types of data sets and storage.
 We need to find a sweet spot of the trade off between I/O cost saving and computational overhead.
 
-Also, mixing multiple encoding is possibly harmful for the following reason.
+Also, mixing multiple encodings is possibly harmful for the following reason.
 
 > Selecting from multiple encoding algorithms at run time imposes noticeable performance overhead on decoding. Future format designs should be cautious about including encoding algorithms that only excel at specific situations in the decoding critical path.
 
