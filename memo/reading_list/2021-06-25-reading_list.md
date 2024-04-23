@@ -3,6 +3,12 @@ layout: memo
 title: Reading list
 ---
 
+# Linux
+- [Control Group v2](https://docs.kernel.org/admin-guide/cgroup-v2.html#information-on-kernel-programming)
+- [FUSE (filesystem in userspace)](https://www.kernel.org/doc/html/next/filesystems/fuse.html)
+- [IO uring](https://kernel.dk/io_uring.pdf)
+- [Linux Host Tuning](https://fasterdata.es.net/host-tuning/linux/)
+
 # Databases
 ## DB engines
 - [ClickHouse](https://clickhouse.com/docs/en/intro)
@@ -34,12 +40,6 @@ title: Reading list
 
 ## Data Sketch Algorithms
 - [KLL Sketch](https://datasketches.apache.org/docs/KLL/KLLSketch.html)
-
-# Performance
-- [Linux Host Tuning](https://fasterdata.es.net/host-tuning/linux/)
-
-## IO
-- [IO uring](https://kernel.dk/io_uring.pdf)
 
 # Security
 - [Capability based security](https://en.wikipedia.org/wiki/Capability-based_security)
