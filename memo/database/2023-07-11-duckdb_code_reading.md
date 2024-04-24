@@ -22,6 +22,10 @@ Based on DuckDB [v0.10.0](https://github.com/duckdb/duckdb/tree/v0.10.0)
 
 > If the transaction is rolled back or aborted, the blocks that were pre-emptively written to disk are marked as unused and reclaimed by the system for use in subsequent writes. This might still cause the database file to grow temporarily, however, and may create gaps in the database file if there are multiple transactions writing at the same time with a subset of those transactions aborting. That space is not lost - however. It will be re-used by the system when new data is ingested.
 
+# Internal data format
+- [Execution format](https://duckdb.org/docs/internals/vector)
+- [Lightweight Compression in DuckDB](https://duckdb.org/2022/10/28/lightweight-compression.html)
+
 # Use Extension
 Read extension [README.md](https://github.com/duckdb/duckdb/blob/v0.10.0/extension/README.md) first.
 
