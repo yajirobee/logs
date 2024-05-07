@@ -15,3 +15,7 @@ $ c++filt _Z1fv
 f()
 ```
 - nm(1) with `--demangle` option
+
+# Links
+- [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
+- [Rule of Zero](https://en.cppreference.com/w/cpp/language/rule_of_three#Rule_of_zero)
