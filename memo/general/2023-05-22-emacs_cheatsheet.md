@@ -14,6 +14,11 @@ title: Emacs cheatsheet
 ## Reinstall packages
 remove packages under `elpa/` directory and restart emacs.
 
+## Key binds
+- list processes of Emacs subprocesses `M-m a p` (list-processes)
+
+- [Key bindings conventions](https://develop.spacemacs.org/doc/CONVENTIONS.html#key-bindings-conventions)
+
 ## LSP
 - remove blacklist
 ```
