@@ -26,6 +26,7 @@ M-x lsp-workspace-blacklist-remove
 ```
 
 ### [Metals](https://scalameta.org/metals/docs/editors/emacs/)
+
 #### Bloop with gradle
 - Add [gradle-bloop](https://github.com/scalacenter/gradle-bloop) plugin. e.g. on `build.gradle.kts`
 
@@ -59,6 +60,13 @@ $ bloop projects
 
 #### Reinstall metals
 Delete `.cache/lsp/metals/` and install server again.
+
+### [Clangd](https://clangd.llvm.org/)
+
+#### [Project setup](https://clangd.llvm.org/installation#project-setup)
+```
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+```
 
 # Emacs for Mac
 - [Emacs for OSX](https://emacsforosx.com/)
