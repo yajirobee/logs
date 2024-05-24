@@ -51,3 +51,6 @@ withResources {
 ```
 
 reference: [Is there standard way to use multiple resources?](https://discuss.kotlinlang.org/t/is-there-standard-way-to-use-multiple-resources/2613)
+
+# Links
+- [Playground](https://play.kotlinlang.org/)

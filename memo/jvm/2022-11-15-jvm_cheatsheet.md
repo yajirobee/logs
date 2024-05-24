@@ -51,7 +51,8 @@ _java_thread_list=0x00007f7d40428050, length=252, elements={
 > Note: Enabling NMT causes a 5% -10% performance overhead.
 
 ## Profiling
-[async-profiler](https://github.com/async-profiler/async-profiler)
+- [async-profiler](https://github.com/async-profiler/async-profiler)
+- [hprof-slurp](https://github.com/agourlay/hprof-slurp)
 
 # Memory management
 ## GC
@@ -63,6 +64,16 @@ _java_thread_list=0x00007f7d40428050, length=252, elements={
 From [Direct vs. non-direct buffers](https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html)
 
 - [Understanding Java Buffer Pool Memory Space](https://www.fusion-reactor.com/blog/understanding-java-buffer-pool-memory-space/)
+
+# Libraries and tools
+Libraries I commonly use for java projects.
+
+- [micrometer](https://micrometer.io/) - application metrics
+- [failsafe](https://failsafe.dev/) - falult tolerance and resilience
+- [bucket4j](https://github.com/bucket4j/bucket4j) - rate limiting
+- [HikariCP](https://github.com/brettwooldridge/HikariCP) - JDBC connection pool
+- [jOOQ](https://www.jooq.org/) - DSL for type safe SQL construction
+- [flyway](https://flywaydb.org/) - DB version control
 
 # References
 - [Oracle Java Standart Edition Documentation](https://docs.oracle.com/en/java/javase/index.html)
