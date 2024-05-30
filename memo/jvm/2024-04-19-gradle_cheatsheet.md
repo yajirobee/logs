@@ -21,6 +21,12 @@ Use [Gradle Properties](https://docs.gradle.org/current/userguide/build_environm
 org.gradle.jvmargs=-Xmx1024m -XX:MaxMetaspaceSize=256m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
 ```
 
+# Dependencies
+## Debug
+> Gradle provides the built-in dependencyInsight task to render a dependency insight report from the command line. Dependency insights provide information about a single dependency within a single configuration. Given a dependency, you can identify the selection reason and origin.
+
+- [Dependency Insights](https://docs.gradle.org/current/userguide/viewing_debugging_dependencies.html#dependency_insights)
+
 # Using Plugins
 [Plugins DSL](https://docs.gradle.org/current/userguide/plugins.html#sec:plugins_block) is newer and convenient way to
 declare plugin dependencies. It looks up [Gradle plugin portal](https://plugins.gradle.org/) for core and community plugins.

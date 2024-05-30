@@ -102,3 +102,4 @@ For example, `QUERY_SUPPRESS_BEGIN` is set [when auto commit is true](https://gi
 
 # Links
 - [POSTGRESQLCO.NF](https://postgresqlco.nf/doc/en/param/)
+- [pgbadger](https://github.com/darold/pgbadger)
