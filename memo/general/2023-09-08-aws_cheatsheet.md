@@ -55,6 +55,9 @@ aws configure set default.s3.max_concurrent_requests 20
 
 from: [Amazon Aurora DB cluster and DB instance parameters](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_WorkingWithDBClusterParamGroups.html#Aurora.Managing.ParameterGroups)
 
+## Enhanced monitoring
+- [OS metrics in Enhanced Monitoring](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Monitoring-Available-OS-Metrics.html)
+
 # SDK
 ## Retry behavior
 - [General retry behavior of SDKs](https://docs.aws.amazon.com/sdkref/latest/guide/feature-retry-behavior.html)
