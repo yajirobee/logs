@@ -16,11 +16,11 @@ title: Open table catalog, table and data formats
 ## Delta Lake
 [Protocol](https://github.com/delta-io/delta/blob/master/PROTOCOL.md)
 
-- Atomic log record insertion depends on atomic "put if absent** or rename operations
+- Atomic log record insertion depends on atomic "put if absent" or rename operations
   - To use Delta Lake on S3, transaction coordinator service is required because of lack of them on S3.
 - Checkpoint is made at the end of write transactions.
   - Checkpoint happens every 10 transactions by default.
-- Reference: [Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores, VLDB 2020](https://www.vldb.org/pvldb/vol13/p3411-armbrust.pdf**
+- Reference: [Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores, VLDB 2020](https://www.vldb.org/pvldb/vol13/p3411-armbrust.pdf)
 
 ## Iceberg
 **Update June 4th, 2024: [Databricks acquired Tablular](https://www.databricks.com/company/newsroom/press-releases/databricks-agrees-acquire-tabular-company-founded-original-creators). Delta Lake and Iceberg will probably be merged gradually in the near future.**
@@ -30,7 +30,7 @@ title: Open table catalog, table and data formats
 - A manifest list is created for each table snapshot.
 - [Puffine file format](https://iceberg.apache.org/puffin-spec/) is a file format for indexes and statistics of a table
 
-### Atomic data commi
+### Atomic data commit
 from [File System Operations](https://iceberg.apache.org/spec/#file-system-operations)
 
 > Tables do not require rename, except for tables that use atomic rename to implement the commit operation for new metadata files.
