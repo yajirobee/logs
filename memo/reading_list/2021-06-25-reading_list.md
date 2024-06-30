@@ -93,3 +93,4 @@ title: Reading list
 
 # General
 - [Tailscale](https://tailscale.com/use-cases/homelab)
+- [グーグルのクラウドを支えるテクノロジー](https://www.school.ctc-g.co.jp/columns/nakai2/)
