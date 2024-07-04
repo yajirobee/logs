@@ -16,6 +16,9 @@ title: Reading list
   - [ClickBench](https://benchmark.clickhouse.com/)
     - [github](https://github.com/ClickHouse/ClickBench/)
 
+## Transaction
+- [Implementing MVCC and major SQL transaction isolation levels](https://notes.eatonphil.com/2024-05-16-mvcc.html)
+
 ## Distributed Transaction
 - [An In-Depth Analysis of Distributed Transaction Solutions](https://www.alibabacloud.com/blog/an-in-depth-analysis-of-distributed-transaction-solutions_597232)
 
