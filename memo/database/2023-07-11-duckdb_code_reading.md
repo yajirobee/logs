@@ -14,6 +14,9 @@ Based on DuckDB [v0.10.0](https://github.com/duckdb/duckdb/tree/v0.10.0)
 - Executor
   - Entry point: `Executor::ExecuteTask`
 
+## Copy
+`PipelineExecutor::PushFinalize` -> `PhysicalCopyToFile::Combine` -> (custom) `CopyFunction::copy_to_combine`
+
 # Join
 - [Out of core hash join](https://github.com/duckdb/duckdb/pull/4189)
 
