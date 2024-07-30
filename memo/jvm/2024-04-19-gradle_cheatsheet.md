@@ -27,6 +27,9 @@ org.gradle.jvmargs=-Xmx1024m -XX:MaxMetaspaceSize=256m -XX:+HeapDumpOnOutOfMemor
 
 - [Dependency Insights](https://docs.gradle.org/current/userguide/viewing_debugging_dependencies.html#dependency_insights)
 
+# Features
+- [Modeling library features](https://docs.gradle.org/current/userguide/feature_variants.html)
+
 # Using Plugins
 [Plugins DSL](https://docs.gradle.org/current/userguide/plugins.html#sec:plugins_block) is newer and convenient way to
 declare plugin dependencies. It looks up [Gradle plugin portal](https://plugins.gradle.org/) for core and community plugins.
