@@ -70,6 +70,11 @@ From [Direct vs. non-direct buffers](https://docs.oracle.com/javase/8/docs/api/j
 - [java.lang.invoke.VarHandle](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/invoke/VarHandle.html)
 - [JEP 193: Variable Handles について](https://qiita.com/yoshioterada/items/319ed0dec4b847d2b1ed)
 
+# Check class file major version
+```sh
+javap -verbose JavaClassNameOrPath | grep major
+```
+
 # Libraries and tools
 Libraries I commonly use for java projects.
 
