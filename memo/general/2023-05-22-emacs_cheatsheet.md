@@ -10,6 +10,11 @@ title: Emacs cheatsheet
 
 - [Emacs manual](https://www.gnu.org/software/emacs/manual/html_node/efaq/Evaluating-Emacs-Lisp-code.html)
 
+## enable / disable tabs instead of spaces on a buffer
+set `indent-tab-mode` to `t` to enable tabs.
+
+- [Tabs vs Spaces](https://www.gnu.org/software/emacs/manual/html_node/emacs/Just-Spaces.html)
+
 # Spacemacs
 ## Reinstall packages
 remove packages under `elpa/` directory and restart emacs.

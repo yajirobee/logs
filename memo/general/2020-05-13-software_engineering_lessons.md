@@ -10,6 +10,8 @@ Lessons and best practices from my experience. This is a living document.
 - Software/System dependency is a way to leverage existing assets, but it also adds constraints.
   - impossible to pin versions of dependencies for good, e.g. security bugs, hardware support
   - version upgrade may break compatibilty
+- Use scale-agnostic programming abstraction properly
+  - [Scale Agnosticism](https://queue.acm.org/detail.cfm?id=3025012)
 
 # Protocol
 - Generally avoid custom serialization format
