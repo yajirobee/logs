@@ -11,4 +11,3 @@ title: Percentile sketch algoritms
 - [DDSketch, 2019](https://arxiv.org/pdf/1908.10693)
   - [Computing Accurate Percentiles with DDSketch](https://www.datadoghq.com/blog/engineering/computing-accurate-percentiles-with-ddsketch/)
   - [sketches-java](https://github.com/DataDog/sketches-java/)
-

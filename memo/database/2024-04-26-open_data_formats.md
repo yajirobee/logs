@@ -74,3 +74,4 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 ## Links
 - [An Empirical Evaluation of Columnar Storage Formats](https://www.vldb.org/pvldb/vol17/p148-zeng.pdf)
 - [Exploiting Cloud Object Storage for High-Performance Analytics](https://www.vldb.org/pvldb/vol16/p2769-durner.pdf)
+- [Amazon's Exabyte-Scale Migration from Apache Spark to Ray on Amazon EC2](https://aws.amazon.com/jp/blogs/opensource/amazons-exabyte-scale-migration-from-apache-spark-to-ray-on-amazon-ec2/)

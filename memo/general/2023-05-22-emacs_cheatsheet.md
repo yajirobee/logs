@@ -15,6 +15,18 @@ set `indent-tab-mode` to `t` to enable tabs.
 
 - [Tabs vs Spaces](https://www.gnu.org/software/emacs/manual/html_node/emacs/Just-Spaces.html)
 
+# Major modes
+## Markdown mode
+- [markdown mode](https://github.com/jrblevin/markdown-mode)
+
+### Table editing
+- `C-c UP` or `C-c DOWN` - Move the current row up or down.
+- `C-c LEFT` or `C-c RIGHT` - Move the current column left or right.
+- `C-c S-UP` - Kill the current row.
+- `C-c S-DOWN` - Insert a row above the current row. With a prefix argument, row line is created below the current one.
+- `C-c S-LEFT` - Kill the current column.
+- `C-c S-RIGHT` - Insert a new column to the left of the current one.
+
 # Spacemacs
 ## Reinstall packages
 remove packages under `elpa/` directory and restart emacs.
