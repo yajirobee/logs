@@ -89,6 +89,19 @@ cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 - [Emacs for OSX](https://emacsforosx.com/)
 - [Emacs Mac Port](https://github.com/railwaycat/homebrew-emacsmacport)
 
+# Trouble shooting
+## Too many open files
+This problem cannot be simply solved by increasing ulimit because
+
+> Emacs uses pselect, which is limited to FD_SETSIZE file descriptors, usually 1024.
+
+It requires to build Emacs to change `FD_SETSIZE`.
+
+lsp-mode tends to consume many file descriptors for file watching.
+[file-notify-rm-all-watches](https://www.gnu.org/software/emacs/manual/html_node/elisp/File-Notifications.html#index-file_002dnotify_002drm_002dall_002dwatches) can be used to free up descriptors as a workaound.
+
+reference: [Fix annoying max open files for Emacs](https://en.liujiacai.net/2022/09/03/emacs-maxopenfiles/)
+
 # Links
 - [web page](https://www.gnu.org/software/emacs/)
 - [Emacs News](https://emba.gnu.org/emacs/emacs/-/blob/master/etc/NEWS)
