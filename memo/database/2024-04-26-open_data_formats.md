@@ -57,7 +57,16 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 ## Hudi
 [Spec](https://hudi.apache.org/tech-specs/)
 
+- It seems Hudi is used more for non-SQL analytical engines like Spark, Flink.
+  - Trino and Hive support only read as of Aug. 2024.
+- Supports both copy-on-write and merge-on-read table types
+  - merge-on-read table is optimized for update and delete heavy workload
+
+> Hudi guarantees that the actions performed on the timeline are atomic & timeline consistent based on the instant time. Atomicity is achieved by relying on the atomic puts to the underlying storage to move the write operations through various states in the timeline.
+(from: [Timeline](https://hudi.apache.org/docs/timeline))
+
 ### Integrations
+- [Ecosystem support](https://hudi.apache.org/ecosystem/)
 - [Trino](https://trino.io/docs/current/connector/hudi.html)
 
 ## Kudo
@@ -65,6 +74,7 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 
 ## Links
 - [Big Metadata: When Metadata is Big Data](https://dl.acm.org/doi/10.14778/3476311.3476385)
+- [Apache Hudi vs Delta Lake vs Apache Iceberg](https://www.onehouse.ai/blog/apache-hudi-vs-delta-lake-vs-apache-iceberg-lakehouse-feature-comparison)
 
 # Columnar data format
 ## Parquet
