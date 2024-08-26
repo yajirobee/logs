@@ -19,6 +19,18 @@ curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r
 ```
 - [Instance identity documents](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html)
 
+### Get user data
+```sh
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+sudo cat /var/lib/cloud/instances/$INSTANCE_ID/user-data.txt
+```
+
+or
+
+```sh
+curl http://169.254.169.254/2021-03-23/user-data
+```
+
 ## Data transfer bandwidth between S3
 > Traffic between Amazon EC2 and Amazon S3 can leverage up to 100 Gbps of bandwidth to VPC endpoints and public IPs in the same Region.
 
