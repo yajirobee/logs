@@ -6,10 +6,12 @@ title: Open table formats
 # Delta Lake
 [Protocol](https://github.com/delta-io/delta/blob/master/PROTOCOL.md)
 
-## Integrations
+## Integrations / ecosystem
+- [List of integrations](https://delta.io/integrations/)
+- [Trino](https://trino.io/docs/current/connector/delta-lake.html)
 - [DuckDB](https://duckdb.org/docs/extensions/delta)
 
-## Observations, thoughts, questions
+## Observations / thoughts / questions
 - Atomic log record insertion depends on atomic "put if absent" or rename operations
   - To use Delta Lake on S3, transaction coordinator service is required because of lack of them on S3.
   - P.S. Since Aug 20, 2024, S3 supports put if absent. [S3 conditional writes](https://aws.amazon.com/about-aws/whats-new/2024/08/amazon-s3-conditional-writes/)
@@ -23,15 +25,14 @@ title: Open table formats
 
 [Spec](https://iceberg.apache.org/spec/)
 
-## Integrations
+## Integrations / ecosystem
 - [Trino](https://trino.io/docs/current/connector/iceberg.html)
 - [Hive](https://iceberg.apache.org/docs/latest/hive/#partitioned-tables)
 - [DuckDB](https://duckdb.org/docs/extensions/iceberg)
   - read only as of 2024/08/07
 - [ClickHouse](https://clickhouse.com/docs/en/engines/table-engines/integrations/iceberg)
 
-
-## Observations, thoughts, questions
+## Observations / thoughts / questions
 - A manifest list is created for each table snapshot.
 - [Puffine file format](https://iceberg.apache.org/puffin-spec/) is a file format for indexes and statistics of a table
 
@@ -51,12 +52,12 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 # Hudi
 [Spec](https://hudi.apache.org/tech-specs/)
 
-## Integrations
+## Integrations / ecosystem
 - [Ecosystem support](https://hudi.apache.org/ecosystem/)
 - [Trino](https://trino.io/docs/current/connector/hudi.html)
 
-## Observations, thoughts, questions
-- It seems Hudi is optimized for streaming (or micro-batch) use cases rather than batch processing.
+## Observations / thoughts / questions
+- It seems Hudi is optimized for near-realtime scan and ingest use cases rather than batch processing.
   - Development seems the most active for Spark, Flink.
   - Trino and Hive support only read as of Aug. 2024.
 - Supports both copy-on-write and merge-on-read table types
@@ -79,6 +80,16 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 ---
 # Kudo
 [Schema design](https://kudu.apache.org/docs/schema_design.html)
+
+## Integrations / ecosystem
+Tightly integrated with Impala.
+Has integration with NiFi and Spark.
+
+## Observations / thoughts / questions
+- Has replication and high availability mechanism by itself.
+  - Others rely on reliability of underlying storage, e.g. HDFS, cloud object storage
+  - Makes consensus by Raft algorithm
+- Direction is somehow similar to Hudi. Aims for rear realtime scan and ingest use cases.
 
 ---
 # Links
