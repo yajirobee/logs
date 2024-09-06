@@ -1,35 +1,37 @@
 ---
 layout: memo
-title: Open table catalog, table and data formats
+title: Open table formats
 ---
 
-# Catalog formats
-## Unity Catalog
-[Github](https://github.com/unitycatalog/unitycatalog)
-
-
-## Polaris Catalog
-[Github](https://github.com/snowflakedb/polaris-catalog)
-[Announcement](https://www.snowflake.com/blog/introducing-polaris-catalog/)
-
-# Table formats
-## Delta Lake
+# Delta Lake
 [Protocol](https://github.com/delta-io/delta/blob/master/PROTOCOL.md)
 
+## Integrations
+- [DuckDB](https://duckdb.org/docs/extensions/delta)
+
+## Observations, thoughts, questions
 - Atomic log record insertion depends on atomic "put if absent" or rename operations
   - To use Delta Lake on S3, transaction coordinator service is required because of lack of them on S3.
+  - P.S. Since Aug 20, 2024, S3 supports put if absent. [S3 conditional writes](https://aws.amazon.com/about-aws/whats-new/2024/08/amazon-s3-conditional-writes/)
 - Checkpoint is made at the end of write transactions.
   - Checkpoint happens every 10 transactions by default.
 - Reference: [Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores, VLDB 2020](https://www.vldb.org/pvldb/vol13/p3411-armbrust.pdf)
 
-### Integrations
-- [DuckDB](https://duckdb.org/docs/extensions/delta)
-
-## Iceberg
+---
+# Iceberg
 **Update June 4th, 2024: [Databricks acquired Tablular](https://www.databricks.com/company/newsroom/press-releases/databricks-agrees-acquire-tabular-company-founded-original-creators). Delta Lake and Iceberg will probably be merged gradually in the near future.**
 
 [Spec](https://iceberg.apache.org/spec/)
 
+## Integrations
+- [Trino](https://trino.io/docs/current/connector/iceberg.html)
+- [Hive](https://iceberg.apache.org/docs/latest/hive/#partitioned-tables)
+- [DuckDB](https://duckdb.org/docs/extensions/iceberg)
+  - read only as of 2024/08/07
+- [ClickHouse](https://clickhouse.com/docs/en/engines/table-engines/integrations/iceberg)
+
+
+## Observations, thoughts, questions
 - A manifest list is created for each table snapshot.
 - [Puffine file format](https://iceberg.apache.org/puffin-spec/) is a file format for indexes and statistics of a table
 
@@ -47,16 +49,15 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 
 - How to confirm that data files pointed by a position delete file still exist?
 
-### Integrations
-- [Trino](https://trino.io/docs/current/connector/iceberg.html)
-- [Hive](https://iceberg.apache.org/docs/latest/hive/#partitioned-tables)
-- [DuckDB](https://duckdb.org/docs/extensions/iceberg)
-  - read only as of 2024/08/07
-- [ClickHouse](https://clickhouse.com/docs/en/engines/table-engines/integrations/iceberg)
-
-## Hudi
+---
+# Hudi
 [Spec](https://hudi.apache.org/tech-specs/)
 
+## Integrations
+- [Ecosystem support](https://hudi.apache.org/ecosystem/)
+- [Trino](https://trino.io/docs/current/connector/hudi.html)
+
+## Observations, thoughts, questions
 - It seems Hudi is used more for non-SQL analytical engines like Spark, Flink.
   - Trino and Hive support only read as of Aug. 2024.
 - Supports both copy-on-write and merge-on-read table types
@@ -65,23 +66,11 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 > Hudi guarantees that the actions performed on the timeline are atomic & timeline consistent based on the instant time. Atomicity is achieved by relying on the atomic puts to the underlying storage to move the write operations through various states in the timeline.
 (from: [Timeline](https://hudi.apache.org/docs/timeline))
 
-### Integrations
-- [Ecosystem support](https://hudi.apache.org/ecosystem/)
-- [Trino](https://trino.io/docs/current/connector/hudi.html)
-
-## Kudo
+---
+# Kudo
 [Schema design](https://kudu.apache.org/docs/schema_design.html)
 
-## Links
+---
+# Links
 - [Big Metadata: When Metadata is Big Data](https://dl.acm.org/doi/10.14778/3476311.3476385)
 - [Apache Hudi vs Delta Lake vs Apache Iceberg](https://www.onehouse.ai/blog/apache-hudi-vs-delta-lake-vs-apache-iceberg-lakehouse-feature-comparison)
-
-# Columnar data format
-## Parquet
-- [File format](https://parquet.apache.org/docs/file-format/)
-- [Thrift definition](https://github.com/apache/parquet-format/blob/master/src/main/thrift/parquet.thrift)
-
-## Links
-- [An Empirical Evaluation of Columnar Storage Formats](https://www.vldb.org/pvldb/vol17/p148-zeng.pdf)
-- [Exploiting Cloud Object Storage for High-Performance Analytics](https://www.vldb.org/pvldb/vol16/p2769-durner.pdf)
-- [Amazon's Exabyte-Scale Migration from Apache Spark to Ray on Amazon EC2](https://aws.amazon.com/jp/blogs/opensource/amazons-exabyte-scale-migration-from-apache-spark-to-ray-on-amazon-ec2/)

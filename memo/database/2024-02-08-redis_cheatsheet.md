@@ -16,6 +16,9 @@ jedisNodeConnection.close();
 ```
 ([Reference](https://groups.google.com/g/jedis_redis/c/b-65UX8qvOE))
 
+# Performance
+- [Diagnosing latency issues](https://redis.io/docs/latest/operate/oss_and_stack/management/optimization/latency/)
+
 ## Links
 - [Redis cluster specification](https://redis.io/docs/reference/cluster-spec/)
 - [Redis Clustering Best Practices](https://redis.com/blog/redis-clustering-best-practices-with-keys/)
