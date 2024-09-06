@@ -37,7 +37,6 @@ title: Open table formats
 
 ### Atomic data commit
 from [File System Operations](https://iceberg.apache.org/spec/#file-system-operations)
-
 > Tables do not require rename, except for tables that use atomic rename to implement the commit operation for new metadata files.
 
 from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
@@ -46,7 +45,6 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 ### Delete format
 - Position delete file points rows by file location and position
 - Equality delete file
-
 - How to confirm that data files pointed by a position delete file still exist?
 
 ---
@@ -58,10 +56,22 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 - [Trino](https://trino.io/docs/current/connector/hudi.html)
 
 ## Observations, thoughts, questions
-- It seems Hudi is used more for non-SQL analytical engines like Spark, Flink.
+- It seems Hudi is optimized for streaming (or micro-batch) use cases rather than batch processing.
+  - Development seems the most active for Spark, Flink.
   - Trino and Hive support only read as of Aug. 2024.
 - Supports both copy-on-write and merge-on-read table types
   - merge-on-read table is optimized for update and delete heavy workload
+    - File group of merge-on-read table comprises of columnar base files and [row based delta log files](https://hudi.apache.org/tech-specs/#log-file-format)
+  - [Table and query types](https://hudi.apache.org/docs/table_types/)
+- File locations are stored on files index on [metadata table](https://hudi.apache.org/docs/metadata)
+  - Eliminate expensive list files operation of DFS/cloud object storage
+- Hudi supports [Record level index](https://hudi.apache.org/blog/2023/11/01/record-level-index/)
+  - Implemented by HFile format which has B+-tree like structures
+  - Index is built for a primary key, i.e. keys must be unique across all partitions within a table
+
+### Concurrency Control
+> Hudi implements a file level, log based concurrency control protocol on the Hudi timeline, which in-turn relies on bare minimum atomic puts to cloud storage.
+(from: [Lakehouse Concurrency Control: Are we too optimistic?](https://hudi.apache.org/blog/2021/12/16/lakehouse-concurrency-control-are-we-too-optimistic/))
 
 > Hudi guarantees that the actions performed on the timeline are atomic & timeline consistent based on the instant time. Atomicity is achieved by relying on the atomic puts to the underlying storage to move the write operations through various states in the timeline.
 (from: [Timeline](https://hudi.apache.org/docs/timeline))
