@@ -89,6 +89,7 @@ Has integration with NiFi and Spark.
 - Has replication and high availability mechanism by itself.
   - Others rely on reliability of underlying storage, e.g. HDFS, cloud object storage
   - Makes consensus by Raft algorithm
+  - It plays some roles of distributed file system rather than simple table format.
 - Direction is somehow similar to Hudi. Aims for rear realtime scan and ingest use cases.
 
 ---
