@@ -15,6 +15,7 @@ title: Reading list
   - [github](https://github.com/ClickHouse/ClickHouse)
   - [ClickBench](https://benchmark.clickhouse.com/)
     - [github](https://github.com/ClickHouse/ClickBench/)
+- [DataFusion](https://datafusion.apache.org/)
 
 ## Transaction
 - [Implementing MVCC and major SQL transaction isolation levels](https://notes.eatonphil.com/2024-05-16-mvcc.html)
