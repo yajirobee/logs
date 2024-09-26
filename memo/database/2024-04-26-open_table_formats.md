@@ -48,6 +48,9 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 - Equality delete file
 - How to confirm that data files pointed by a position delete file still exist?
 
+### Maintenance
+- [Maintenance](https://iceberg.apache.org/docs/nightly/maintenance/)
+
 ---
 # Hudi
 [Spec](https://hudi.apache.org/tech-specs/)
@@ -84,6 +87,8 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 ## Integrations / ecosystem
 Tightly integrated with Impala.
 Has integration with NiFi and Spark.
+
+- [Trino](https://trino.io/docs/current/connector/kudu.html)
 
 ## Observations / thoughts / questions
 - Has replication and high availability mechanism by itself.
