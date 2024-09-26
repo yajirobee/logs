@@ -68,3 +68,8 @@ tags: Book
 - 2.5.9 **The USE Method**
   - measure utilization, saturation and errors (USE) for every resource
   - listing resources and finding metrics are possibly time consuming for the first time, but it should be much faster next time
+- 2.5.10 RED Method
+  - For every service, check Request rate, errors and duration (RED)
+  - USE and RED methods are complementary: USE method for machine health, RED method for user health
+- 2.5.11 Workload Characterization
+  - **> The best performance wins are the result of eliminating unnecessary work.**
