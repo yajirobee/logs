@@ -3,7 +3,7 @@ layout: memo
 title: DuckDB Code Reading
 ---
 
-Based on DuckDB [v0.10.0](https://github.com/duckdb/duckdb/tree/v0.10.0)
+Based on DuckDB [v1.1.2](https://github.com/duckdb/duckdb/tree/v1.1.2)
 
 # Query Execution Flow
 - Parser
@@ -33,7 +33,7 @@ Based on DuckDB [v0.10.0](https://github.com/duckdb/duckdb/tree/v0.10.0)
 - [Lightweight Compression in DuckDB](https://duckdb.org/2022/10/28/lightweight-compression.html)
 
 # Use Extension
-Read extension [README.md](https://github.com/duckdb/duckdb/blob/v0.10.0/extension/README.md) first.
+Read extension [README.md](https://github.com/duckdb/duckdb/blob/v1.1.2/extension/README.md) first.
 
 ## Install
 - Extensions are downloaded from "extensions.duckdb.org" by default.
@@ -108,3 +108,6 @@ duckdb -unsigned
    The DuckDB symbols required by the loadable extensions are left unresolved. This will reduce the size of the binaries
    and works well when running the DuckDB cli directly. For windows this uses delay loading. For MacOS and linux the
    dynamic loader will look up the missing symbols when the extension is dlopen-ed.
+
+# Links
+- [Guidance on developing DuckDB extensions in Rust](https://github.com/duckdb/community-extensions/issues/54)
