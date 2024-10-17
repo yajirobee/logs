@@ -3,7 +3,13 @@ layout: memo
 title: Scala cheatsheet
 ---
 
-# For comprehension
+# Scala 3
+
+## Links
+- [new features of Scala 3](https://docs.scala-lang.org/scala3/reference/other-new-features/index.html)
+
+# Scala 2
+## For comprehension
 In Scala, for comprehension is a syntax sugar of a sequence of following methods
 - foreach
   - e.g.
@@ -34,7 +40,7 @@ In Scala, for comprehension is a syntax sugar of a sequence of following methods
 
 - [For comprehensions](https://docs.scala-lang.org/tour/for-comprehensions.html)
 
-# Specify interface implemented by lambda explicitly
+## Specify interface implemented by lambda explicitly
 ```scala
 // differentiate it from Supplier[Boolean]
 { () => true }: java.util.function.BooleanSupplier
