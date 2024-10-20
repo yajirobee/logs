@@ -18,6 +18,15 @@ title: Open table formats
 - Checkpoint is made at the end of write transactions.
   - Checkpoint happens every 10 transactions by default.
 - Reference: [Delta Lake: High-Performance ACID Table Storage over Cloud Object Stores, VLDB 2020](https://www.vldb.org/pvldb/vol13/p3411-armbrust.pdf)
+- [Row Tracking and Row IDs](https://github.com/delta-io/delta/blob/master/PROTOCOL.md#row-tracking)
+  - every row has two Row IDs, fresh Row ID and stable Row ID
+  - Default generated Row IDs: calculated by `baseRowId` field of `add` and `remove` actions and row position
+  - Materialized Row IDs: stored in a column in the data files
+  - fresh Row ID = Default generated Row ID
+  - stable Row ID = Materialiezed Row ID if not null, otherwise Default generated Row ID
+
+# Links
+- [Delta Kernel](https://github.com/delta-io/delta/tree/master/kernel)
 
 ---
 # Iceberg
