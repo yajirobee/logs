@@ -24,6 +24,8 @@ title: Open table formats
   - Materialized Row IDs: stored in a column in the data files
   - fresh Row ID = Default generated Row ID
   - stable Row ID = Materialiezed Row ID if not null, otherwise Default generated Row ID
+- [Data skipping](https://docs.databricks.com/en/delta/data-skipping.html)
+  - By default, statistics of the first 32 columns are collected
 
 # Links
 - [Delta Kernel](https://github.com/delta-io/delta/tree/master/kernel)
