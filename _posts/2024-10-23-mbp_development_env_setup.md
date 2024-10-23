@@ -99,15 +99,16 @@ rbenv global 3.3.5
 - Install [IntelliJ IDEA](https://www.jetbrains.com/idea/download/)
 
 ### Configuration
-- keybind (Preferences -> Keymap)
+- Font (Editor > Font): JetBrains Mono, size = 14.0
+- Keybind (Preferences > Keymap)
   - Use "Emacs"
   - Type Hierarchy : remove ^H, add ^⌘H
   - Backspace add ^H
-- Code Style (Preferences -> Editor -> Code Style)
+- Code Style (Preferences > Editor > Code Style)
   - Kotlin
-    - Tabs and Indents -> Continuation indent : 8 -> 4
-    - imports -> Top-Level Symbols / Java Statics and Enum Members : "Use single name import"
-    - imports -> Packages to Use Import with "*" : empty
+    - Tabs and Indents > Continuation indent : 8 -> 4
+    - imports > Top-Level Symbols / Java Statics and Enum Members : "Use single name import"
+    - imports > Packages to Use Import with "*" : empty
 
 ## Containers
 - Install Podman
