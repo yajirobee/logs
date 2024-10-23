@@ -1,7 +1,7 @@
-3---
+---
 layout: blog
 title: "Setup development environment on MacBook Pro"
-tags: Database
+tags: Development
 ---
 
 Setup log of my new work MBP.
