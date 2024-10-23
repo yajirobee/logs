@@ -85,6 +85,12 @@ Libraries I commonly use for java projects.
 - [jOOQ](https://www.jooq.org/) - DSL for type safe SQL construction
 - [flyway](https://flywaydb.org/) - DB version control
 
+# Commands
+- Check installed JVMs
+```sh
+/usr/libexec/java_home -V
+```
+
 # References
 - [Oracle Java Standart Edition Documentation](https://docs.oracle.com/en/java/javase/index.html)
 - [Java Lnaguage Changes](https://docs.oracle.com/en/java/javase/21/language/java-language-changes.html)
