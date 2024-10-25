@@ -73,3 +73,20 @@ tags: Book
   - USE and RED methods are complementary: USE method for machine health, RED method for user health
 - 2.5.11 Workload Characterization
   - **> The best performance wins are the result of eliminating unnecessary work.**
+- 2.6 Modeling
+  - It’s critical to know where knee points exist and what resource is a bottleneck for that performance behavior. It impacts the system architecture design decision.
+- 2.8.5 Multimodal Distributions
+  - Average is useful only for unimordal distributions. ask what is the distribution before using average
+  - Latency metrics are often bimodal
+
+## 3 Operating Systems
+- 3.2.5 Clock and Idle
+  - `clock()` routine: updating the system time, maintaining CPU statistics, etc
+    - executed from a timer interrupt
+    - each execution is called a `tick`
+- 3.2.9 Schedulers
+  - prioritize I/O-bound workloads over CPU-bound workloads
+- 3.3 Kernels
+  - Kernel differences: file system support, system calls, network stack architecture, real-time support, scheduling algorithms for CPUs, disk I/O, networking
+- 3.4.1 Linux Kernel Developments
+  - Multi-queue block I/O scheduler is default in 5.0 and classic schedulers like CFQ, deadline have been deleted
