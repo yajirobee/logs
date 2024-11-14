@@ -21,6 +21,21 @@ Use [Gradle Properties](https://docs.gradle.org/current/userguide/build_environm
 org.gradle.jvmargs=-Xmx1024m -XX:MaxMetaspaceSize=256m -XX:+HeapDumpOnOutOfMemoryError -Dfile.encoding=UTF-8
 ```
 
+# Global configurations
+- parallelize build by default
+
+Set `org.gradle.parallel` property on [gradle.properties](https://docs.gradle.org/current/userguide/build_environment.html#the_gradle_properties_file) file.
+```
+org.gradle.parallel=true
+```
+
+- Enable the [configuration cache](https://docs.gradle.org/current/userguide/performance.html#enable_configuration_cache)
+
+Set `org.gradle.configuratino-cache` property on [gradle.properties](https://docs.gradle.org/current/userguide/build_environment.html#the_gradle_properties_file) file.
+```
+org.gradle.configuration-cache=true
+```
+
 # Dependencies
 ## Debug
 > Gradle provides the built-in dependencyInsight task to render a dependency insight report from the command line. Dependency insights provide information about a single dependency within a single configuration. Given a dependency, you can identify the selection reason and origin.
