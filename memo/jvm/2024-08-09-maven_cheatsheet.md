@@ -29,3 +29,14 @@ Use [buildplan plugin](https://www.mojohaus.org/buildplan-maven-plugin/usage.htm
 ```sh
 mvn fr.jcgay.maven.plugins:buildplan-maven-plugin:list
 ```
+
+# Trouble shooting
+## jenv settings are ignored
+```sh
+# set JAVA_HOME by jEnv
+jenv enable-plugin export
+```
+or
+```sh
+jenv exec mvn ...
+```
