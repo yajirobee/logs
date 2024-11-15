@@ -4,8 +4,11 @@ title: "Read Book: Systems Performance 2nd edition"
 tags: Book
 ---
 
-# memo
-## 1 Introduction
+Notes while reading [Systems Performance: Enterprise and the Cloud, 2nd Edition](https://www.brendangregg.com/blog/2020-07-15/systems-performance-2nd-edition.html).
+
+<!--end_excerpt-->
+
+# 1 Introduction
 - 1.1 Systems Performance
   - > Systems performance studies the performance of an entire computer system, including all major software and hardware components. Anything in the data path, from storage devices to application software, is included, because it can affect performance. For distribnuted systems this means multiple servers and applications.
   - Write a diagram of system showing the data path
@@ -21,7 +24,7 @@ tags: Book
 - 1.10 Methodologies
   - > Without a methodology, a methodology, a perforamnce investigation can turn into a fishing expedition
 
-## 2 Methodologies
+# 2 Methodologies
 - experienced performance engineers understand which metrics are important and when they point to an issue, and how to use them to narrow down an investigation
 - 2.3.1 Latency
   - > single word "latency" can be ambiguous, it is best to include qualifying terms
@@ -79,7 +82,7 @@ tags: Book
   - Average is useful only for unimordal distributions. ask what is the distribution before using average
   - Latency metrics are often bimodal
 
-## 3 Operating Systems
+# 3 Operating Systems
 - 3.2.5 Clock and Idle
   - `clock()` routine: updating the system time, maintaining CPU statistics, etc
     - executed from a timer interrupt
@@ -90,3 +93,28 @@ tags: Book
   - Kernel differences: file system support, system calls, network stack architecture, real-time support, scheduling algorithms for CPUs, disk I/O, networking
 - 3.4.1 Linux Kernel Developments
   - Multi-queue block I/O scheduler is default in 5.0 and classic schedulers like CFQ, deadline have been deleted
+
+# 5 Applications
+- 5.1 Objectives
+  - Better observability enables to see and eliminate unnecessary work and to better understanding and tune active work.
+    - It should be a major factor to choose applications / middlewares / languages and runtimes.
+- 5.2.5 Concurrency and Parallelism
+  - Linux mutex is implemented in [3 paths](https://www.kernel.org/doc/Documentation/locking/mutex-design.txt)
+  - Hash table of locks is a design option to limit number of locks for fine grained locking
+    - Avoid CPU overheads for the creation and destruction of the lock too
+  - false sharing - two CPUs updating different locks in the same cache line
+    - encounter cache coherencey overhead
+- 5.3.1 Compiled Languages
+  - gcc applies some optimizations even at `-O0`
+- 5.4 Methodology
+  - CPU / off-CPU profiling and thread state analysis can reveal how compute resources are used
+  - Distributed tracing is suggested as the last resort
+  - It appears the methodologies are described from the point of view of engineers who don't have much context about application.
+    - When application developpers work on analysis, the order to try methodologies may change
+- 5.4.2 Off-CPU Analysis
+  - off-CPU sampling comes with with major overhead
+    - It must sample the pool of threads rather than the pool of CPUs
+- 5.5 Observability Tools
+  - [BPF Compiler Collections (BCC)](https://github.com/iovisor/bcc/tree/master)
+  - [profile(8)](https://github.com/iovisor/bcc/blob/master/tools/profile.py)
+  - offcpu(8) - [Off-CPU flame graphs](https://www.brendangregg.com/FlameGraphs/offcpuflamegraphs.html)
