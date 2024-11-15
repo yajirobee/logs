@@ -5,6 +5,7 @@ tags: Book
 ---
 
 Notes while reading [Systems Performance: Enterprise and the Cloud, 2nd Edition](https://www.brendangregg.com/blog/2020-07-15/systems-performance-2nd-edition.html).
+This is still WIP as I'm still reading the book.
 
 <!--end_excerpt-->
 
