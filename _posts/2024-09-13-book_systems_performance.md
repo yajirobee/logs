@@ -7,6 +7,8 @@ tags: Book
 Notes while reading [Systems Performance: Enterprise and the Cloud, 2nd Edition](https://www.brendangregg.com/blog/2020-07-15/systems-performance-2nd-edition.html).
 This is still WIP as I'm still reading the book.
 
+I read the 1st edition 9 years ago. It turns out that the 2nd edition has so many updates since the 1st including more coverage for Linux rather than Solaris and Cloud computing. I recommend to read it even if you've read the 1st edition.
+
 <!--end_excerpt-->
 
 # 1 Introduction
