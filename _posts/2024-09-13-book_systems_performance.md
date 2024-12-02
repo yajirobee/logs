@@ -5,7 +5,7 @@ tags: Book
 ---
 
 Notes while reading [Systems Performance: Enterprise and the Cloud, 2nd Edition](https://www.brendangregg.com/blog/2020-07-15/systems-performance-2nd-edition.html).
-This is still WIP as I'm still reading the book.
+This is still WIP as I'm still reading.
 
 I read the 1st edition 9 years ago. It turns out that the 2nd edition has so many updates since the 1st including more coverage for Linux rather than Solaris and Cloud computing. I recommend to read it even if you've read the 1st edition.
 
@@ -121,3 +121,23 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
   - [BPF Compiler Collections (BCC)](https://github.com/iovisor/bcc/tree/master)
   - [profile(8)](https://github.com/iovisor/bcc/blob/master/tools/profile.py)
   - offcpu(8) - [Off-CPU flame graphs](https://www.brendangregg.com/FlameGraphs/offcpuflamegraphs.html)
+
+# 11 Could Computing
+- 11.1.3 Capacity Planning
+  - Cloud computing makes people free from strict capacity planning to purchase proper hardwares.
+    - For growing startups, it's particularlly difficult to estimate because demand changes more aggressively and the pace of code changes is high.
+- 11.1.6 Orchestration (Kubernetes)
+  - > Performance challenges in Kubernetes include scheduling, and network performance, as extra components are used to implement container networking and load balancing.
+- 11.2.2 Overhead
+  - > Understanding when and when not to expect performance overhead from virtulization is important
+  - The guest applications execute directly on the processors, so CPU-bound applications may experience almost the same performance as a bare-metal system.
+  - > CPU overheads may be encountered when making privileged processor calls, accessing hardware, and mapping main memory
+  - The mapping from guest virtual memory to host physical memory is cached in the TLB.
+  - The storage architecture may also lead to double caching, i.e. caching on both host and guest.
+- 11.2.3 Resource Controls
+  - > A guest's CPU usage is typically opaque to the hypervisor, and guest kernel thread priorities cannot typically be seen or respected.
+  - > In the Amazon EC2 cloud, network I/O and disk I/O to network-attached devices are throttled to quotas using external systems.
+- 11.2.4 Observability
+  - > From the guest, physical resource usage may not be observable at all.
+  - vmstats(8) command includes CPU percent stolen (st). It shows CPU time not available to the guest. It may be consumed by other tenants or other hypervisor functions.
+  - Disk and network resource contention may be identified by careful analysis of I/O patterns and latency outliers.
