@@ -25,4 +25,4 @@ jedisNodeConnection.close();
 ## Links
 - [Redis cluster specification](https://redis.io/docs/reference/cluster-spec/)
 - [Redis Clustering Best Practices](https://redis.com/blog/redis-clustering-best-practices-with-keys/)
-
+- [Lua and Redis functions](https://redis.io/docs/latest/develop/interact/programmability/)
