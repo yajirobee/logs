@@ -3,6 +3,9 @@ layout: memo
 title: Redis cheatsheet
 ---
 
+# Commands
+- Get bytes of a key and its value: [MEMORY USAGE](https://redis.io/docs/latest/commands/memory-usage/)
+
 # Redis cluster
 
 ## Transaction in a hash slot with Jedis
