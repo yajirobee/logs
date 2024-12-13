@@ -30,6 +30,9 @@ Lessons and best practices from my experience. This is a living document.
 - Understand where a metric come from before using it
   - Be aware whether the metric is leading or lagging indicator
   - [Active Benchmarking](https://www.brendangregg.com/activebenchmarking.html)
+- Think of the most important problem first. Do not start from where it is most convenient to look.
+  - Beware of [Streetlight effect](https://en.wikipedia.org/wiki/Streetlight_effect)
+  - > A policeman sees a drunk man searching for something under a streetlight and asks what the drunk has lost. He says he lost his keys and they both look under the streetlight together. After a few minutes the policeman asks if he is sure he lost them here, and the drunk replies, no, and that he lost them in the park. The policeman asks why he is searching here, and the drunk replies, "this is where the light is".
 
 # Communications
 - Poor communication makes more tasks
