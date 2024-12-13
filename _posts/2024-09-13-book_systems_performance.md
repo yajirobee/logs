@@ -32,13 +32,13 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
 - 2.3.1 Latency
   - > single word "latency" can be ambiguous, it is best to include qualifying terms
 - 2.3.2 Time Scales
-  - **> have an instinct about time and reasonable expectation for latency from different sources**
+  - > **have an instinct about time and reasonable expectation for latency from different sources**
 - 2.3.3 Trade Offs
   - good/fast/cheap "pick two" trade-off
   - in most cases, good and cheap are picked
   - That choice can become problematic when architecture and tech stacks choices don't allow good performance.
 - 2.3.4 Tuning Efforts
-  - **> Performance tuning is most effective when done closest to where the work is performed.**
+  - > **Performance tuning is most effective when done closest to where the work is performed.***
   - > Operating system performance analysis can also identify application-level issues, not just OS-level issues
 - 2.3.6 When to stop analysis
   - when major problems are solved
@@ -54,7 +54,7 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
     - saturation may not happen at 100% time-based utilization depending on capability of parallelism
   - Capacity-based utilization
 - 2.3.15 Known-Unknowns
-  - **> The more you learn about systems, the more unknown-unknowns you become aware of.**
+  - > **The more you learn about systems, the more unknown-unknowns you become aware of.**
   - which are then known-unknowns that you can check on
 - 2.4 Perspectives
   - Resource analysis (bottom-up) vs workload analysis (top-down)
@@ -78,7 +78,7 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
   - For every service, check Request rate, errors and duration (RED)
   - USE and RED methods are complementary: USE method for machine health, RED method for user health
 - 2.5.11 Workload Characterization
-  - **> The best performance wins are the result of eliminating unnecessary work.**
+  - > **The best performance wins are the result of eliminating unnecessary work.**
 - 2.6 Modeling
   - It’s critical to know where knee points exist and what resource is a bottleneck for that performance behavior. It impacts the system architecture design decision.
 - 2.8.5 Multimodal Distributions
@@ -121,6 +121,23 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
   - [BPF Compiler Collections (BCC)](https://github.com/iovisor/bcc/tree/master)
   - [profile(8)](https://github.com/iovisor/bcc/blob/master/tools/profile.py)
   - offcpu(8) - [Off-CPU flame graphs](https://www.brendangregg.com/FlameGraphs/offcpuflamegraphs.html)
+
+# 6 CPUs
+- 6.3.8 Utilization
+  - > The measure of CPU utilization spans all clock cycles for eligible activities, including memory stall cycles.
+    - High CPU utilization doesn't immediately mean CPU bound workload.
+    - A CPU may be utilized for stalls waiting for memory I/O.
+    - High CPU & high IPC suggests CPU bound workload.
+- 6.4.1 Hardwares
+    - Handling of TLD misses is processor-dependent
+      - > Newer processors can service TLB misses in hardware.
+- 6.4.2 Software
+  - In completely fair scheduler (CFS), tasks are managed on a red-black tree keyed from the task CPU time.
+- 6.5.3 Workload Characterization
+  - High system time (time spent in kernel) may be futher understood by the syscall and interrupt rate.
+  - > I/O bound workloads have high system time, syscalls and higher voluntary context switches as threads block waiting for I/O.
+- 6.5.4 Profiling
+  - > 99 Hertz is used to avoid lock-step sampling that may occur at 100 Hertz, which would produce a skewed profile.
 
 # 11 Could Computing
 - 11.1.3 Capacity Planning
