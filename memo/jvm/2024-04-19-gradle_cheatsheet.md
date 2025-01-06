@@ -37,6 +37,11 @@ org.gradle.configuration-cache=true
 ```
 
 # Dependencies
+## Platforms
+[Platforms](https://docs.gradle.org/current/userguide/platforms.html) are used to ensure that all dependencies in a project align with a consistent set of versions.
+
+BOMs can be imported by platforms.
+
 ## Debug
 > Gradle provides the built-in dependencyInsight task to render a dependency insight report from the command line. Dependency insights provide information about a single dependency within a single configuration. Given a dependency, you can identify the selection reason and origin.
 
