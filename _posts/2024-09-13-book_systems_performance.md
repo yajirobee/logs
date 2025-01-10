@@ -138,6 +138,29 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
   - > I/O bound workloads have high system time, syscalls and higher voluntary context switches as threads block waiting for I/O.
 - 6.5.4 Profiling
   - > 99 Hertz is used to avoid lock-step sampling that may occur at 100 Hertz, which would produce a skewed profile.
+- 6.6.1 uptime
+  - Since 1993 on Linux, load averages show system-wide demand: CPUs, disks and other resources, not only CPU demand.
+    - The average is an exponentially damped moving average.
+  - Pressure Stall Information (PSI) was added in Linux 4.20
+    - available on `/proc/pressure/cpu`
+    - shows saturation of CPU, memory and I/O
+    - The average shows the percent of time something was stalled on a resource
+- 6.6.6 top
+  - CPU usage of top(1) itself can be significant
+    - due to the system calles to read /proc, open(2), read(2), close(2), over many processes.
+- 6.6.13 perf
+  - Since Linux 5.8, CPU flame graphs can be generated from `perf.data`
+    ```sh
+    perf record -F 99 -a -g -- sleep 10
+    perf script report flamegraph
+    ```
+- 6.6.21 Other Tools
+  - > GPU profiling is different from CPU profiling, as CPUs do not have a stack trace showing code path ancestry.
+  - > Profilters instead can instrument API and memory transfer calls and their timing.
+- 6.7.2 SUbsecond-Offset Heat Map
+  - > CPU activity is typically measured in microseconds or milliseconds; reporting this data as averages over an entire second can wipe out useful information.
+- 6.9.7 Exclusive CPU Sets
+  - cpusets of Linux allows to make a set of CPUs exclusive for processes.
 
 # 11 Could Computing
 - 11.1.3 Capacity Planning
