@@ -11,3 +11,6 @@ title: Good readings
 
 # OSS
 - [Hacking on PostgreSQL is Really Hard](https://rhaas.blogspot.com/2024/05/hacking-on-postgresql-is-really-hard.html)
+
+# General
+- [The Hard Truth About Innovative Cultures](https://hbr.org/2019/01/the-hard-truth-about-innovative-cultures)
