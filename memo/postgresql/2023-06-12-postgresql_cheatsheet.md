@@ -86,6 +86,14 @@ test=# select pid, relation::regclass, mode, granted, query from pg_locks join p
 (1 row)
 ```
 
+# The Query Rewrite Rule System (views and materialized views)
+- [Rules and Privileges](https://www.postgresql.org/docs/current/rules-privileges.html)
+
+## Security invoker view
+> By default, access to the underlying base relations referenced in the view is determined by the permissions of the view owner.
+If the view has the security_invoker property set to true, access to the underlying base relations is determined by the permissions of the user executing the query, rather than the view owner.
+(from: https://www.postgresql.org/docs/current/sql-createview.html)
+
 # Clients
 ## Set GUC parameters via libpq connection string
 e.g.
