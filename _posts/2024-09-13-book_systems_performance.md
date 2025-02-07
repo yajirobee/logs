@@ -162,6 +162,65 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
 - 6.9.7 Exclusive CPU Sets
   - cpusets of Linux allows to make a set of CPUs exclusive for processes.
 
+# 7 Memory
+- 7.1 Terminology
+  - > Swapping: Linux uses the term swapping to refer to anonymous paging to the swap device (the transfer of swap pages).
+- 7.2.1 Virtual Memory
+  - Oversubscribe vs overcommit
+    - oversubscribe: allows allocation more than main memory, e.g. the size of main memory + swap device. had bound
+    - overcommit (Linux term): allows unbounded memory allocation
+- 7.2.2 Paging
+  - File system paging is caused by read/write of pages in memory-mapped files.
+    - normal behavior for applications that use mmap(2) and file systems that use the page cache.
+  - Page-out: a page was moved out of memory.
+    - may or may not include a write to a storage device
+  - Anonymous page-outs: requre moving the data to the physical swap devices.
+- 7.2.3 Demand Paging
+  - Minor fault: physical memory mapping can be satisfied from another page in memory
+    - e.g. memory growth of the process, mapping to another existing page, such as reading a page from a mapped shared library.
+ - Major fault: require storage device access
+- 7.2.5 Process Swapping
+  - > Linux systems do not swap processes at all and rely only on paging.
+- 7.2.9 Shared Memory
+  - Proportional set size (PSS): private memory + shared memory divided by the number of users
+- 7.3.1 Hardware
+  - Column address strobe (CAS): time between sending a memory module the desired address (column) and when the data is available to be read.
+    - depends on type of memory, e.g. DDR4, 5
+    - > For memory I/O transfers, this latency may occur multiple times for a memory bus (e.g., 64 bits wide) to transfer a cache line (e.g., at 64 bytes wide).
+    - There are also other latencies involved with the CPU and MMU
+- 7.3.2 Software
+  - swappiness: the degree to which the system should favor freeing memory from the page cache instead of swapping
+    - 0 means always prefer freeing the page cache
+    - control the balance how much warm file system cache should be preserved
+  - Without swap, there is no paging grace period.
+    - application hits OOM error or OOM killer terminates it.
+  - Linux uses the buddy allocator for managing pages
+    - Multiple free lists for different sized memory allocations
+  - Page Scanning: on linux, the page-out daemon is called "kswapd"
+    - Scans LRU page lists of inactive and active memory to free pages
+- 7.3.3 Process Virtual Address Space
+  - For simple allocators, free(3) does not return memory to OS
+    - memory is kept to serve future allocations
+    - Process resident memory can only grow, which is normal
+  - Memory allocators
+    - glibc: behavior depends on allocation request size.
+      - small allocations are served from bins of memory, buddy-like algorithm
+      - large allocations can use a tree lookup to find space efficiently
+    - jemalloc: uses techniques such as multiple arenas, per-thread caching, and small object slabs
+      - improve scalability, reduce memory fragmentation
+- 7.4.2 USE Method
+  - > Saturation: The degree of page scanning, paging, swapping, and Linux OOM killer sacrifices performed, as measures to relieve memory pressure.
+  - > Historically, memory allocation errors have been left for the applications to report
+- 7.5.4 sar (system activity reporter)
+  - > To understand these in deeper detail, you may need to use tracers to instrument memory tracepoints and kernel functions, such as perf(1) and bpftrace
+  - %vmeff: measure of page reclaim efficiency
+    - High means pages are successfully stolen from the inactive list
+    - Low means the system is struggling
+    - The man page describes near 100% as high, less than 30% as low
+- 7.6.2 Multiple Page Sizes
+  - Transparent huge pages (THP): use huge pages by automatically promoting and demoting normal pages to huge
+    - application doesn't need to specify huge pages
+
 # 11 Could Computing
 - 11.1.3 Capacity Planning
   - Cloud computing makes people free from strict capacity planning to purchase proper hardwares.
