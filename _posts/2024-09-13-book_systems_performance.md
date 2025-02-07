@@ -164,10 +164,11 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
 
 # 7 Memory
 - 7.1 Terminology
-  - > Swapping: Linux uses the term swapping to refer to anonymous paging to the swap device (the transfer of swap pages).
+  - Swapping (in Linux): anonymous paging to the swap device (the transfer of swap pages)
 - 7.2.1 Virtual Memory
   - Oversubscribe vs overcommit
-    - oversubscribe: allows allocation more than main memory, e.g. the size of main memory + swap device. had bound
+    - oversubscribe: allows bounded allocation more than main memory
+      - e.g. the size of main memory + swap device
     - overcommit (Linux term): allows unbounded memory allocation
 - 7.2.2 Paging
   - File system paging is caused by read/write of pages in memory-mapped files.
@@ -178,7 +179,7 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
 - 7.2.3 Demand Paging
   - Minor fault: physical memory mapping can be satisfied from another page in memory
     - e.g. memory growth of the process, mapping to another existing page, such as reading a page from a mapped shared library.
- - Major fault: require storage device access
+  - Major fault: require storage device access
 - 7.2.5 Process Swapping
   - > Linux systems do not swap processes at all and rely only on paging.
 - 7.2.9 Shared Memory
