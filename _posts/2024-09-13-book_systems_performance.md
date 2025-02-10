@@ -140,7 +140,7 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
   - > 99 Hertz is used to avoid lock-step sampling that may occur at 100 Hertz, which would produce a skewed profile.
 - 6.6.1 uptime
   - Since 1993 on Linux, load averages show system-wide demand: CPUs, disks and other resources, not only CPU demand.
-    - The average is an exponentially damped moving average.
+    - [The average is an exponentially damped moving average](https://www.brendangregg.com/blog/2017-08-08/linux-load-averages.html).
   - Pressure Stall Information (PSI) was added in Linux 4.20
     - available on `/proc/pressure/cpu`
     - shows saturation of CPU, memory and I/O
@@ -221,6 +221,9 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
 - 7.6.2 Multiple Page Sizes
   - Transparent huge pages (THP): use huge pages by automatically promoting and demoting normal pages to huge
     - application doesn't need to specify huge pages
+
+# 8 File Systems
+
 
 # 11 Could Computing
 - 11.1.3 Capacity Planning
