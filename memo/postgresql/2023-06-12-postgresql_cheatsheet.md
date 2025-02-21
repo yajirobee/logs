@@ -76,6 +76,9 @@ AND am.amname = 'btree'
 ORDER BY index_method, opfamily_name, opfamily_operator;
 ```
 
+## Links
+- [postgres not using btree_gist index](https://stackoverflow.com/questions/71788182/postgres-not-using-btree-gist-index)
+
 # DDL
 ## Locks
 - `create index if not exist` takes `SHARE` lock even if the index already exists
