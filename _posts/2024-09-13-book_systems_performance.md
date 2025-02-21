@@ -223,7 +223,71 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
     - application doesn't need to specify huge pages
 
 # 8 File Systems
-
+- 8.3.1 File System Latency
+  - > Operating systems have not historically made the file system latency readily observable, instead providing disk device-level statistics
+    - There are many cases disk metrics are unrelated to the application performance
+      - e.g. file systems perform background flushing of written data
+        - causes burst of high latency disk I/Os
+        - however, no application is waiting them
+- 8.3.2 Caching
+  - > File systems use caching to improve read performance, and buffering (in the cache) to improve write performance.
+- 8.3.4 Prefetch
+  - File systems allow tuning prefetch behavior
+- 8.3.5 Read-Ahead
+  - > Historically, prefetch has also been known as read-ahead. Linux uses the read-ahead term for a system call, readahead(2), that allows applications to explicitly warm up the file system cache.
+- 8.3.8 Raw and Direct I/O
+  - Raw I/O: request directly to disk offset. Bypassing the file system.
+  - Direct I/O: bypass the file system cache. Using the file system.
+    - mapping of file offsets to disk offsets must still be performed
+    - I/O may be resized to match the size of on-disk layout
+    - depending on file system, not only disabling read caching and write buffering, but also disable prefetch
+- 8.3.10 Memory-Mapped Files
+  - syscall execution and context switch overheads for read(2), write(2) can be avoided
+  - double copying of data can also be avoided, if the kernel supports directly mapping the file data buffer to the process adress space
+  - It's not effective when high disk I/O latency is dominant.
+- 8.3.12 Logical vs. Physical I/O
+  - File system can make differences between logical and physical I/O, e.g.
+    - cache read
+    - buffer write
+    - map files to address spaces
+    - create additional I/O to maintain the on-disk physical layout metadata
+    - journaling
+  - cause disk I/O that is unrelated, indirect, implicit, inflated, or deflated as compared to application I/O.
+- 8.3.15 Access Timestamps
+  - access time updates amplify write I/Os
+- 8.3.16 Capacity
+  - Low free file system size cause consuming more CPU time and disk I/O to find free blocks
+  - Also, free space on disk are likely to be smaller and sparsely located. Smaller or random I/O degrades performance.
+- 8.4.2 VFS
+  - > The terminology used by the Linux VFS interface can be a little confusing, since it reuses the terms inodes and superblocks to refer to VFS objects—terms that originated from Unix file system on-disk data structures.
+- 8.4.2 File System Caches
+  - Linux nowadays has multiple cache types
+    - Buffer Cache
+      - unified buffer cache: store buffer cache in page cache to avoid double caching and synchronization overhead.
+        - used since Linux 2.4
+    - Page Cache
+      - caches virtual memory pages including mapped file system pages
+        - more efficient for file access than buffer cache, which required translation from file offset to disk offset for each look up
+      - Since Linux 2.6.32, per-device flusher threads (named flush) are used
+    - Dentry Cache (Dcache)
+      - remembers mapping from directory entry (struct dentry) to VFS inode
+      - improves path name lookups
+      - has negative caching
+        - failed lookups commonly occur when searching for shared libraries
+    - Inode Cache
+      - caching VFS inodes (struct inodes) typically retured via stat(2) syscall
+        - frequently accessed for checking permissions, updating timestamps during modification
+- 8.4.5 File System Types
+  - Berkely fast file system (FFS)
+    - origin of many file systems
+    - improved performance by splitting the partition into numerous cylinder groups
+    - block interleaving: placing sequential file blocks on disk with a spacing between them of one or more blocks.
+  - ext4
+    - Preallocation: via fallocate(2) syscall, applications to preallocate space that is likely contiguous
+  - zfs
+    - Pooled storage: allows all assigned devices to be used in parallel
+    - Snapshots: Due to COW architecture, snapshots can be created nearly instantaneously
+    - Data deduplication
 
 # 11 Could Computing
 - 11.1.3 Capacity Planning
