@@ -60,6 +60,22 @@ For large relation scan, a small ring buffer is used.
 ### Synchronized scan across multiple queries
 - [synchronize_seqscans](https://postgresqlco.nf/doc/en/param/synchronize_seqscans/)
 
+# Index
+- [Operator Classes and Operator Families](https://www.postgresql.org/docs/current/indexes-opclass.html)
+
+check operators supported by B-tree
+```sql
+SELECT
+  am.amname AS index_method,
+  opf.opfname AS opfamily_name,
+  amop.amopopr::regoperator AS opfamily_operator
+FROM pg_am am, pg_opfamily opf, pg_amop amop
+WHERE opf.opfmethod = am.oid
+AND amop.amopfamily = opf.oid
+AND am.amname = 'btree'
+ORDER BY index_method, opfamily_name, opfamily_operator;
+```
+
 # DDL
 ## Locks
 - `create index if not exist` takes `SHARE` lock even if the index already exists
