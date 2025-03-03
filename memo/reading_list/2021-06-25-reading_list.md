@@ -92,6 +92,10 @@ title: Reading list
 ## LLM
 - [GPT in 500 lines of SQL](https://explainextended.com/2023/12/31/happy-new-year-15/)
 
+- [Cline](https://github.com/cline/cline)
+
+- [Devin](https://devin.ai/)
+
 # General Engineering
 - [Design Docs at Google](https://www.industrialempathy.com/posts/design-docs-at-google/)
 - [OpenRewrite](https://docs.openrewrite.org/)

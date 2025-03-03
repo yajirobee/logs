@@ -85,6 +85,9 @@ Delete `.cache/lsp/metals/` and install server again.
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 ```
 
+### Links
+- [copilot language server](https://github.com/github/copilot-language-server-release)
+
 # Emacs for Mac
 - [Emacs for OSX](https://emacsforosx.com/)
 - [Emacs Mac Port](https://github.com/railwaycat/homebrew-emacsmacport)

@@ -56,6 +56,7 @@ _java_thread_list=0x00007f7d40428050, length=252, elements={
 
 # Memory management
 ## GC
+- [Garbage-First (G1) Garbage Collector](https://docs.oracle.com/en/java/javase/17/gctuning/garbage-first-g1-garbage-collector1.html)
 - [G1GC Tuning](https://www.oracle.com/technical-resources/articles/java/g1gc.html)
 
 ## Direct Buffer & Buffer Pool
