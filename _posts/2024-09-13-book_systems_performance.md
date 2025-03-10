@@ -289,6 +289,68 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
     - Snapshots: Due to COW architecture, snapshots can be created nearly instantaneously
     - Data deduplication
 
+# 9 Disks
+- 9.2.1 Simple Disk
+  - On-disk controller may process I/O queue by non-FIFO algorithm to optimize performance
+    - Elevetor seeking for rotational disk
+    - Separate queues for read and write I/O especailly for flash memory-based disks
+- 9.2.2 Caching Disk
+  - > The on-disk cache may also be used to improve write performance, by using it as a write-back cache.
+- 9.3.1 Measuring Time
+  - Block I/O wait time: time spent from I/O creation and insert into kernel I/O queue to when it left from the final kernel queue and was issued to the disk
+    - may span multiple kernel-level queues, e.g. block I/O layer queue, disk device queue
+  - 3 possible driver layers may implement their own queue, or may block on mutexes
+- 9.3.2 Time Scales
+  - > These latencies may be interpreted differently based on the environment requirements. While working in the enterprise storage industry, I considered any disk I/O taking over 10 ms to be unusually slow and a potential source of performance issues.
+- 9.3.4 Random vs. Sequential I/O
+  - > Sometimes random I/O isn’t identified by inspecting the offsets but may be inferred by measuring increased disk service time.
+- 9.3.5 Read/Write Ratio
+  - > The reads and writes may themselves show different workload patterns: reads may be random I/O, while writes may be sequential (especially for copy-on-write file systems).
+  - > They may also exhibit different I/O sizes.
+- 9.3.7 IOPS Are Not Equal
+  - IOPS must be used with details
+    - random or sequential
+    - I/O size
+    - read or write
+    - buffered or direct
+    - number of I/O in parallel
+- 9.3.9 Utilization
+  - > but know nothing about the performance of the underlying disks upon which it is built. This leads to scenarios where virtual disk utilization, as reported by the operating system, is significantly different from what is happening on the actual disks (and is counterintuitive):
+- 9.3.10 Saturation
+  - > 50% disk utilization during an interval may mean 100% utilized for half that time and idle for the rest. Any interval summary can suffer from similar issues.
+- 9.3.11 I/O Wait
+  - > I/O wait can be a very confusing metric. If another CPU-hungry process comes along, the I/O wait value can drop: the CPUs now have something to do, instead of being idle.
+  - The time that application threads are blocked on disk I/O is more reliable metric.
+- 9.4.1.1 Magnetic Rotational
+  - Short-Stroking: use only the outer tracks of disk for the workload
+    - > This reduces seek time as head movement is bounded by a smaller range, and the disk may put the heads at rest at the outside edge, reducing the first seek after idle.
+    - The reminder are either unused or used for low-throughput workloads
+  - Elevetor Seeking: reorder I/O based on their on-disk location
+    - minimize travel of the disk heads
+  - Sloth Disks: sometimes return very slow I/O, over one second, without any reported errors
+- 9.4.1.2 Solid-State Drives
+  - > when writing I/O sizes that are smaller than the flash memory block size (which may be as large as 512 Kbytes). This can cause write amplification, where the remainder of the block is copied elsewhere before erasure, and also latency for at least the erase-write cycle.
+- 9.4.2 Interfaces
+  - SAS (Serial Attached SCSI)
+    - > Other SAS features include dual porting of drives for use with redundant connectors and architectures, I/O multipathing, SAS domains, hot swapping, and compatibility support for SATA devices. These features have made SAS popular for enterprise use, especially with redundant architectures.
+  - FC
+    - > FC is commonly used in enterprise environments to create storage area networks (SANs) where multiple storage devices can be connected to multiple servers via a Fibre Channel Fabric. This offers greater scalability and accessibility than other interfaces, and is similar to connecting multiple hosts via a network.
+- 9.4.3 Storage Types
+  - Software RAID reduces complexity and hardware cost and improve observability from OS
+  - Read-Modify-Write
+    - > When data is stored as a stripe including a parity, as with RAID-5, write I/O can incur additional read I/O and compute time. This is because writes that are smaller than the stripe size may require the entire stripe to be read, the bytes modified, the parity recalculated, and then the stripe rewritten.
+  - Advanced disk controller cards can provide advanced features that can affect performance
+- 9.4.4 Operating System Disk I/O Stack
+  - I/O merging: statistics for front and back merges are available in iostat(1)
+    - rqm/s, rrqm/s, wrqm/s, drqm/s, etc
+  - I/O Schedulers
+    - The multi-queue driver (blk-mq, added in Linux 3.13) uses separate submission queues for each CPU, and multiple dispatch queues for the devices
+      - The classic scheduler used a single request queue, protected by a single lock
+        - performance bottleneck at high I/O rate
+    - > Kyber has shown improved storage I/O latencies in the Netflix cloud, where it is used by default.
+- 9.5.2 USE Method
+  - > the observability tools (e.g., Linux iostat(1)) do not present per-controller metrics but provide them only per disk. There are workarounds for this: if the system has only one controller, you can determine the controller IOPS and throughput by summing those metrics for all disks.
+
 # 11 Could Computing
 - 11.1.3 Capacity Planning
   - Cloud computing makes people free from strict capacity planning to purchase proper hardwares.
