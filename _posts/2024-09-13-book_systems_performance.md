@@ -350,6 +350,25 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
     - > Kyber has shown improved storage I/O latencies in the Netflix cloud, where it is used by default.
 - 9.5.2 USE Method
   - > the observability tools (e.g., Linux iostat(1)) do not present per-controller metrics but provide them only per disk. There are workarounds for this: if the system has only one controller, you can determine the controller IOPS and throughput by summing those metrics for all disks.
+- 9.6.1 iostat
+  - > For resource usage and capacity planning, %util is important, but bear in mind that it is only a measure of busyness (non-idle time) and may mean little for virtual devices backed by multiple disks.
+  - > Nonzero counts in the rqm/s column show that contiguous requests were merged before delivery to the device, to improve performance. This metric is also a sign of a sequential workload.
+  - > The discard and flush statistics are new additions to iostat(1). Discard operations free up blocks on the drive (the ATA TRIM command), and their statistics were added in the Linux 4.19 kernel. Flush statistics were added in Linux 5.5. These can help to narrow down the reason for disk latency.
+- 9.6.4 pidstat
+  - > Some time later the page cache was flushed, as can be seen in the second interval output by the kworker/u4:1-flush-259:0 process, which experienced iodelay.
+- 9.6.5 perf
+  - > Often I/O will be queued and then issued later by a kernel thread, and tracing the block:block_rq_issue tracepoint will not show the originating process or user-level stack trace. In those cases you can try tracing block:block_rq_insert instead, which is for queue insertion. Note that it misses I/O that did not queue.
+  - > Disk I/O latency (described earlier as disk request time) can also be determined by recording both the disk issue and completion events for later analysis.
+- 9.6.8 biotop
+  - > By the time disk I/O is issued to the device, the requesting process may no longer be on CPU, and identifying it can be difficult. biotop(8) uses a best-effort approach: the PID and COMM columns will usually match the correct process, but this is not guaranteed.
+- 9.6.9 biostacks
+  - > I have seen cases where there was mysterious disk I/O without any application causing it. The reason turned out to be background file system tasks.
+- 9.6.14 SCSI Logging
+  - > Linux has a built-in facility for SCSI event logging.
+- 9.9 Tuning
+  - > While changing tunables can be easy to do, the default settings are usually reasonable and rarely need much adjusting.
+- 9.9.1 Operating System Tunables
+  - > For Linux, the container groups (cgroups) block I/O (blkio) subsystem provides storage device resource controls for processes or process groups. This can be a proportional weight (like a share) or a fixed limit. Limits can be set for read and write independently, and for either IOPS or throughput (bytes per second).
 
 # 11 Could Computing
 - 11.1.3 Capacity Planning
