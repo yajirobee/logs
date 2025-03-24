@@ -41,7 +41,9 @@ A query to claculate table size with aggregating partitioned tables into the par
 select
   coalesce(pg_partition_root(c.oid)::text, relname) relname,
   count(relname) n_relations,
-  pg_size_pretty(sum(pg_table_size(c.oid))) relsize
+  pg_size_pretty(sum(pg_table_size(c.oid))) relsize,
+  sum(relpages) relpages,
+  sum(reltuples) reltuples
 from pg_class c
 left join pg_namespace n on (n.oid = c.relnamespace)
 where nspname = 'public'
