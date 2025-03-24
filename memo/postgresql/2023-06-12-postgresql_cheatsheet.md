@@ -36,6 +36,20 @@ Use `-postgresql.transactional.lock=false` option
 - [Disk Usage](https://wiki.postgresql.org/wiki/Disk_Usage)
 - [pg_total_relation_size](https://pgpedia.info/p/pg_total_relation_size.html)
 
+A query to claculate table size with aggregating partitioned tables into the parent table.
+```sql
+select
+  coalesce(pg_partition_root(c.oid)::text, relname) relname,
+  count(relname) n_relations,
+  pg_size_pretty(sum(pg_table_size(c.oid))) relsize
+from pg_class c
+left join pg_namespace n on (n.oid = c.relnamespace)
+where nspname = 'public'
+group by coalesce(pg_partition_root(c.oid)::text, relname)
+having sum(pg_table_size(c.oid)) > 8192
+order by sum(pg_table_size(c.oid)) desc
+```
+
 # Query execution
 ## Generic vs custom plans for prepared statement
 > By default (that is, when `plan_cache_mode` is set to auto), the server will automatically choose whether to use a generic or custom plan for a prepared statement that has parameters. The current rule for this is that the first five executions are done with custom plans and the average estimated cost of those plans is calculated. Then a generic plan is created and its estimated cost is compared to the average custom-plan cost.
