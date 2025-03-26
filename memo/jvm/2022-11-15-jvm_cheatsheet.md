@@ -28,7 +28,12 @@ openjdk version "11.0.16.1" 2022-08-12
 ## Set the TTL for DNS Name Lookups
 Use `networkaddress.cache.ttl` / `networkaddress.cache.negative.ttl`
 
-- [java 11 Networking Properties](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/doc-files/net-properties.html)
+- [java 17 Networking Properties](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/doc-files/net-properties.html)
+
+`sun.net.inetaddr.ttl` / `sun.net.inetaddr.negative.ttl` are the legacy properties.
+They have the same meaning as `networkaddress.cache.ttl` / `networkaddress.cache.negative.ttl`, but preferred way is `networkaddress.cache.ttl` / `networkaddress.cache.negative.ttl`.
+
+- [java 8 Networking Properties](https://docs.oracle.com/javase/8/docs/technotes/guides/net/properties.html)
 
 # Monitoring
 ## Native Memory Tracking
