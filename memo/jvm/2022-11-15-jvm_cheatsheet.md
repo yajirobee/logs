@@ -36,6 +36,13 @@ They have the same meaning as `networkaddress.cache.ttl` / `networkaddress.cache
 - [java 8 Networking Properties](https://docs.oracle.com/javase/8/docs/technotes/guides/net/properties.html)
 
 # Monitoring
+## inspect system properties of running jvm process
+```
+jcmd <pid> VM.system_properties
+```
+
+- [jcmd java 17](https://docs.oracle.com/en/java/javase/17/docs/specs/man/jcmd.html)
+
 ## Native Memory Tracking
 Enable NMT by `-XX:NativeMemoryTracking=[summary | detail]` and execute
 

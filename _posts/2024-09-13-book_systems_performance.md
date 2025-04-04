@@ -370,6 +370,65 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
 - 9.9.1 Operating System Tunables
   - > For Linux, the container groups (cgroups) block I/O (blkio) subsystem provides storage device resource controls for processes or process groups. This can be a proportional weight (like a share) or a fixed limit. Limits can be set for read and write independently, and for either IOPS or throughput (bytes per second).
 
+# 10 Network
+- > The network is often blamed for poor performance given the potential for congestion and its inherent complexity (blame the unknown).
+- 10.1 Terminology
+  - Network latency can refer to the message round trip time, or the time to establish a connection (e.g. TCP handshake), excluding the data transfer time that follows.
+- 10.3.4 Packet size
+  - > Packet size is usually limited by the network interface maximum transmission unit (MTU) size, which for many Ethernet networks is configured to be 1,500 bytes.
+  - > Ethernet now supports larger packets (frames) of up to approximately 9,000 bytes, termed jumbo frames. These can improve network throughput performance, as well as the latency of data transfers, by requiring fewer packets.
+  - Many systems stick to the 1500 MTU default
+    - some firewall administrators have blocked all ICMP to avoid ICMP-based attacks
+    - It prevents "can't fragment" message and causes network packets to be silently dropped once the packet size increases beyond 1500.
+    - > If the ICMP message is received and fragmentation occurs, there is also the risk of fragmented packets getting dropped by devices that do not support them.
+- 10.3.5 Latency
+  - Ping latency may not exactly reflect the round-trip time of application requests
+    - ICMP may be handled with a different priority by routers.
+  - Connection latency is exercises more kernel code to establish a connection and includes time to retransmit any dropped packets.
+    - TCP SYN packet can be dropped by the server if its backlog is full.
+  - First-Byte latency includes the think time of target server
+    - increase if the server is overloaded or takes time to schedule
+- 10.3.6 Buffering
+  - > Buffering can also be performed by external network components, such as switches and routers, in an effort to improve their own throughput. Unfortunately, the use of large buffers on these components can lead to bufferbloat, where packets are queued for long intervals. This causes TCP congestion avoidance on the hosts, which throttles performance.
+- 10.3.10 Utilization
+  - > Given variable bandwidth and duplex due to autonegotiation, calculating this isn’t as straightforward as it sounds.
+- 10.4.1 Protocols
+  - Important topics for TCP performance
+    - three-way handshake
+    - duplicate ACK detection
+    - congestion control algorithms
+    - Nagle
+    - delayed ACKs
+    - SACK, and FACK
+  - > A session that has fully closed enters the `TIME_WAIT` state so that late packets are not mis-associated with a new connection on the same ports.
+    - This can lead to a performance issue of port exhaustion
+  - QUIC is built upon UDP, and provides several features on top of it,
+- 10.4.2 Hardware
+  - > Most interfaces have separate channels for transmit and receive, and when operating in full-duplex mode, each channel’s utilization must be studied separately.
+  - > The use of extended BPF to implement firewalls on commodity hardware is growing, due to its performance, programmability, ease of use, and final cost.
+- 10.4.3 Software
+  - TCP Connection Queues: Bursts of inbound connections are handled by using backlog queues
+    - queue for incomplete connections while the TCP handshake completes (also known as the SYN backlog)
+    - queue for established sessions waiting to be accepted by the application
+  - TCP Buffering
+    - > The Linux kernel will also dynamically increase the size of these buffers based on connection activity, and allows tuning of their minimum, default, and maximum sizes.
+  - Queueing Discipline
+    - An optional layer for managing traffic classification (tc), scheduling, manipulation, filtering, and shaping of network packets.
+  - Network Device Drivers
+    - interrupt coalescing mode: instead of interrupting the kernel for every arrived packet, an interrupt is sent only when a timer (polling) or certain number of packets is reached.
+    - > The Linux kernel uses a new API (NAPI) framework that uses an interrupt mitigation technique: for low packet rates, interrupts are used (processing is scheduled via a softirq); for high packet rates, interrupts are disabled, and polling is used to allow coalescing
+  - > RSS: Receive Side Scaling: For modern NICs that support multiple queues and can hash packets to different queues, which are in turn processed by different CPUs, interrupting them directly.
+  - > Without a CPU load-balancing strategy for network packets, a NIC may interrupt only one CPU, which can reach 100% utilization and become a bottleneck. This may show up as high softirq CPU time on a single CPU
+  - Kernel Bypass: The expense of copying packet data can be avoided by directly accessing memory on the NIC.
+- 10.5.1 Tools Method
+  - > an Internet-facing system with unreliable remote clients should have a higher retransmit rate than an internal system with clients in the same data center.
+- 10.5.2 USE Method
+  - > Saturation of the network interface is difficult to measure. Some network buffering is normal, as applications can send data much more quickly than an interface can transmit it. It may be possible to measure as the time application threads spend blocked on network sends, which should increase as saturation increases.
+- 10.5.4 Latency Analysis
+  - > `SO_TIMESTAMPING` can identify transmission delays, network round-trip time, and inter-stack latencies; this can be especially helpful when analyzing complex packet latency involving tunneling
+- 10.5.6 Packet Sniffing
+  - > packet capture implementations commonly allow a filtering expression to be supplied by the user and perform this filtering in the kernel. This reduces overhead by not transferring unwanted packets to user level. The filter expression is typically optimized using Berkeley Packet Filter (BPF), which compiles the expression to BPF bytecode that can be JIT-compiled to machine code by the kernel.
+
 # 11 Could Computing
 - 11.1.3 Capacity Planning
   - Cloud computing makes people free from strict capacity planning to purchase proper hardwares.
