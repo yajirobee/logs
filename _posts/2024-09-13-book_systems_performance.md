@@ -428,6 +428,26 @@ I read the 1st edition 9 years ago. It turns out that the 2nd edition has so man
   - > `SO_TIMESTAMPING` can identify transmission delays, network round-trip time, and inter-stack latencies; this can be especially helpful when analyzing complex packet latency involving tunneling
 - 10.5.6 Packet Sniffing
   - > packet capture implementations commonly allow a filtering expression to be supplied by the user and perform this filtering in the kernel. This reduces overhead by not transferring unwanted packets to user level. The filter expression is typically optimized using Berkeley Packet Filter (BPF), which compiles the expression to BPF bytecode that can be JIT-compiled to machine code by the kernel.
+- 10.6.1 ss
+  - > Similar per-socket information is available using the older netstat(8) tool. ss(8), however, can show much more information when using options.
+  - ss doesn't have the age of connections, which is needed to calculate the average throughput
+  - > ss(8) reads these extended details from the netlink(7) interface, which operates via sockets of family AF_NETLINK to fetch information from the kernel.
+- 10.6.5 netstat
+  - > Some of the statistic names include typos (e.g., packetes rejected). These can be problematic to simply fix, if other monitoring tools have been built upon the same output.
+    - /proc/net/snmp and /proc/net/netstat are better for data sources of tools
+- 10.6.7 nicstat
+  - > nicstat(1) prints network interface statistics, including throughput and utilization.
+- 10.6.11 tcpretrans
+  - > Packet-capture can only see details that are on the wire, whereas tcpretrans(8) prints the TCP state directly from the kernel, and can be enhanced to print more kernel state if needed.
+- 10.7.1 ping
+  - > Newer kernels and ping(8) versions use kernel timestamp support (SIOCGSTAMP or SO_TIMESTAMP) to improve the accuracy of the reported ping times.
+- 10.7.2 traceroute
+  - A hop may not return ICMP at all or ICMP be blocked by a firewall.
+    - A workaround is switching to TCP using `-T` option.
+- 10.8.1 System-Wide
+  - The max socket buffer size may need to be set to 16MB or higher to support full-speed 10GbE connections.
+    - `net.core.rmem_max = 16777216` and `net.core.wmem_max = 16777216`
+  - > The Tuned Project provides automatic tuning for some of these tunables based on selectable profiles, and supports Linux distributions
 
 # 11 Could Computing
 - 11.1.3 Capacity Planning
