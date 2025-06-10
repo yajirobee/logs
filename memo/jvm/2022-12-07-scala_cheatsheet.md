@@ -7,6 +7,7 @@ title: Scala cheatsheet
 
 ## Links
 - [new features of Scala 3](https://docs.scala-lang.org/scala3/reference/other-new-features/index.html)
+- [Direct-style Effects Explained](https://www.inner-product.com/posts/direct-style-effects/)
 
 # Scala 2
 ## For comprehension
