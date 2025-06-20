@@ -39,6 +39,8 @@ Lessons and best practices from my experience. This is a living document.
 - Do not just dispense ideas. Let person who trackles on a problem to own ideas.
   - > develop problems, and to do a really good job of articulating them, rather than trying to pitch solutions. There are often multiple ways to solve a problem, and picking the right one is letting someone own the solution. (from [Building and operating a pretty big storage system called S3](https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html))
 - [Weak and strong team concepts.](https://lethain.com/weak-and-strong-team-concepts/)
+  - > The organic approach is quick to respond to change, but struggles to effect broad changes that impact many individuals.
+  - > The hierarchical approach is often slow to make an initial response to a new challenge, but is able to effect massive, wide reaching change.
 
 # Learning
 - Lead to "approach" goal orientation rather than "avoidance".
