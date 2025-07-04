@@ -19,3 +19,4 @@ title: Good readings
 
 # General
 - [The Hard Truth About Innovative Cultures](https://hbr.org/2019/01/the-hard-truth-about-innovative-cultures)
+- [Writing code was never the bottleneck](https://ordep.dev/posts/writing-code-was-never-the-bottleneck)
