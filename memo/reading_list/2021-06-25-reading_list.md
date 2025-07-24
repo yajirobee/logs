@@ -26,6 +26,9 @@ title: Reading list
 ## Data Lake
 - [Project Nessie](https://projectnessie.org/)
 - [Subtrait](https://substrait.io/)
+- [Delta sharing](https://github.com/delta-io/delta-sharing?tab=readme-ov-file)
+  - [Integrations](https://delta.io/integrations/)
+  - [Introduction](https://www.databricks.com/blog/2021/05/26/introducing-delta-sharing-an-open-protocol-for-secure-data-sharing.html)
 
 ## Data lineage
 - [Data lineage system in a data warehouse](https://cloud.google.com/solutions/architecture-concept-data-lineage-systems-in-a-data-warehouse)
