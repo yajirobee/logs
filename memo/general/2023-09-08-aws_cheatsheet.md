@@ -78,5 +78,19 @@ from: [Amazon Aurora DB cluster and DB instance parameters](https://docs.aws.ama
 - [General retry behavior of SDKs](https://docs.aws.amazon.com/sdkref/latest/guide/feature-retry-behavior.html)
 - [Retry behavior of SDK for Java v2](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/using.html#using-retries)
 
+# CLI
+## [Export credentials](https://docs.aws.amazon.com/cli/latest/reference/configure/export-credentials.html)
+retrieve AWS credentials using credential resolution process, e.g. assume role
+```sh
+$ aws configure export-credentials --profile engineering
+{
+  "Version": 1,
+  "AccessKeyId": ...,
+  "SecretAccessKey": ...,
+  "SessionToken": ...,
+  "Expiration": ...
+}
+```
+
 # Links
 - [AWS Latency Monitoring](https://www.cloudping.co/grid)
