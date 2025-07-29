@@ -62,6 +62,10 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 ### Maintenance
 - [Maintenance](https://iceberg.apache.org/docs/nightly/maintenance/)
 
+### Partitioning
+- [Partitioning](https://iceberg.apache.org/docs/latest/partitioning/)
+- [Partition Transforms](https://iceberg.apache.org/spec/#partitioning)
+
 ---
 # Hudi
 [Spec](https://hudi.apache.org/tech-specs/)
