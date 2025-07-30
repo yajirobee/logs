@@ -37,7 +37,7 @@ S3 Tables supports IAM-based and resource-based access control and automatic mai
 - [S3 Tables and table bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables.html)
   - [Accessing S3 tables using Glue Iceberg REST endpoint](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-glue-endpoint.html)
 
-
+---
 # AWS Glue
 - [Creating Iceberg tables](https://docs.aws.amazon.com/glue/latest/dg/populate-otf.html#creating-iceberg-tables)
   - By default, Iceberg v2 tables are created
@@ -51,6 +51,13 @@ S3 Tables supports IAM-based and resource-based access control and automatic mai
   - Catalog ID = account ID
 - Iceberg REST APIs have a free-form prefix. It can be used to logically segments catalogs.
   - [Prefix and catalog path parameters](https://docs.aws.amazon.com/glue/latest/dg/connect-glu-iceberg-rest.html#prefix-catalog-path-parameters)
+- > All Iceberg tables in Amazon S3 are stored in the default Data Catalog having Catalog ID = AWS account ID
+  - [Populating catalog](https://docs.aws.amazon.com/lake-formation/latest/dg/populating-catalog.html)
+
+## [Quotas](https://docs.aws.amazon.com/general/latest/gr/glue.html#limits_glue)
+- Max databases per region in an AWS account = 10,000
+- Max tables per region in an AWS account = 1,000,000
+- Max tables per database = 200,000
 
 ## Links
 - [AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)
@@ -58,7 +65,7 @@ S3 Tables supports IAM-based and resource-based access control and automatic mai
   - [Access Apache Iceberg tables in Amazon S3 from Databricks using AWS Glue Iceberg REST Catalog in Amazon SageMaker Lakehouse](https://aws.amazon.com/blogs/big-data/access-amazon-s3-iceberg-tables-from-databricks-using-aws-glue-iceberg-rest-catalog-in-amazon-sagemaker-lakehouse/#:~:text=This%20shows%20that%20you%20can,Formation%20managing%20the%20data%20access.)
 - [Iceberg REST Catalog API](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/apache/iceberg/main/open-api/rest-catalog-open-api.yaml)
 
-
+---
 # AWS Lake Formation
 Lake Formation provides RDBMS permissions model to grant or revoke access to Data Catalog resources.
 
@@ -97,6 +104,9 @@ A principal must pass both Lake Formation and IAM permissions checks.
 
 ## [Integrating with Lake Formation](https://docs.aws.amazon.com/lake-formation/latest/dg/Integrating-with-LakeFormation.html)
 - [Roles and responsibilities](https://docs.aws.amazon.com/lake-formation/latest/dg/roles-and-responsibilities.html)
+
+## [Quotas](https://docs.aws.amazon.com/general/latest/gr/lake-formation.html#limits_lake-formation)
+- Number of registered paths per region in an AWS account = 10,000
 
 ## Links
 - [AWS Lake Formation](https://docs.aws.amazon.com/lake-formation/latest/dg/what-is-lake-formation.html)
