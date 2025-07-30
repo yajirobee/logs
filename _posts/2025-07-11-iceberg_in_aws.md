@@ -8,21 +8,21 @@ tags: Database AWS
 <!--end_excerpt-->
 
 # S3 Tables
-S3 Tables supports IAM-based and resource-based access control and automatic maintenance operations for Iceberg tables stored in buckets.
+S3 Tables supports IAM-based and resource-based access control and automatic maintenance operations for Iceberg tables stored in buckets. S3 Tables is available in S3 table buckets.
 
-- S3 Tables is available in S3 table buckets.
-- Unreferenced file removal is [enabled for all tables by default](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-table-buckets-maintenance.html)
-  - It can be configured per table
-- Compaction and snapshot is [enabled for all tables by default](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-maintenance.html)
-  - It can be configured per table
+## Table maintenance
+- Unreferenced file removal: [enabled for all tables by default](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-table-buckets-maintenance.html)
+  - Configurable per table
+- Compaction and snapshot: [enabled for all tables by default](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-maintenance.html)
+  - Configurable per table
+
+## Integration with Glue and Lake Formation
 - [Resource mapping between AWS Glue](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-aws.html) (left is S3 Table resource, right is Glue resource)
   - Table bucket = Catalog
   - Namespace = Database
   - Table = Table
 - [Client configuration to use Glue Iceberg endpoint](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-glue-endpoint.html#setup-client-glue-irc)
-  - Sigv4 properties : Sigv4 must be enabled, the signing name is glue
   - Warehouse location : `<accountid>:s3tablescatalog/<table-bucket-name>`
-  - Endpoint URI : Refer to the AWS Glue service endpoints reference guide for the region-specific endpoint
 
 ## [Quotas](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-regions-quotas.html#s3-tables-quotas)
 - Table buckets per region in an AWS account = [10](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-buckets-create.html)
@@ -51,8 +51,10 @@ S3 Tables supports IAM-based and resource-based access control and automatic mai
   - Catalog ID = account ID
 - Iceberg REST APIs have a free-form prefix. It can be used to logically segments catalogs.
   - [Prefix and catalog path parameters](https://docs.aws.amazon.com/glue/latest/dg/connect-glu-iceberg-rest.html#prefix-catalog-path-parameters)
-- > All Iceberg tables in Amazon S3 are stored in the default Data Catalog having Catalog ID = AWS account ID
-  - [Populating catalog](https://docs.aws.amazon.com/lake-formation/latest/dg/populating-catalog.html)
+  - For S3 Tables, catalog ID is `<accountid>:s3tablescatalog/<table-bucket-name>`
+    - [S3 Table integration](https://docs.aws.amazon.com/lake-formation/latest/dg/enable-s3-tables-catalog-integration.html) must be enabled on Lake Formation
+  - For Iceberg tables in regular S3 buckets, prefix / catalog ID is unavailable.
+    - All tables are stored in the default Data Catalog (Catalog ID = AWS account ID) (reference: [Populating catalog](https://docs.aws.amazon.com/lake-formation/latest/dg/populating-catalog.html))
 
 ## [Quotas](https://docs.aws.amazon.com/general/latest/gr/glue.html#limits_glue)
 - Max databases per region in an AWS account = 10,000
@@ -68,8 +70,6 @@ S3 Tables supports IAM-based and resource-based access control and automatic mai
 ---
 # AWS Lake Formation
 Lake Formation provides RDBMS permissions model to grant or revoke access to Data Catalog resources.
-
-- [Managing permission](https://docs.aws.amazon.com/lake-formation/latest/dg/managing-permissions.html)
 
 ## [Permissions model](https://docs.aws.amazon.com/lake-formation/latest/dg/lf-permissions-overview.html)
 Lake Formation manages two types of permissions.
@@ -92,7 +92,6 @@ A principal must pass both Lake Formation and IAM permissions checks.
 - [Permissions management workflow](https://docs.aws.amazon.com/lake-formation/latest/dg/how-it-works.html#lf-workflow)
   - If the user is authorized, Lake Formation provides temporary access to data
   - [Credential vending](https://docs.aws.amazon.com/lake-formation/latest/dg/using-cred-vending.html)
-
   - Creation of tables at specific S3 location can be blocked by data location permissions
 
 ### [Storage access management](https://docs.aws.amazon.com/lake-formation/latest/dg/storage-permissions.html)
