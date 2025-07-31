@@ -16,8 +16,11 @@ S3 Tables supports IAM-based and resource-based access control and automatic mai
 - Compaction and snapshot: [enabled for all tables by default](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-maintenance.html)
   - Configurable per table
 
-## Integration with Glue and Lake Formation
-- [Resource mapping between AWS Glue](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-aws.html) (left is S3 Table resource, right is Glue resource)
+## [Integration with Glue and Lake Formation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-aws.html)
+S3 table buckets can be integrated with Glue and Lake Formation. When the integration is enabled,
+a Glue catalog is created per table bucket and Iceberg tables are managed on that catalog.
+
+- Resource mapping between AWS Glue (left is S3 Table resource, right is Glue resource)
   - Table bucket = Catalog
   - Namespace = Database
   - Table = Table
@@ -47,8 +50,11 @@ S3 Tables supports IAM-based and resource-based access control and automatic mai
   - Number of distinct values (NDVs) of columns is also [supported](https://docs.aws.amazon.com/glue/latest/dg/iceberg-column-statistics.html)
 
 ## Data Catalog
-- An AWS account has a single Data Catalog in a region.
+- An AWS account has a default Data Catalog per region
   - Catalog ID = account ID
+  - Only the default catalog is displayed on Glue UI
+    - Non-default catalogs are available on API
+      - [GetCatalogs](https://docs.aws.amazon.com/glue/latest/webapi/API_GetCatalogs.html)
 - Iceberg REST APIs have a free-form prefix. It can be used to logically segments catalogs.
   - [Prefix and catalog path parameters](https://docs.aws.amazon.com/glue/latest/dg/connect-glu-iceberg-rest.html#prefix-catalog-path-parameters)
   - For S3 Tables, catalog ID is `<accountid>:s3tablescatalog/<table-bucket-name>`
