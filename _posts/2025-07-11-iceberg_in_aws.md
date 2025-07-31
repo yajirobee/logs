@@ -20,6 +20,10 @@ S3 Tables supports IAM-based and resource-based access control and automatic mai
 S3 table buckets can be integrated with Glue and Lake Formation. When the integration is enabled,
 a Glue catalog is created per table bucket and Iceberg tables are managed on that catalog.
 
+The integration is enabled by the following steps.
+1. registering buckets to Lake Formation as data location
+2. creating a federated catalog on Glue
+
 - Resource mapping between AWS Glue (left is S3 Table resource, right is Glue resource)
   - Table bucket = Catalog
   - Namespace = Database
@@ -55,6 +59,7 @@ a Glue catalog is created per table bucket and Iceberg tables are managed on tha
   - Only the default catalog is displayed on Glue UI
     - Non-default catalogs are available on API
       - [GetCatalogs](https://docs.aws.amazon.com/glue/latest/webapi/API_GetCatalogs.html)
+    - Also available on Lake Formation UI
 - Iceberg REST APIs have a free-form prefix. It can be used to logically segments catalogs.
   - [Prefix and catalog path parameters](https://docs.aws.amazon.com/glue/latest/dg/connect-glu-iceberg-rest.html#prefix-catalog-path-parameters)
   - For S3 Tables, catalog ID is `<accountid>:s3tablescatalog/<table-bucket-name>`
@@ -70,6 +75,7 @@ a Glue catalog is created per table bucket and Iceberg tables are managed on tha
 ## Links
 - [AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)
   - [Data discovery and cataloging in Glue](https://docs.aws.amazon.com/glue/latest/dg/catalog-and-crawler.html)
+  - [Glue Iceberg REST API spec](https://docs.aws.amazon.com/glue/latest/dg/iceberg-rest-apis.html)
   - [Access Apache Iceberg tables in Amazon S3 from Databricks using AWS Glue Iceberg REST Catalog in Amazon SageMaker Lakehouse](https://aws.amazon.com/blogs/big-data/access-amazon-s3-iceberg-tables-from-databricks-using-aws-glue-iceberg-rest-catalog-in-amazon-sagemaker-lakehouse/#:~:text=This%20shows%20that%20you%20can,Formation%20managing%20the%20data%20access.)
 - [Iceberg REST Catalog API](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/apache/iceberg/main/open-api/rest-catalog-open-api.yaml)
 
