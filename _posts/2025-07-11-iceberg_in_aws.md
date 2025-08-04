@@ -11,10 +11,9 @@ tags: Database AWS
 S3 Tables supports IAM-based and resource-based access control and automatic maintenance operations for Iceberg tables stored in buckets. S3 Tables is available in S3 table buckets.
 
 ## Table maintenance
-- Unreferenced file removal: [enabled for all tables by default](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-table-buckets-maintenance.html)
-  - Configurable per table
-- Compaction and snapshot: [enabled for all tables by default](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-maintenance.html)
-  - Configurable per table
+[Unreferenced file removal](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-table-buckets-maintenance.html) and
+[Compaction and snapshot](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-maintenance.html)
+are enabled by default. They are configurable per table.
 
 ## [Integration with Glue and Lake Formation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-aws.html)
 S3 table buckets can be integrated with Glue and Lake Formation. When the integration is enabled,
@@ -73,10 +72,10 @@ The integration is enabled by the following steps.
 - Max tables per database = 200,000
 
 ## Links
-- [AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)
+p- [AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)
   - [Data discovery and cataloging in Glue](https://docs.aws.amazon.com/glue/latest/dg/catalog-and-crawler.html)
   - [Glue Iceberg REST API spec](https://docs.aws.amazon.com/glue/latest/dg/iceberg-rest-apis.html)
-  - [Access Apache Iceberg tables in Amazon S3 from Databricks using AWS Glue Iceberg REST Catalog in Amazon SageMaker Lakehouse](https://aws.amazon.com/blogs/big-data/access-amazon-s3-iceberg-tables-from-databricks-using-aws-glue-iceberg-rest-catalog-in-amazon-sagemaker-lakehouse/#:~:text=This%20shows%20that%20you%20can,Formation%20managing%20the%20data%20access.)
+  - [Access Apache Iceberg tables in Amazon S3 from Databricks using AWS Glue Iceberg REST Catalog](https://aws.amazon.com/blogs/big-data/access-amazon-s3-iceberg-tables-from-databricks-using-aws-glue-iceberg-rest-catalog-in-amazon-sagemaker-lakehouse/)
 - [Iceberg REST Catalog API](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/apache/iceberg/main/open-api/rest-catalog-open-api.yaml)
 
 ---
