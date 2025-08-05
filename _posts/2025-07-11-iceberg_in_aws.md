@@ -72,10 +72,11 @@ The integration is enabled by the following steps.
 - Max tables per database = 200,000
 
 ## Links
-p- [AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)
+- [AWS Glue](https://docs.aws.amazon.com/glue/latest/dg/what-is-glue.html)
   - [Data discovery and cataloging in Glue](https://docs.aws.amazon.com/glue/latest/dg/catalog-and-crawler.html)
   - [Glue Iceberg REST API spec](https://docs.aws.amazon.com/glue/latest/dg/iceberg-rest-apis.html)
-  - [Access Apache Iceberg tables in Amazon S3 from Databricks using AWS Glue Iceberg REST Catalog](https://aws.amazon.com/blogs/big-data/access-amazon-s3-iceberg-tables-from-databricks-using-aws-glue-iceberg-rest-catalog-in-amazon-sagemaker-lakehouse/)
+  - [Access Iceberg tables in S3 from Databricks using AWS Glue Iceberg REST Catalog](https://aws.amazon.com/blogs/big-data/access-amazon-s3-iceberg-tables-from-databricks-using-aws-glue-iceberg-rest-catalog-in-amazon-sagemaker-lakehouse/)
+  - [Connect Snowflake to S3 tables using Iceberg REST endpoint](https://aws.amazon.com/blogs/storage/connect-snowflake-to-s3-tables-using-the-sagemaker-lakehouse-iceberg-rest-endpoint/)
 - [Iceberg REST Catalog API](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/apache/iceberg/main/open-api/rest-catalog-open-api.yaml)
 
 ---
@@ -98,6 +99,8 @@ A principal must pass both Lake Formation and IAM permissions checks.
     - `IAMAllowedPrincipal` must be removed for granular access control
     - `IAMAllowedPrincipal` is set to new databases and tables by default. The default setting can be modified.
   - LF-Tag based access control (LF-TBAC) is the best way to scale permissions across huge number of resources
+
+- [Metadata access control](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-metadata.html)
 
 ## Permissions enforcement
 - [Permissions management workflow](https://docs.aws.amazon.com/lake-formation/latest/dg/how-it-works.html#lf-workflow)

@@ -3,6 +3,31 @@ layout: memo
 title: AWS cheatsheet
 ---
 
+# IAM
+
+- [Signature Version 4](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_sigv.html)
+
+## [Policy evaluation logic](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_evaluation-logic.html)
+- When an IAM entity (user or role) requests access to a resource within the same account, AWS evaluates all the permissions granted by the identity-based and resource-based policies.
+  - An explicit deny in either of these policies overrides the allow.
+    - Explicit deny: policy with `DENY` statement
+    - Inplicit deny: there is no applicable `DENY` and `ALLOW` statements
+
+## [Permissions boundaries](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html)
+- Within the same account, resource-based policies that grant permissions to an IAM user ARN are not limited by an implicit deny in an identity-based policy or permissions boundary.
+- Resource-based policies that grant permissions to an IAM role ARN are limited by an implicit deny in a permissions boundary or session policy.
+
+## [Cross account resource access](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies-cross-account-resource-access.html)
+- To share the resource directly, the resource that you want to share must support resource-based policies.
+  - Unlike an identity-based policy for a role, a resource-based policy specifies who (which principal) can access that resource.
+  - In cross account access, a principal needs an Allow in the identity policy and the resource-based policy.
+- Use a role as a proxy when you want to access resources in another account that do not support resource-based policies.
+
+[IAM Access Analyzer](https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html#what-is-access-analyzer-resource-identification) helps to identify the resources shared with an external entity.
+
+## Links
+- [AWS services that work with IAM](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_aws-services-that-work-with-iam.html)
+
 # EC2
 
 ## [Instance Metadata]((https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instancedata-data-retrieval.html))
