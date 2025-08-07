@@ -102,21 +102,39 @@ A principal must pass both Lake Formation and IAM permissions checks.
 
 - [Metadata access control](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-metadata.html)
 
+### Underlying data access permissions
+The following permissions are required to enable principals to read and write underlying data
+
+- Register the Amazon S3 locations that contain the data with Lake Formation.
+- Principals who create Data Catalog tables that point to underlying data locations must have data location permissions.
+- Principals who read and write underlying data must have Lake Formation data access permissions on the Data Catalog tables that point to the underlying data locations.
+- Principals who read and write underlying data must have the lakeformation:GetDataAccess IAM permission when the underlying data location is registered with Lake Formation.
+
+> The Lake Formation permissions model doesn't prevent access to Amazon S3 locations through the Amazon S3 API or console if you have access to them through IAM or Amazon S3 policies. You can attach IAM policies to principals to block this access.
+
+(from [Underlying data access control](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-underlying-data.html))
+
 ## Permissions enforcement
 - [Permissions management workflow](https://docs.aws.amazon.com/lake-formation/latest/dg/how-it-works.html#lf-workflow)
   - If the user is authorized, Lake Formation provides temporary access to data
-  - [Credential vending](https://docs.aws.amazon.com/lake-formation/latest/dg/using-cred-vending.html)
   - Creation of tables at specific S3 location can be blocked by data location permissions
 
 ### [Storage access management](https://docs.aws.amazon.com/lake-formation/latest/dg/storage-permissions.html)
   - Column level, row level and cell level filtering are enforced by the integrated service
 
-> The Lake Formation permissions model doesn't prevent access to Amazon S3 locations through the Amazon S3 API or console if you have access to them through IAM or Amazon S3 policies. You can attach IAM policies to principals to block this access.
-
-[Underlying data access control](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-underlying-data.html)
-
-## [Integrating with Lake Formation](https://docs.aws.amazon.com/lake-formation/latest/dg/Integrating-with-LakeFormation.html)
-- [Roles and responsibilities](https://docs.aws.amazon.com/lake-formation/latest/dg/roles-and-responsibilities.html)
+### [Credential vending](https://docs.aws.amazon.com/lake-formation/latest/dg/using-cred-vending.html)
+- Lake Formation can vend scoped-down temporary credentials in the form of AWS STS tokens to registered Amazon S3 locations based on the effective permissions
+- Credential vending APIs
+  - `GetTemporaryGlueTableCredentials`
+  - `GetTemporaryGluePartitionCredentials`
+  - APIs are disabled by default.
+    - [Third party query engines must be registered](https://docs.aws.amazon.com/lake-formation/latest/dg/permitting-third-party-call.html) to use them or [full access must be enabled](https://docs.aws.amazon.com/lake-formation/latest/dg/full-table-credential-vending.html)
+      - Registered IAM session tag must be set when third party query engines call assume role for the role that is used to call credential vending APIs.
+- Credential vending only works with queries that run through the AWS Glue ETL library
+- Lake Formation credential vending API operations enable a distributed-enforcement with explicit deny on failure (fail-close) model
+  - Integrated services are trusted to properly enforce Lake Formation permissions (distributed-enforcement)
+  - [Roles and responsibilities](https://docs.aws.amazon.com/lake-formation/latest/dg/roles-and-responsibilities.html)
+  - [Snowflake supports use of vended credentials](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-catalog-integration-vended-credentials)
 
 ## [Quotas](https://docs.aws.amazon.com/general/latest/gr/lake-formation.html#limits_lake-formation)
 - Number of registered paths per region in an AWS account = 10,000
