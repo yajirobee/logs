@@ -42,6 +42,7 @@ The integration is enabled by the following steps.
 ## Links
 - [S3 Tables and table bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables.html)
   - [Accessing S3 tables using Glue Iceberg REST endpoint](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-tables-integrating-glue-endpoint.html)
+- [IAM actions / resources / condition keys for S3 Tables](https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazons3tables.html)
 
 ---
 # AWS Glue
@@ -80,7 +81,7 @@ The integration is enabled by the following steps.
 - [Iceberg REST Catalog API](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/apache/iceberg/main/open-api/rest-catalog-open-api.yaml)
 
 ---
-# AWS Lake Formation
+# AWS Lake Formation (LF)
 Lake Formation provides RDBMS permissions model to grant or revoke access to Data Catalog resources.
 
 ## [Permissions model](https://docs.aws.amazon.com/lake-formation/latest/dg/lf-permissions-overview.html)
@@ -94,13 +95,15 @@ Lake Formation uses a combination of Lake Formation permissions and IAM permissi
 A principal must pass both Lake Formation and IAM permissions checks.
 
 ### [Metadata permissions](https://docs.aws.amazon.com/lake-formation/latest/dg/metadata-permissions.html)
-  - By default, all databases and tables have `IAMAllowedPrincipal` group
-    - If this permissions exists on a database or table, all principals will be granted access to the database or table
-    - `IAMAllowedPrincipal` must be removed for granular access control
-    - `IAMAllowedPrincipal` is set to new databases and tables by default. The default setting can be modified.
-  - LF-Tag based access control (LF-TBAC) is the best way to scale permissions across huge number of resources
+- By default, all databases and tables have `IAMAllowedPrincipal` group
+  - If this permissions exists on a database or table, all principals will be granted access to the database or table
+  - `IAMAllowedPrincipal` must be removed for granular access control
+  - `IAMAllowedPrincipal` is set to new databases and tables by default. The default setting can be modified.
+- LF-Tag based access control (LF-TBAC) is the best way to scale permissions across huge number of resources
 
 - [Metadata access control](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-metadata.html)
+- [Lake Formation personas and IAM permissions reference](https://docs.aws.amazon.com/lake-formation/latest/dg/permissions-reference.html)
+- [Lake Formation permissions reference](https://docs.aws.amazon.com/lake-formation/latest/dg/lf-permissions-reference.html)
 
 ### Underlying data access permissions
 The following permissions are required to enable principals to read and write underlying data
@@ -114,13 +117,24 @@ The following permissions are required to enable principals to read and write un
 
 (from [Underlying data access control](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-underlying-data.html))
 
+### [Cross account data sharing](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-permissions.html)
+- Query and join tables across multiple accounts is available with cross account data sharing
+- AWS Resource Access Manger (RAM) is used to share LF resources
+- If the grantee account is in the same [organization](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html) as the grantor account, shared access is available immediately
+  - Otherwise, RAM sends an invitation to the grantee account to accept or reject the resource grant
+- [Setup required in each consumer account](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-prereqs.html)
+  - at least one user in the consumer account must be a [data lake administrator](https://docs.aws.amazon.com/lake-formation/latest/dg/initial-lf-config.html#create-data-lake-admin) to view shared resources
+  - The data lake administrator can grant Lake Formation permissions on the shared resources to other principals in the account
+- [Permissions required to access underlying data of shared table](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-read-data.html)
+
 ## Permissions enforcement
 - [Permissions management workflow](https://docs.aws.amazon.com/lake-formation/latest/dg/how-it-works.html#lf-workflow)
   - If the user is authorized, Lake Formation provides temporary access to data
   - Creation of tables at specific S3 location can be blocked by data location permissions
 
 ### [Storage access management](https://docs.aws.amazon.com/lake-formation/latest/dg/storage-permissions.html)
-  - Column level, row level and cell level filtering are enforced by the integrated service
+- Column level, row level and cell level filtering are enforced by the integrated service
+  - Integrated services are trusted to properly enforce Lake Formation permissions (distributed-enforcement)
 
 ### [Credential vending](https://docs.aws.amazon.com/lake-formation/latest/dg/using-cred-vending.html)
 - Lake Formation can vend scoped-down temporary credentials in the form of AWS STS tokens to registered Amazon S3 locations based on the effective permissions
@@ -132,7 +146,6 @@ The following permissions are required to enable principals to read and write un
       - Registered IAM session tag must be set when third party query engines call assume role for the role that is used to call credential vending APIs.
 - Credential vending only works with queries that run through the AWS Glue ETL library
 - Lake Formation credential vending API operations enable a distributed-enforcement with explicit deny on failure (fail-close) model
-  - Integrated services are trusted to properly enforce Lake Formation permissions (distributed-enforcement)
   - [Roles and responsibilities](https://docs.aws.amazon.com/lake-formation/latest/dg/roles-and-responsibilities.html)
   - [Snowflake supports use of vended credentials](https://docs.snowflake.com/en/user-guide/tables-iceberg-configure-catalog-integration-vended-credentials)
 

@@ -38,6 +38,7 @@ title: Open table formats
 
 ## Integrations / ecosystem
 - [Trino](https://trino.io/docs/current/connector/iceberg.html)
+  - [Query S3 Tables from Trino using Iceberg REST endpoint](https://aws.amazon.com/blogs/storage/query-amazon-s3-tables-from-open-source-trino-using-apache-iceberg-rest-endpoint/)
 - [Hive](https://iceberg.apache.org/docs/latest/hive/#partitioned-tables)
 - [DuckDB](https://duckdb.org/docs/extensions/iceberg)
   - read only as of 2024/08/07
@@ -65,6 +66,12 @@ from [Metastore Tables](https://iceberg.apache.org/spec/#metastore-tables)
 ### Partitioning
 - [Partitioning](https://iceberg.apache.org/docs/latest/partitioning/)
 - [Partition Transforms](https://iceberg.apache.org/spec/#partitioning)
+
+### Importing exsiting parquet files
+Iceberg Java API has [AppendFiles API](https://iceberg.apache.org/javadoc/1.9.2/org/apache/iceberg/AppendFiles.html)
+that imports existing parquet files to an Iceberg table without rewriting them.
+[PyIceberg](https://py.iceberg.apache.org/api/#add-files) and [Spark](https://iceberg.apache.org/docs/latest/spark-procedures/#add_files)
+supports `add_files` operation that scans footer of parquet files and imports to a table.
 
 ---
 # Hudi
