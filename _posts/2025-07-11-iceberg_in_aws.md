@@ -4,11 +4,11 @@ title: "Study Apache Iceberg ecosystems in AWS"
 tags: Database AWS
 ---
 
-[WIP] Study note about Apache Iceberg ecosystems in AWS.
+Study note about Apache Iceberg ecosystems in AWS.
 <!--end_excerpt-->
 
 # S3 Tables
-S3 Tables supports IAM-based and resource-based access control and automatic maintenance operations for Iceberg tables stored in buckets. S3 Tables is available in S3 table buckets.
+S3 Tables supports IAM-based and resource-based access control and automatic maintenance operations for Iceberg tables stored in buckets. S3 Tables is available in S3 table buckets. It was [released on 2024/12/03](https://aws.amazon.com/blogs/aws/new-amazon-s3-tables-storage-optimized-for-analytics-workloads/).
 
 ## Table maintenance
 [Unreferenced file removal](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-table-buckets-maintenance.html) and
@@ -67,6 +67,12 @@ The integration is enabled by the following steps.
   - For Iceberg tables in regular S3 buckets, prefix / catalog ID is unavailable.
     - All tables are stored in the default Data Catalog (Catalog ID = AWS account ID) (reference: [Populating catalog](https://docs.aws.amazon.com/lake-formation/latest/dg/populating-catalog.html))
 
+## Access control
+- [A resource-based policy can be attached to a catalog](https://docs.aws.amazon.com/glue/latest/dg/security_iam_service-with-iam.html#security_iam_service-with-iam-resource-based-policies)
+  - [ARNs of data catalog resources](https://docs.aws.amazon.com/glue/latest/dg/glue-specifying-resource-arns.html#data-catalog-resource-arns)
+    - Federated catalogs are also catalog resources
+- Cross-account permissions of Glue and Lake Formation [can be used at the same time](https://docs.aws.amazon.com/lake-formation/latest/dg/hybrid-cross-account.html)
+
 ## [Quotas](https://docs.aws.amazon.com/general/latest/gr/glue.html#limits_glue)
 - Max databases per region in an AWS account = 10,000
 - Max tables per region in an AWS account = 1,000,000
@@ -100,6 +106,7 @@ A principal must pass both Lake Formation and IAM permissions checks.
   - `IAMAllowedPrincipal` must be removed for granular access control
   - `IAMAllowedPrincipal` is set to new databases and tables by default. The default setting can be modified.
 - LF-Tag based access control (LF-TBAC) is the best way to scale permissions across huge number of resources
+  - LF-Tag can be assigned for databases and tables, not for catalogs
 
 - [Metadata access control](https://docs.aws.amazon.com/lake-formation/latest/dg/access-control-metadata.html)
 - [Lake Formation personas and IAM permissions reference](https://docs.aws.amazon.com/lake-formation/latest/dg/permissions-reference.html)
@@ -120,12 +127,28 @@ The following permissions are required to enable principals to read and write un
 ### [Cross account data sharing](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-permissions.html)
 - Query and join tables across multiple accounts is available with cross account data sharing
 - AWS Resource Access Manger (RAM) is used to share LF resources
-- If the grantee account is in the same [organization](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html) as the grantor account, shared access is available immediately
+- If the grantee (provider) account is in the same [organization](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_introduction.html) as the grantor (consumer) account, shared access is available immediately
   - Otherwise, RAM sends an invitation to the grantee account to accept or reject the resource grant
 - [Setup required in each consumer account](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-prereqs.html)
   - at least one user in the consumer account must be a [data lake administrator](https://docs.aws.amazon.com/lake-formation/latest/dg/initial-lf-config.html#create-data-lake-admin) to view shared resources
   - The data lake administrator can grant Lake Formation permissions on the shared resources to other principals in the account
+- The consumer account principals cannot assign new LF-Tags for shared resources
+  - For fine grained database or table level access control in the consumer account, only named resource based method is available
 - [Permissions required to access underlying data of shared table](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-read-data.html)
+
+[Example steps](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-TBAC.html) for cross account data sharing with LF-TBAC
+- [grantor]: set required IAM permissions for Glue and RAM resources
+  - [Prerequisites](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-prereqs.html)
+- [grantee]: create a data lake administrator
+- [grantor]: assign LF-Tag to databases and tables
+  - [Assigning LF-tags to Data Catalog resources](https://docs.aws.amazon.com/lake-formation/latest/dg/TBAC-assigning-tags.html)
+- [grantor]: grant data permission to external accounts using LF-Tag expressions
+- [grantor]: (If credential vending isn't used by consumer) grant permissions to access underlying data, e.g. S3 to external accounts or principals by resource-based permissions
+- [grantee]: receive the resource share in RAM as a data lake administrator
+- [grantee]: the data lake administrator grants LF-Tag key-value permissions to other IAM principals
+  - [Granting permissions on shared databases and tables](https://docs.aws.amazon.com/lake-formation/latest/dg/regranting-shared-resources.html)
+- [grantee]: grant permissions required to access underlying data of shared tables for IAM principals that read data
+- [grantee]: (If credential vending isn't used) grant permissions to access underlying data for IAM principals that read data
 
 ## Permissions enforcement
 - [Permissions management workflow](https://docs.aws.amazon.com/lake-formation/latest/dg/how-it-works.html#lf-workflow)
