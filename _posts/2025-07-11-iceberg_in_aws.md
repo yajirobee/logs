@@ -46,6 +46,8 @@ The integration is enabled by the following steps.
 
 ---
 # AWS Glue
+AWS launched Glue Iceberg REST endpoint along with the launch of S3 Tables. ([The release date is the same as S3 Tables.](https://docs.aws.amazon.com/glue/latest/dg/doc-history.html))
+
 - [Creating Iceberg tables](https://docs.aws.amazon.com/glue/latest/dg/populate-otf.html#creating-iceberg-tables)
   - By default, Iceberg v2 tables are created
   - > Data Catalog doesn’t support creating partitions and adding Iceberg table properties.
