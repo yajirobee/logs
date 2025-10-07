@@ -139,18 +139,18 @@ The following permissions are required to enable principals to read and write un
 - [Permissions required to access underlying data of shared table](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-read-data.html)
 
 [Example steps](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-TBAC.html) for cross account data sharing with LF-TBAC
-- [grantor]: set required IAM permissions for Glue and RAM resources
+- grantor: set required IAM permissions for Glue and RAM resources
   - [Prerequisites](https://docs.aws.amazon.com/lake-formation/latest/dg/cross-account-prereqs.html)
-- [grantee]: create a data lake administrator
-- [grantor]: assign LF-Tag to databases and tables
+- grantee: create a data lake administrator
+- grantor: assign LF-Tag to databases and tables
   - [Assigning LF-tags to Data Catalog resources](https://docs.aws.amazon.com/lake-formation/latest/dg/TBAC-assigning-tags.html)
-- [grantor]: grant data permission to external accounts using LF-Tag expressions
-- [grantor]: (If credential vending isn't used by consumer) grant permissions to access underlying data, e.g. S3 to external accounts or principals by resource-based permissions
-- [grantee]: receive the resource share in RAM as a data lake administrator
-- [grantee]: the data lake administrator grants LF-Tag key-value permissions to other IAM principals
+- grantor: grant data permission to external accounts using LF-Tag expressions
+- grantor: (If credential vending isn't used by consumer) grant permissions to access underlying data, e.g. S3 to external accounts or principals by resource-based permissions
+- grantee: receive the resource share in RAM as a data lake administrator
+- grantee: the data lake administrator grants LF-Tag key-value permissions to other IAM principals
   - [Granting permissions on shared databases and tables](https://docs.aws.amazon.com/lake-formation/latest/dg/regranting-shared-resources.html)
-- [grantee]: grant permissions required to access underlying data of shared tables for IAM principals that read data
-- [grantee]: (If credential vending isn't used) grant permissions to access underlying data for IAM principals that read data
+- grantee: grant permissions required to access underlying data of shared tables for IAM principals that read data
+- grantee: (If credential vending isn't used) grant permissions to access underlying data for IAM principals that read data
 
 ## Permissions enforcement
 - [Permissions management workflow](https://docs.aws.amazon.com/lake-formation/latest/dg/how-it-works.html#lf-workflow)
