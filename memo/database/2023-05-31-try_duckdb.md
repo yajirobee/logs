@@ -107,7 +107,8 @@ select l_linenumber, count(*) from read_parquet('lineitem.parquet') group by 1;
 ```
 
 ## Parquet files on S3
-[Loading a secret based on a profile](https://duckdb.org/docs/stable/core_extensions/httpfs/s3api.html#loading-a-secret-based-on-a-profile)
+- [secret manager](https://duckdb.org/docs/stable/configuration/secrets_manager)
+- [Loading a secret based on a profile](https://duckdb.org/docs/stable/core_extensions/httpfs/s3api.html#loading-a-secret-based-on-a-profile)
 
 ### [Export](https://duckdb.org/docs/guides/import/s3_export)
 ```sql
