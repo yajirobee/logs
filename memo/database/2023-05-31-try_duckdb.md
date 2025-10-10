@@ -107,19 +107,7 @@ select l_linenumber, count(*) from read_parquet('lineitem.parquet') group by 1;
 ```
 
 ## Parquet files on S3
-- [Load AWS credentials from environment variables](https://github.com/duckdb/duckdb/pull/5419)
-```sh
-export AWS_DEFAULT_REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r '.region')
-export AWS_ACCESS_KEY_ID=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/${role_name} | jq -r '.AccessKeyId')
-export AWS_SECRET_ACCESS_KEY=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/${role_name} | jq -r '.SecretAccessKey')
-export AWS_SESSION_TOKEN=$(curl -s http://169.254.169.254/latest/meta-data/iam/security-credentials/${role_name} | jq -r '.Token')
-```
-
-[aws](https://duckdb.org/docs/extensions/aws) extension was introduced by DuckDB `0.9.0`.
-Credentials can be loaded as follows:
-```
-CALL load_aws_credentials();
-```
+[Loading a secret based on a profile](https://duckdb.org/docs/stable/core_extensions/httpfs/s3api.html#loading-a-secret-based-on-a-profile)
 
 ### [Export](https://duckdb.org/docs/guides/import/s3_export)
 ```sql
