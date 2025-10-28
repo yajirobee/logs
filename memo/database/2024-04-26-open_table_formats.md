@@ -73,6 +73,10 @@ that imports existing parquet files to an Iceberg table without rewriting them.
 [PyIceberg](https://py.iceberg.apache.org/api/#add-files) and [Spark](https://iceberg.apache.org/docs/latest/spark-procedures/#add_files)
 supports `add_files` operation that scans footer of parquet files and imports to a table.
 
+Columns in Iceberg data files are selected by field id. Field IDs of Iceberg schema and
+data files schema must match.
+- [Column projection](https://iceberg.apache.org/spec/#column-projection)
+
 ---
 # Hudi
 [Spec](https://hudi.apache.org/tech-specs/)
