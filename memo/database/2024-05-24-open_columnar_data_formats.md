@@ -15,6 +15,11 @@ title: Open columnar data formats
       your own parquet writer using low level interface like parquet-{common,column,encoding}.
     - e.g. [Iceberg's parquet writer](https://github.com/apache/iceberg/blob/main/parquet/src/main/java/org/apache/iceberg/parquet/ParquetWriter.java), [Trino's parquet writer](https://github.com/trinodb/trino/blob/master/lib/trino-parquet/src/main/java/io/trino/parquet/writer/ParquetWriter.java)
 
+## Links
+- [Capacitor (BigQuery's columnar storage format)](https://cloud.google.com/blog/products/bigquery/inside-capacitor-bigquerys-next-generation-columnar-storage-format)
+  - Has the same ancestor as Parquet (Dremel)
+  - [Motivation of Parquet](https://parquet.apache.org/docs/overview/motivation/)
+
 ---
 # ORC
 - [ORC Specification v1](https://orc.apache.org/specification/ORCv1/)

@@ -98,7 +98,15 @@ Parquet extension is built-in.
 
 ### [Export](https://duckdb.org/docs/guides/import/parquet_export)
 ```sql
-copy lineitem to 'lineitem.parquet' (format 'parquet');
+copy lineitem to 'lineitem.parquet' (format parquet, compression zstd);
+
+-- accelerate writing by https://duckdb.org/docs/stable/data/parquet/tips#enabling-per_thread_output
+copy lineitem to 'lineitem.parquet'
+  (format parquet, compression zstd, per_thread_output);
+
+-- limit file size https://duckdb.org/docs/stable/sql/statements/copy#copy--to-options
+copy lineitem to 'lineitem.parquet'
+  (format parquet, compression zstd, file_size_bytes '64M', per_thread_output);
 ```
 
 ### [Query](https://duckdb.org/docs/guides/import/query_parquet)
