@@ -7,6 +7,9 @@ title: Python cheatsheet
 ## [uv](https://docs.astral.sh/uv/)
 > A single tool to replace pip, pip-tools, pipx, poetry, pyenv, twine, virtualenv, and more.
 
+### migrate to uv from another package manager
+Use [uvx migrate-to-uv](https://github.com/mkniewallner/migrate-to-uv) tool
+
 ## [poetry](https://python-poetry.org/)
 Poetry manages project configurations on the customer sections of python standard project configuration file [pyproject.toml](https://packaging.python.org/en/latest/specifications/pyproject-toml/#pyproject-toml-spec).
 
