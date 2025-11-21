@@ -129,6 +129,12 @@ test=# select pid, relation::regclass, mode, granted, query from pg_locks join p
 If the view has the security_invoker property set to true, access to the underlying base relations is determined by the permissions of the user executing the query, rather than the view owner.
 (from: https://www.postgresql.org/docs/current/sql-createview.html)
 
+# Statistics
+Since pg 15, statistics are stored on the shared memory. Legacy stats collector has gone.
+- Main code
+  - [pgstat.c](https://github.com/postgres/postgres/blob/master/src/backend/utils/activity/pgstat.c)
+  - [pgstat_shmem.c](https://github.com/postgres/postgres/blob/master/src/backend/utils/activity/pgstat_shmem.c)
+
 # Clients
 ## Set GUC parameters via libpq connection string
 e.g.
