@@ -134,6 +134,7 @@ Since pg 15, statistics are stored on the shared memory. Legacy stats collector 
 - Main code
   - [pgstat.c](https://github.com/postgres/postgres/blob/master/src/backend/utils/activity/pgstat.c)
   - [pgstat_shmem.c](https://github.com/postgres/postgres/blob/master/src/backend/utils/activity/pgstat_shmem.c)
+- Flush by `pgstat_report_stat()`
 
 # Clients
 ## Set GUC parameters via libpq connection string
