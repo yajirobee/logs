@@ -23,6 +23,14 @@ kubectl exec -it ${pod_name} -- /bin/bash
   - `1.0` means 1 CPU unit (= 1 physical CPU core or 1 virtual core)
   - `1000m` (one thousand millicpu) = `1.0`
 
+# Namespaces
+[Namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) provide a mechanism for isolating groups of resources within a single cluster.
+
+# Manage multiple clusters
+- [Configure Access to Multiple Clusters]https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/
+
 # Links
-- [Kubernetes concepts (AWS EKS doc)](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-concepts.html)
+- Kubernetes concepts
+  - [kubernetes doc](https://kubernetes.io/docs/concepts/)
+  - [AWS EKS doc](https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-concepts.html)
 - Switching contexts and namespaces: [kubectl & kubens](https://github.com/ahmetb/kubectx)
