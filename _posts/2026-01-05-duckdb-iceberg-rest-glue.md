@@ -11,13 +11,16 @@ I used DuckDB [1.4.3](https://github.com/duckdb/duckdb/releases/tag/v1.4.3).
 
 # Setup
 1. Install and load extensions
+
 ```
 INSTALL aws;
 INSTALL httpfs;
 INSTALL iceberg;
 LOAD iceberg;
 ```
+
 2. Create a secret that is used to access the Iceberg REST catalog and tables
+
 ```
 CREATE SECRET (
     TYPE s3,
@@ -27,7 +30,9 @@ CREATE SECRET (
     REGION 'us-east-1'
 );
 ```
+
 3. Connect to the catalog
+
 ```
 ATTACH 'account_id' AS glue_catalog (
     TYPE iceberg,
