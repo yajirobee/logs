@@ -28,6 +28,8 @@ title: Open columnar data formats
 
 ---
 # Links
-- [An Empirical Evaluation of Columnar Storage Formats](https://www.vldb.org/pvldb/vol17/p148-zeng.pdf)
-- [Exploiting Cloud Object Storage for High-Performance Analytics](https://www.vldb.org/pvldb/vol16/p2769-durner.pdf)
-- [Amazon's Exabyte-Scale Migration from Apache Spark to Ray on Amazon EC2](https://aws.amazon.com/jp/blogs/opensource/amazons-exabyte-scale-migration-from-apache-spark-to-ray-on-amazon-ec2/)
+- [An Empirical Evaluation of Columnar Storage Formats](https://www.vldb.org/pvldb/vol17/p148-zeng.pdf) (2023)
+- [Exploiting Cloud Object Storage for High-Performance Analytics](https://www.vldb.org/pvldb/vol16/p2769-durner.pdf) (2023)
+- [Amazon's Exabyte-Scale Migration from Apache Spark to Ray on Amazon EC2](https://aws.amazon.com/jp/blogs/opensource/amazons-exabyte-scale-migration-from-apache-spark-to-ray-on-amazon-ec2/) (2024)
+- [Column Storage For the AI Era](https://sympathetic.ink/2025/12/11/Column-Storage-for-the-AI-era.html) (2025)
+- [Using External Indexes, Metadata Stores, Catalogs and Caches to Accelerate Queries on Apache Parquet](https://datafusion.apache.org/blog/2025/08/15/external-parquet-indexes/) (2025)
