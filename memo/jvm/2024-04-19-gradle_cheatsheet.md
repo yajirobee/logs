@@ -80,3 +80,7 @@ allprojects {
 Use `.init.gradle.kts` extension for init scripts
 
 ## [Default Imports](https://docs.gradle.org/current/userguide/writing_build_scripts.html#script-default-imports)
+
+# Shadow
+## Merging service descriptor files (`META-INF/services`)
+use [mergeServiceFiles()](https://gradleup.com/shadow/configuration/merging/#merging-service-descriptor-files)
