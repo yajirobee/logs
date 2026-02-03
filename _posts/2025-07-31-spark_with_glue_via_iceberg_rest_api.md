@@ -60,6 +60,16 @@ podman run --rm -it \
 ```
 
 ## SQL examples
+- show current catalog
+```python
+spark.catalog.currentCatalog()
+```
+
+- list catalogs
+```python
+spark.catalog.listCatalogs()
+```
+
 - list databases
 ```python
 spark.sql("SHOW databases").show()
