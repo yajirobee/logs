@@ -21,6 +21,9 @@ Available access modes vary by whether Unity Catalog is enabled or not
 # Unity Catalog
 - Unity Catalog is account-level resource
   - [Only one Unity Catalog can be created per region](https://docs.databricks.com/aws/en/data-governance/unity-catalog/best-practices#metastores)
+- The default catalog varies by whether Unity Catalog is enabled or not ([doc](https://docs.databricks.com/aws/en/catalogs/default))
+  - Unity Catalog enabled -> the workspace catalog
+  - Unity Catalog disabled -> `hive_metastore`
 
 ## Links
 - [What is Unity Catalog?](https://docs.databricks.com/aws/en/data-governance/unity-catalog/)
