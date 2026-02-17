@@ -28,6 +28,5 @@ Available access modes vary by whether Unity Catalog is enabled or not
 ## Links
 - [What is Unity Catalog?](https://docs.databricks.com/aws/en/data-governance/unity-catalog/)
 
-
 # Databricks Utilities (dbutils)
 [dbutils](https://docs.databricks.com/gcp/en/dev-tools/databricks-utils) provides utility commands for notebooks.

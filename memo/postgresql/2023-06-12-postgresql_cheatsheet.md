@@ -95,8 +95,8 @@ ORDER BY index_method, opfamily_name, opfamily_operator;
 ## Links
 - [postgres not using btree_gist index](https://stackoverflow.com/questions/71788182/postgres-not-using-btree-gist-index)
 
-# DDL
-## Locks
+# SQL commands
+## Locks on create index
 - `create index if not exist` takes `SHARE` lock even if the index already exists
 
 confirmed on PostgreSQL 14.9
@@ -120,6 +120,11 @@ test=# select pid, relation::regclass, mode, granted, query from pg_locks join p
  20944 | test     | ShareLock | t       | create index if not exists test_idx on test (key);
 (1 row)
 ```
+
+## MERGE
+As of 17, if both WHEN NOT MATCHED BY SOURCE and WHEN NOT MATCHED [BY TARGET] clauses
+are specified, the MERGE command will perform a FULL join between data_source and the target table.
+(from [mailing list](https://www.postgresql.org/message-id/1903318.1736451593%40sss.pgh.pa.us))
 
 # The Query Rewrite Rule System (views and materialized views)
 - [Rules and Privileges](https://www.postgresql.org/docs/current/rules-privileges.html)
