@@ -32,14 +32,19 @@ SPARK_SCALA_VERSION="3.5_2.12"
 AWS_SDK_VERSION="2.32.10"
 HADOOP_AWS_VERSION="3.3.6"
 # need s3, sts, glue, dynamodb, kms packages from aws sdk
-SPARK_PACKAGES_CONFIG="org.apache.iceberg:iceberg-spark-runtime-${SPARK_SCALA_VERSION}:${ICEBERG_VERSION},software.amazon.awssdk:s3:${AWS_SDK_VERSION},software.amazon.awssdk:sts:${AWS_SDK_VERSION},software.amazon.awssdk:glue:${AWS_SDK_VERSION},software.amazon.awssdk:dynamodb:${AWS_SDK_VERSION},software.amazon.awssdk:kms:${AWS_SDK_VERSION},org.apache.hadoop:hadoop-aws:${HADOOP_AWS_VERSION}"
+SPARK_PACKAGES_CONFIG="org.apache.iceberg:iceberg-spark-runtime-${SPARK_SCALA_VERSION}:${ICEBERG_VERSION},\
+software.amazon.awssdk:s3:${AWS_SDK_VERSION},\
+software.amazon.awssdk:sts:${AWS_SDK_VERSION},\
+software.amazon.awssdk:glue:${AWS_SDK_VERSION},\
+software.amazon.awssdk:dynamodb:${AWS_SDK_VERSION},\
+software.amazon.awssdk:kms:${AWS_SDK_VERSION},\
+org.apache.hadoop:hadoop-aws:${HADOOP_AWS_VERSION}"
 
 GLUE_CATALOG_ID="${AWS_ACCOUNT_ID}"
 # If you used S3 Table and Glue/Lake Formation integration, a catalog is created per table bucket
 # GLUE_CATALOG_ID="${AWS_ACCOUNT_ID}:s3tablescatalog/${BUCKET_NAME}""
 
 podman run --rm -it \
-  --name spark-iceberg-job \
   -v ./:/opt/spark/work-dir \
   -e AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID}" \
   -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
