@@ -42,7 +42,7 @@ podman run --rm -it \
   -e AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY}" \
   -e AWS_SESSION_TOKEN="${AWS_SESSION_TOKEN}" \
   -e AWS_REGION="${AWS_REGION}" \
-  spark:3.5.6-java17-python3 \
+  spark:4.0.0-java21-python3 \
   /opt/spark/bin/pyspark \
   --packages "${SPARK_PACKAGES_CONFIG}" \
   --conf "spark.jars.ivy=/opt/spark/work-dir/.ivy" \
