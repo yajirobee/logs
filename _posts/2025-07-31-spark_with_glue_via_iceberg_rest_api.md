@@ -27,18 +27,10 @@ eval $(aws configure export-credentials --format env)
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 
 # packages required to use iceberg and S3
-ICEBERG_VERSION="1.9.2"
-SPARK_SCALA_VERSION="3.5_2.12"
-AWS_SDK_VERSION="2.32.10"
-HADOOP_AWS_VERSION="3.3.6"
-# need s3, sts, glue, dynamodb, kms packages from aws sdk
+ICEBERG_VERSION="1.10.1"
+SPARK_SCALA_VERSION="4.0_2.13"
 SPARK_PACKAGES_CONFIG="org.apache.iceberg:iceberg-spark-runtime-${SPARK_SCALA_VERSION}:${ICEBERG_VERSION},\
-software.amazon.awssdk:s3:${AWS_SDK_VERSION},\
-software.amazon.awssdk:sts:${AWS_SDK_VERSION},\
-software.amazon.awssdk:glue:${AWS_SDK_VERSION},\
-software.amazon.awssdk:dynamodb:${AWS_SDK_VERSION},\
-software.amazon.awssdk:kms:${AWS_SDK_VERSION},\
-org.apache.hadoop:hadoop-aws:${HADOOP_AWS_VERSION}"
+org.apache.iceberg:iceberg-aws-bundle:${ICEBERG_VERSION}"
 
 GLUE_CATALOG_ID="${AWS_ACCOUNT_ID}"
 # If you used S3 Table and Glue/Lake Formation integration, a catalog is created per table bucket
@@ -52,7 +44,7 @@ podman run --rm -it \
   -e AWS_REGION="${AWS_REGION}" \
   spark:3.5.6-java17-python3 \
   /opt/spark/bin/pyspark \
-  --conf "spark.jars.packages=${SPARK_PACKAGES_CONFIG}" \
+  --packages "${SPARK_PACKAGES_CONFIG}" \
   --conf "spark.jars.ivy=/opt/spark/work-dir/.ivy" \
   --conf "spark.sql.catalog.glue_rest_catalog=org.apache.iceberg.spark.SparkCatalog" \
   --conf "spark.sql.catalog.glue_rest_catalog.type=rest" \
