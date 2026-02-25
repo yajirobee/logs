@@ -25,8 +25,18 @@ Available access modes vary by whether Unity Catalog is enabled or not
   - Unity Catalog enabled -> the workspace catalog
   - Unity Catalog disabled -> `hive_metastore`
 
+## Credentials
+- Use a role registered in service credentials for aws client
+```python
+boto3_session = boto3.Session(
+    botocore_session=dbutils.credentials.getServiceCredentialsProvider(credential_name)
+    ...
+)
+```
+
 ## Links
 - [What is Unity Catalog?](https://docs.databricks.com/aws/en/data-governance/unity-catalog/)
+- [Unity Catalog managed credentials](https://docs.databricks.com/aws/en/sql/language-manual/sql-ref-storage-credentials)
 
 # Databricks Utilities (dbutils)
 [dbutils](https://docs.databricks.com/gcp/en/dev-tools/databricks-utils) provides utility commands for notebooks.
