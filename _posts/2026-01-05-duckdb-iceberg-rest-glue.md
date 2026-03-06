@@ -1,6 +1,6 @@
 ---
 layout: blog
-title: Access Iceberg tables managed in AWS Glue Iceberg REST catalog and S3 Tables
+title: Access Iceberg tables managed in AWS Glue Iceberg REST catalog and S3 Tables by DuckDB
 tags: Database AWS
 ---
 
@@ -67,6 +67,10 @@ select count(*) from glue_catalog.tpch.nation;
 ```sql
 create schema glue_catalog.test_db;
 create table glue_catalog.test_db.test_tbl as select n from generate_series(1, 100) s(n);
+-- to override a storage location
+create table glue_catalog.test_db.test_tbl
+  with ('location' = 's3://bucket-name/path/to/table/')
+  as select n from generate_series(1, 100) s(n);
 ```
 
 ```
