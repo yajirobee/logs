@@ -87,6 +87,7 @@ AWS launched Glue Iceberg REST endpoint along with the launch of S3 Tables. ([Th
   - [Access Iceberg tables in S3 from Databricks using AWS Glue Iceberg REST Catalog](https://aws.amazon.com/blogs/big-data/access-amazon-s3-iceberg-tables-from-databricks-using-aws-glue-iceberg-rest-catalog-in-amazon-sagemaker-lakehouse/)
   - [Connect Snowflake to S3 tables using Iceberg REST endpoint](https://aws.amazon.com/blogs/storage/connect-snowflake-to-s3-tables-using-the-sagemaker-lakehouse-iceberg-rest-endpoint/)
 - [Iceberg REST Catalog API](https://editor-next.swagger.io/?url=https://raw.githubusercontent.com/apache/iceberg/main/open-api/rest-catalog-open-api.yaml)
+- [Iceberg AWS Integrations](https://iceberg.apache.org/docs/latest/aws/)
 
 ---
 # AWS Lake Formation (LF)
