@@ -6,6 +6,11 @@ title: Kubernetes cheatsheet
 # Nodes, Pods, Containers
 - [Viewing Pods and Nodes](https://kubernetes.io/docs/tutorials/kubernetes-basics/explore/explore-intro/)
 
+## List containers in a pod
+```sh
+kubectl get pods ${pod_name} -o jsonpath='{.spec.containers[*].name}'
+```
+
 ## Login a container
 ```sh
 kubectl exec -it ${pod_name} -c ${container_name} -- /bin/bash
