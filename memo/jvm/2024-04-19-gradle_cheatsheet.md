@@ -84,3 +84,5 @@ Use `.init.gradle.kts` extension for init scripts
 # Shadow
 ## Merging service descriptor files (`META-INF/services`)
 use [mergeServiceFiles()](https://gradleup.com/shadow/configuration/merging/#merging-service-descriptor-files)
+
+- [Service Provider](https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html#Service_Provider)
