@@ -14,6 +14,9 @@ $ ./gradlew test --tests "some.package.class\$subclass"
 $ ./gradlew run --args="-h"
 ```
 
+- forcing tasks to execute
+use [--rerun-tasks](https://docs.gradle.org/current/userguide/command_line_interface.html#sec:rerun_tasks) option
+
 ## Modify JVM options
 Use [Gradle Properties](https://docs.gradle.org/current/userguide/build_environment.html). e.g.
 
