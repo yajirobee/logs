@@ -8,6 +8,7 @@ title: Good readings
 - [Building and operating a pretty big storage system called S3](https://www.allthingsdistributed.com/2023/07/building-and-operating-a-pretty-big-storage-system.html) (2023)
 - [Just make it scale: An Aurora DSQL story](https://www.allthingsdistributed.com/2025/05/just-make-it-scale-an-aurora-dsql-story.html) (2025)
 - [Systems Correctness Practices at Amazon Web Services](https://cacm.acm.org/practice/systems-correctness-practices-at-amazon-web-services/) (2025)
+- [S3 Files and the changing face of S3](https://www.allthingsdistributed.com/2026/04/s3-files-and-the-changing-face-of-s3.html) (2026)
 
 # AI / LLM
 - [Advancing the Search Frontier with AI Agents](https://cacm.acm.org/research/advancing-the-search-frontier-with-ai-agents/) (2024)
