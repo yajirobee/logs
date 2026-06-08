@@ -12,6 +12,8 @@ Lessons and best practices from my experience. This is a living document.
   - version upgrade may break compatibilty
 - Use scale-agnostic programming abstraction properly
   - [Scale Agnosticism](https://queue.acm.org/detail.cfm?id=3025012)
+- Record background, intentions and decisions in architecture design documents rather than detailed behaviors
+  - [Architecture Decision Record](https://martinfowler.com/bliki/ArchitectureDecisionRecord.html) (ADR)
 
 # Protocol
 - Generally avoid custom serialization format
