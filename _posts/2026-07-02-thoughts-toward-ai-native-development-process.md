@@ -130,7 +130,7 @@ Due to our multi-repo setup, there is no ideal place in Git to store cross-repos
 
 We need to record design decisions that impact a large portion of the system. It isn't obvious where to store such information with a multi-repo setup. Migration to mono-repo is an option since it suits AI context management. However, migrating from multi-repo to mono-repo involves major effort particularly in CI/CD migration. It's unrealistic to consolidate all existing repositories into mono-repo even at the team level.
 
-Instead, I'm considering the meta-repo / virtual mono-repo pattern (ref: https://devnewsletter.com/p/meta-repo-pattern/)
+Instead, I'm considering the meta-repo / virtual mono-repo pattern (ref: [The Meta-Repo Pattern](https://devnewsletter.com/p/meta-repo-pattern/))
 
 > Rather than restructuring codebases (an expensive and politically fraught undertaking), teams are building what amount to maps: lightweight repositories that sit above their project code and provide agents with the context they lack. Practitioners call them "meta-repos" or "virtual monorepos." They contain no application code, only documentation, manifests, and tooling that orient an AI agent across an entire system.
 
