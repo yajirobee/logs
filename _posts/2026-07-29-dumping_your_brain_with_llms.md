@@ -14,7 +14,7 @@ proofreading, the text still remains largely my own words.
 
 ---
 
-In [the previous blog post](2026-07-02-thoughts-toward-ai-native-development-process.md),
+In [the previous blog post]({% post_url 2026-07-02-thoughts-toward-ai-native-development-process %}),
 I described how context matters to get quality output from LLMs and AI tools.
 As a next step, I've lately been writing down my domain knowledge about the
 systems and software I'm working on. It's required to delegate more tasks to
