@@ -33,6 +33,7 @@ VACUUM removes old MultiXacts at the time of tuple freezing.
 - [Multixacts and Wraparound](https://www.postgresql.org/docs/13/routine-vacuuming.html#VACUUM-FOR-WRAPAROUND)
 - [pgrowlocks](https://www.postgresql.org/docs/13/pgrowlocks.html)
 - [Multixact members limit exceeded on 9.4](https://www.postgresql-archive.org/Multixact-members-limit-exceeded-td5976890.html)
+- [MultiXacts in PostgreSQL: usage, side effects, and monitoring](https://aws.amazon.com/blogs/database/multixacts-in-postgresql-usage-side-effects-and-monitoring/) (P.S. 2026-11-13)
 
 [^tupheader]: [tuple header layout](https://www.postgresql.org/docs/13/storage-page-layout.html#STORAGE-TUPLE-LAYOUT)
 
