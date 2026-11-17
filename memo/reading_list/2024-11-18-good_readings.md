@@ -25,6 +25,7 @@ title: Good readings
 - [Memory Safety for Skeptics](https://dl.acm.org/doi/10.1145/3786177) (2026)
   - > experienced developers know rewrites are expensive and frequently misguided. Often, demands for large-scale rewrites are not a carefully reasoned argument about trade-offs, but an aesthetic criticism of code that looks “ugly” or “too old.” If anything, those calling for mass rewrites show their own inability to do the difficult work of understanding and working with an existing codebase that does a job and does it well.
   - [We Decided to Rewrite Our Software. You Won’t Believe What Happened Next!](https://medium.com/adobetech/we-decided-to-rewrite-our-software-you-wont-believe-what-happened-next-dd03574f6654)
+- [How the Claude Code team does code review](https://claude.dev/blog/solving-code-review-at-anthropic/) (2026)
 
 # General
 - [The Hard Truth About Innovative Cultures](https://hbr.org/2019/01/the-hard-truth-about-innovative-cultures) (2019)
