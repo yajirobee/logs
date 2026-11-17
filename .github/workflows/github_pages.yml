@@ -26,9 +26,15 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+      # Newer runner images only ship the latest patch of each Ruby series,
+      # so resolve .ruby-version (e.g. 4.0.9) to its series (4.0) for CI.
+      - name: Resolve Ruby series
+        id: ruby
+        run: echo "version=$(cut -d. -f1,2 .ruby-version)" >> "$GITHUB_OUTPUT"
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
+          ruby-version: ${{ steps.ruby.outputs.version }}
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
           cache-version: 0 # Increment this number if you need to re-download cached gems
       - name: Setup Pages
